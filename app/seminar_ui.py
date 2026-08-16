@@ -97,7 +97,7 @@ def render_profile(data: pd.DataFrame, key: str) -> None:
     nums = numerical(data)
     cats = categorical(data)
     univariate, grouped, association, static = st.tabs(
-        ["Univariate distributions", "Numeric by group", "Two categorical variables", "Static teaching figure"]
+        ["Univariate distributions", "Numeric by group", "Two categorical variables", "Static figure"]
     )
 
     with univariate:
@@ -179,7 +179,7 @@ def render_profile(data: pd.DataFrame, key: str) -> None:
             st.info("A two-categorical association display requires at least two categorical variables.")
 
     with static:
-        st.markdown("##### Seaborn / Matplotlib static teaching figure")
+        st.markdown("##### Seaborn / Matplotlib static figure")
         st.caption("Use this fixed-style figure for slides, handouts, or discussion; use the Plotly charts above for interactive exploration.")
         if nums:
             variable = st.selectbox("Numeric variable for static figure", nums, key=f"{key}_static_numeric")

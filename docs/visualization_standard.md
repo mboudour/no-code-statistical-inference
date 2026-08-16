@@ -12,7 +12,7 @@ The seminar uses graphics to make data, uncertainty, and evidence inspectable ra
 |---|---|---|---|
 | One numeric variable | Histogram | Boxplot | Shape, centre, spread, skewness, and unusual observations |
 | One categorical variable | Bar chart of counts or proportions | Frequency table | Level frequencies and denominators |
-| Numeric outcome by category | Grouped boxplot with outliers | Jittered observations in static teaching figures | Conditional distributions, medians, spread, overlap, and sample sizes |
+| Numeric outcome by category | Grouped boxplot with outliers | Jittered observations in static figures | Conditional distributions, medians, spread, overlap, and sample sizes |
 | Two categorical variables | Count table and heatmap | Proportion table when appropriate | Joint and conditional distributions; possible association |
 | Two numeric variables | Scatterplot | Fitted line only when the model is stated | Functional form, variation, unusual observations, and conditional association |
 
@@ -22,12 +22,12 @@ A boxplot is therefore **not** a plot for a categorical variable by itself. It i
 
 The participant-facing Streamlit app uses **Plotly Express** as its primary Python plotting interface. Plotly Express is the high-level Python interface for rapid figure construction and returns standard Plotly figures; its browser-oriented figures make hover, zoom, and inspection useful in a no-code setting.[1] The app provides interactive histograms, univariate boxplots, count/proportion bar charts, grouped boxplots, and categorical association heatmaps.
 
-**Seaborn** and **Matplotlib** are retained for static instructional figures, handouts, and slide-ready outputs. Seaborn is a statistical visualization library built on Matplotlib and provides a high-level interface for statistical graphics.[2] The app’s *Static teaching figure* tab shows a Seaborn/Matplotlib histogram or grouped boxplot so that participants can compare an interactive exploratory graphic with a fixed-format teaching graphic.
+**Seaborn** and **Matplotlib** are retained for static instructional figures, handouts, and slide-ready outputs. Seaborn is a statistical visualization library built on Matplotlib and provides a high-level interface for statistical graphics.[2] The app’s *Static figure* tab shows a Seaborn/Matplotlib histogram or grouped boxplot so that participants can compare an interactive exploratory graphic with a fixed-format figure.
 
 | Python library | Seminar role | Default use |
 |---|---|---|
 | `plotly.express` | Interactive no-code exploration in Streamlit | Primary app charts |
-| `seaborn` | Concise static statistical figures | Slide and handout figures; static teaching tab |
+| `seaborn` | Concise static statistical figures | Slide and handout figures; static figure tab |
 | `matplotlib` | Low-level figure control and export | Foundation for static outputs and custom formatting |
 
 ## R implementation
