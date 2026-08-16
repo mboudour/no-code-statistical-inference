@@ -89,6 +89,9 @@ def render_dataset_audit(data: pd.DataFrame, key: str, dataset_name: str, filena
                 st.warning(item)
         else:
             st.success("No constant variables, duplicate rows, or missing cells were detected by the automated audit.")
+        if audit["missing_cells"]:
+            st.markdown("**Missingness is an inferential choice, not merely data cleaning.** The app cannot determine whether values are missing completely at random (MCAR), missing at random conditional on observed variables (MAR), or missing not at random (MNAR). Complete-case analysis can be biased when missingness is informative, and treating missingness as a category changes the estimand.")
+            st.checkbox("I acknowledge that I must document and justify the missing-data rule before making an inferential claim.", key=f"{key}_audit_missingness_ack")
     return audit
 
 
@@ -260,8 +263,22 @@ def render_guarded_analysis(data: pd.DataFrame, audit: dict[str, Any], key: str)
         elif method_key == "association":
             first = st.selectbox("First categorical variable", cats, key=f"{key}_assoc_first")
             second = st.selectbox("Second categorical variable", [name for name in cats if name != first], key=f"{key}_assoc_second")
-            selections.update({"first variable": first, "second variable": second})
-            result = categorical_association(data, first, second)
+            missing_rows = int(data[[first, second]].isna().any(axis=1).sum())
+            missing_rule = st.radio(
+                "Missing-data rule for this association",
+                options=["complete_case", "substantive_missing_category"],
+                format_func=lambda value: "Complete-case analysis (default)" if value == "complete_case" else "Treat missing values as a substantive category — use only if scientifically justified",
+                key=f"{key}_assoc_missing_rule",
+            )
+            if missing_rule == "complete_case":
+                st.info(f"Complete-case analysis will exclude {missing_rows} row(s) with a missing value in either selected variable. This can be biased if missingness is informative; the app cannot determine whether MCAR, MAR, or MNAR reasoning is appropriate.")
+            else:
+                st.warning("This option inserts ‘Missing’ into the contingency table as an analytic category. Use it only when missingness is scientifically meaningful and you can justify that estimand.")
+            if missing_rows and not st.checkbox("I acknowledge that missing-data handling is an inferential choice and have selected the rule intentionally.", key=f"{key}_assoc_missing_ack"):
+                st.info("Acknowledge the missing-data rule to run the association analysis.")
+                return None
+            selections.update({"first variable": first, "second variable": second, "missing-data rule": missing_rule, "rows with missing values in either selected variable": missing_rows})
+            result = categorical_association(data, first, second, missing_rule=missing_rule)
         elif method_key == "linear_regression":
             outcome = st.selectbox("Numeric outcome", nums, key=f"{key}_linear_outcome")
             predictors = st.multiselect("Numeric predictor(s)", [name for name in nums if name != outcome], default=[name for name in nums if name != outcome][:1], key=f"{key}_linear_predictors")

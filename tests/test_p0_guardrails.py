@@ -62,11 +62,16 @@ def test_regression_validators_reject_underdetermined_constant_and_rank_deficien
         validate_inputs("linear_regression", rank_deficient, outcome="y", predictors=["x1", "x2"])
 
 
-def test_categorical_missing_values_are_explicit_and_sparse_2x2_promotes_fisher() -> None:
-    missing_data = pd.DataFrame({"first": ["a", None, "a", None], "second": ["yes", "yes", "no", "no"]})
-    result = categorical_association(missing_data, "first", "second")
-    assert "Missing" in result["details"]["table"].index
-    assert "nan" not in result["details"]["table"].index
+def test_categorical_missing_values_default_to_complete_case_with_explicit_opt_in() -> None:
+    missing_data = pd.DataFrame({"first": ["a", "b", None, None], "second": ["yes", "no", "yes", "no"]})
+    default_result = categorical_association(missing_data, "first", "second")
+    assert "Missing" not in default_result["details"]["table"].index
+    assert default_result["details"]["missing_data"]["rule"] == "complete_case"
+    assert default_result["details"]["missing_data"]["rows_excluded"] == 2
+    substantive_result = categorical_association(missing_data, "first", "second", missing_rule="substantive_missing_category")
+    assert "Missing" in substantive_result["details"]["table"].index
+    assert substantive_result["details"]["missing_data"]["rule"] == "substantive_missing_category"
+    assert substantive_result["details"]["missing_data"]["rows_excluded"] == 0
     sparse = pd.DataFrame({"first": ["a", "a", "b", "b"], "second": ["yes", "no", "yes", "no"]})
     sparse_result = categorical_association(sparse, "first", "second")
     assert "Fisher exact" in sparse_result["test"]

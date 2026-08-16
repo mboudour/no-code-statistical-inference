@@ -48,6 +48,7 @@ def test_full_report_includes_contingency_and_expected_count_tables() -> None:
     assert "### Table" in report
     assert "### Expected" in report
     assert "### Visualization record" in report
+    assert "Missing-data rule: complete_case" in report
 
 
 def test_known_reference_outputs_for_all_supported_inference_families() -> None:

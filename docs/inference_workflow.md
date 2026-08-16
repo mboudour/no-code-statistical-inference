@@ -32,9 +32,15 @@ Every public dataset and CSV upload receives a common audit card before analysis
 | Independent groups | Mean difference, Welch interval, Cohen’s *d* | Group sizes, groupwise shape, outliers, variance evidence, and a **user-specified prospective** power-planning panel | Does not establish causal effect or independence; observed effects are not used as planning effects. |
 | Paired measurements | Mean within-pair difference and interval | Difference distribution and outlying differences | Pair identity must be scientifically documented. |
 | One-way comparison | Group means, omnibus F test, eta-squared | Group sizes, groupwise shape, outliers, variance evidence | Does not identify which groups differ; post-hoc choices require an explicit plan. |
-| Categorical association | Contingency table, chi-square evidence, Cramér’s *V* | Missing values are labelled before category conversion; expected-count warnings, high-cardinality warning, and promoted Fisher exact result for sparse 2×2 tables | Association is not causal direction or practical importance. |
+| Categorical association | Contingency table, chi-square evidence, Cramér’s *V* | Complete-case analysis is the default; a substantive-missing category requires explicit opt-in and acknowledgement; expected-count and high-cardinality warnings; promoted Fisher exact result for sparse 2×2 tables | Association is not causal direction or practical importance. |
 | Linear regression | Coefficients, intervals, R² | Residual shape, heteroskedasticity evidence, Cook’s distance, VIF | Coefficients are conditional model associations, not automatic causal effects. |
 | Logistic regression | Odds ratios, intervals, fitted-probability range | Outcome counts, minimum events per parameter, constant/rank-deficient predictor checks, visible separation risk, and convergence checks | Odds ratios are not risk ratios; calibration and thresholds need further assessment. |
+
+## Missing-data decision rule for categorical association
+
+For two categorical variables, the default is **complete-case analysis**: rows missing either selected variable are excluded from the contingency table, and the result record reports the number excluded. This is not assumed to be unbiased. The Dataset Laboratory asks participants to acknowledge that missingness can be missing completely at random (MCAR), missing at random conditional on observed variables (MAR), or missing not at random (MNAR); the app cannot infer which description is appropriate from the values alone.
+
+Participants may instead select **Treat missing values as a substantive category** only if missingness itself is scientifically meaningful and the resulting estimand can be justified. This option inserts a `Missing` level into the table and is therefore an analytical coding choice, not missing-data imputation. The selected rule, analyzed rows, excluded rows, and rationale warning are included in the standardized diagnostics and downloadable record.
 
 ## Standard result record
 

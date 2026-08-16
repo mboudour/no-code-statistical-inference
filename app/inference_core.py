@@ -373,13 +373,48 @@ def one_way_anova(data: pd.DataFrame, outcome: str, group: str) -> dict[str, Any
     }
 
 
-def categorical_association(data: pd.DataFrame, first: str, second: str) -> dict[str, Any]:
+def categorical_association(
+    data: pd.DataFrame,
+    first: str,
+    second: str,
+    missing_rule: str = "complete_case",
+) -> dict[str, Any]:
+    """Analyze categorical association under an explicit missing-data rule.
+
+    ``complete_case`` is the default because missing values are not presumed to be a
+    substantive category. ``substantive_missing_category`` is available only when the
+    analyst has scientific justification for treating missingness as a category.
+    """
+    if missing_rule not in {"complete_case", "substantive_missing_category"}:
+        raise InputValidationError("Choose either complete_case or substantive_missing_category as the categorical missing-data rule.")
     validation = validate_inputs("association", data, first=first, second=second)
-    first_values = data[first].where(data[first].notna(), "Missing").astype(str)
-    second_values = data[second].where(data[second].notna(), "Missing").astype(str)
-    table = pd.crosstab(first_values, second_values)
+    selected = data[[first, second]].copy()
+    total_rows = len(selected)
+    missing_any = selected.isna().any(axis=1)
+    missing_info = {
+        "rule": missing_rule,
+        "total_selected_rows": int(total_rows),
+        "rows_with_missing_in_either_variable": int(missing_any.sum()),
+        "missing_in_first": int(selected[first].isna().sum()),
+        "missing_in_second": int(selected[second].isna().sum()),
+    }
+    if missing_rule == "complete_case":
+        analysis = selected.dropna().copy()
+        missing_info["rows_analyzed"] = int(len(analysis))
+        missing_info["rows_excluded"] = int(missing_any.sum())
+        missing_info["message"] = "Complete-case analysis is the default. Excluded rows can bias results when missingness is informative; consider whether MCAR, MAR, or MNAR reasoning is plausible from study context."
+    else:
+        analysis = selected.copy()
+        analysis[first] = analysis[first].where(analysis[first].notna(), "Missing")
+        analysis[second] = analysis[second].where(analysis[second].notna(), "Missing")
+        missing_info["rows_analyzed"] = int(len(analysis))
+        missing_info["rows_excluded"] = 0
+        missing_info["message"] = "Missing values were intentionally modeled as a substantive category. This is valid only with documented scientific justification; it is not ordinary missing-data imputation."
+    if analysis.empty:
+        raise InputValidationError("No complete cases are available for the selected categorical variables under the chosen missing-data rule.")
+    table = pd.crosstab(analysis[first].astype(str), analysis[second].astype(str))
     if table.shape[0] < 2 or table.shape[1] < 2:
-        raise InputValidationError("The selected variables produce fewer than two observed categories in at least one dimension after missing-value handling.")
+        raise InputValidationError("The selected variables produce fewer than two observed categories in at least one dimension under the chosen missing-data rule.")
     try:
         chi2, p_value, df, expected = stats.chi2_contingency(table)
     except ValueError as error:
@@ -395,18 +430,18 @@ def categorical_association(data: pd.DataFrame, first: str, second: str) -> dict
         fisher = {"odds_ratio": float(odds_ratio), "p_value": float(fisher_p)}
     return {
         "method": "Chi-square test of categorical association",
-        "question": f"Are {first} and {second} associated in the observed table?",
-        "data_design": f"Contingency table with {n} observed records, {r} by {c} cells.",
-        "assumptions": ["Rows represent independent observational units.", "Categories are mutually exclusive under the chosen coding.", "Expected counts are large enough for the chi-square reference approximation."],
-        "diagnostics": {"minimum_expected_count": float(expected.min()), "cells_expected_below_5": small_expected, "fisher_exact": fisher, "input_validation": list(validation.warnings), "message": "When expected counts are small, Fisher's exact result is promoted for a 2×2 table; larger sparse tables require a simulation-based or collapsed-category analysis outside this workflow."},
+        "question": f"Are {first} and {second} associated under the selected missing-data rule?",
+        "data_design": f"Contingency table with {n} analyzed records, {r} by {c} cells. Missing-data rule: {missing_rule}; {missing_info['rows_excluded']} selected row(s) excluded.",
+        "assumptions": ["Rows represent independent observational units.", "Categories are mutually exclusive under the chosen coding.", "Expected counts are large enough for the chi-square reference approximation.", "The selected missing-data rule is scientifically defensible for this dataset and question."],
+        "diagnostics": {"minimum_expected_count": float(expected.min()), "cells_expected_below_5": small_expected, "fisher_exact": fisher, "missing_data": missing_info, "input_validation": list(validation.warnings), "message": "When expected counts are small, Fisher's exact result is promoted for a 2×2 table; larger sparse tables require a simulation-based or collapsed-category analysis outside this workflow."},
         "estimate": "Observed conditional distributions are shown in the contingency table.",
-        "uncertainty": "The chi-square reference distribution is approximate and depends on expected-count conditions.",
+        "uncertainty": "The chi-square reference distribution is approximate and depends on expected-count conditions and the selected missing-data rule.",
         "effect_size": f"Cramer's V = {cramer_v:.3f}",
         "test": (f"Fisher exact p = {fisher['p_value']:.4f}; odds ratio = {fisher['odds_ratio']:.3f} (promoted because {small_expected} expected cell(s) are below 5)." if fisher and small_expected else f"Chi-square({df}) = {chi2:.3f}, p = {p_value:.4f}"),
         "interpretation": ("For this sparse 2×2 table, Fisher's exact result is the primary small-sample reference calculation. It still does not measure practical importance or causal direction." if fisher and small_expected else "The test evaluates evidence against an independence model, not the practical importance or causal direction of the association."),
-        "limitations": "Sparse cells, dependent observations, and post-hoc category selection can invalidate a simple interpretation.",
-        "next_step": "Inspect conditional proportions, cell counts, expected counts, and the study design before reporting an association.",
-        "details": {"table": table, "expected": pd.DataFrame(expected, index=table.index, columns=table.columns), "n": int(n), "chi2": float(chi2), "df": int(df), "p_value": float(p_value), "cramer_v": float(cramer_v)},
+        "limitations": "Complete-case analysis can be biased when missingness is informative; treating missingness as a category can also change the estimand. Sparse cells, dependent observations, and post-hoc category selection can invalidate a simple interpretation.",
+        "next_step": "Document the missing-data mechanism reasoning, inspect conditional proportions and expected counts, and assess the study design before reporting an association.",
+        "details": {"table": table, "expected": pd.DataFrame(expected, index=table.index, columns=table.columns), "missing_data": missing_info, "n": int(n), "chi2": float(chi2), "df": int(df), "p_value": float(p_value), "cramer_v": float(cramer_v)},
     }
 
 
@@ -505,6 +540,8 @@ def renderable_diagnostics(diagnostics: dict[str, Any]) -> list[str]:
                 lines.append(f"{label}: W={value['statistic']:.3f}, p={value['p_value']:.4f}. {value['message']}")
             else:
                 lines.append(f"{label}: {value['message']}")
+        elif name == "missing_data" and isinstance(value, dict):
+            lines.append(f"Missing-data rule: {value.get('rule', 'not recorded')}; rows analyzed={value.get('rows_analyzed', 'not recorded')}; rows excluded={value.get('rows_excluded', 'not recorded')}. {value.get('message', '')}")
         else:
             lines.append(f"{label}: {value}")
     return lines
