@@ -31,6 +31,14 @@ def test_day_pages_load_and_show_ten_modules() -> None:
         assert len(app.expander) >= 10
 
 
+def test_guided_inference_starts_with_question_and_design_inputs() -> None:
+    app = app_test().switch_page("pages/4_Guided_Inference.py").run(timeout=30)
+    assert not app.exception
+    assert any("1. State your research question" in widget.label for widget in app.text_area)
+    assert any("2. Outcome structure" in widget.label for widget in app.selectbox)
+    assert not any("What is the main purpose of your analysis?" in widget.label for widget in app.selectbox)
+
+
 def test_guided_inference_dataset_lab_and_synthesis_load() -> None:
     for page in ["pages/4_Guided_Inference.py", "pages/5_Dataset_Laboratory.py", "pages/6_Day_Synthesis.py"]:
         app = app_test().switch_page(page).run(timeout=30)

@@ -41,6 +41,15 @@ def test_mean_and_paired_workflows_reject_insufficient_or_degenerate_data() -> N
         paired_comparison(pd.DataFrame({"before": [1.0, 2.0, 3.0], "after": [2.0, 3.0, 4.0]}), "before", "after")
 
 
+def test_group_and_anova_validators_reject_invalid_level_structure() -> None:
+    two_group_data = pd.DataFrame({"outcome": [1.0, 2.0, 3.0, 4.0], "group": ["a", "a", "b", "b"]})
+    with pytest.raises(InputValidationError, match="exactly two"):
+        validate_inputs("two_independent", two_group_data, outcome="outcome", group="group", levels=["a"])
+    anova_data = pd.DataFrame({"outcome": [1.0, 2.0, 3.0, 4.0, 5.0], "group": ["a", "b", "b", "c", "c"]})
+    with pytest.raises(InputValidationError, match="at least two"):
+        validate_inputs("anova", anova_data, outcome="outcome", group="group")
+
+
 def test_regression_validators_reject_underdetermined_constant_and_rank_deficient_inputs() -> None:
     data = pd.DataFrame({"y": [1.0, 2.0, 3.0], "x1": [1.0, 2.0, 3.0], "x2": [1.0, 2.0, 3.0]})
     with pytest.raises(InputValidationError, match="more complete cases"):
