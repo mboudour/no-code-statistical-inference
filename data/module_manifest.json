@@ -22,6 +22,7 @@
     {
       "id": "day_1",
       "title": "Day 1 — Data, variation, and uncertainty",
+      "general_theme": "Foundations of data, variation, and uncertainty",
       "duration_minutes": 180,
       "introduction_minutes": 10,
       "introduction": "Day 1 establishes the language of data, estimands, variation, sampling distributions, and uncertainty. After a ten-minute orientation, ten 17-minute modules each begin with a rigorous presentation and then move to a public-data demonstration and a distinct BYOD activity.",
@@ -371,6 +372,7 @@
     {
       "id": "day_2",
       "title": "Day 2 — Tests, comparisons, and categorical inference",
+      "general_theme": "Evidence from comparisons, tests, and categorical data",
       "duration_minutes": 180,
       "introduction_minutes": 10,
       "introduction": "Day 2 develops formal comparisons and categorical-data reasoning. Every module states its estimand, assumptions, and reference distribution before participants see a demonstrated analysis and work with a separate public BYOD dataset or an upload.",
@@ -720,6 +722,7 @@
     {
       "id": "day_3",
       "title": "Day 3 — Regression, prediction, diagnostics, and reproducibility",
+      "general_theme": "Conditional modelling, prediction, diagnostics, and reproducibility",
       "duration_minutes": 180,
       "introduction_minutes": 10,
       "introduction": "Day 3 treats regression and prediction as transparent conditional models. Each module separates a public demonstration from a distinct BYOD data choice and gives participants an upload path for their own tabular data.",

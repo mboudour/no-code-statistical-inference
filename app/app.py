@@ -505,7 +505,15 @@ def render_home(manifest: dict) -> None:
     )
     overview = []
     for day in manifest["days"]:
-        overview.append({"Day": day["title"], "Modules": len(day["modules"]), "Instructor demonstrations": len(day["modules"]), "Separate BYOD choices": sum(len(module["byod"]) for module in day["modules"])})
+        overview.append(
+            {
+                "Day": day["title"],
+                "General day theme": day.get("general_theme", "See the detailed curriculum."),
+                "Module titles": "\n".join(f"{module['id'].upper()} — {module['title']}" for module in day["modules"]),
+                "Instructor demonstrations": len(day["modules"]),
+                "Separate BYOD choices": sum(len(module["byod"]) for module in day["modules"]),
+            }
+        )
     st.dataframe(pd.DataFrame(overview), width="stretch", hide_index=True)
     st.info(
         "Every module contains one instructor-demonstrated public dataset, three separate public BYOD datasets, and an upload route for a participant's own CSV. The app ships with public data locally, so no API key is required."
