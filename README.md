@@ -30,14 +30,14 @@ Every module has **three separate data pathways**. The instructor demonstrates o
 
 ## Interactive Companion App
 
-The Streamlit companion app follows a **day-first, theory-led sequence**:
+The Streamlit companion app follows the **multipage pattern used by the previous instats seminar app**. Its sidebar gives direct page links to **Day 1**, **Day 2**, and **Day 3**, rather than placing the curriculum inside a nested selector.
 
-1. **Select a day:** Participants choose **Day 1**, **Day 2**, or **Day 3**.
-2. **Day theory:** The chosen day opens with its general theoretical introduction and a ten-module map identifying the selected worked-out public dataset for each module.
-3. **Select a module:** Participants enter one of the ten modules belonging to the selected day.
-4. **Module theory:** Each module presents its definitions, notation, assumptions, and results before any analysis interaction.
-5. **Worked-out public dataset:** The instructor-selected dataset is processed in a no-code profile and analysis workbench. An optional selector makes every bundled public dataset processable through the same workbench.
-6. **BYOD upload:** Participants upload a CSV dataset within the selected module. The file remains in memory for the session and is processed through the same generic workbench.
+1. **Top-level day pages:** Participants open Day 1, Day 2, or Day 3 directly from the sidebar.
+2. **Theory first:** Each day page begins with its general theory and introduction.
+3. **Ten expandable modules:** The selected day then presents its ten modules as labelled expandable sections.
+4. **Module theory:** Each module states its definitions, notation, assumptions, and results before any analysis interaction.
+5. **Worked-out public dataset:** Every module identifies and can open its instructor-selected public dataset in the no-code workbench. A secondary public-data selector makes every bundled dataset processable.
+6. **BYOD upload:** Every module has its own CSV uploader. The file remains in memory for the session and is processed through the same generic workbench.
 
 The interface is intentionally no-code. It never executes user-supplied code, and it keeps participant-uploaded CSV files in memory only.
 
