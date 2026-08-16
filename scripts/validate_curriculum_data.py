@@ -18,18 +18,22 @@ def main() -> None:
     assert len(days) == 3, "The curriculum must contain three days."
 
     modules = [module for day in days for module in day["modules"]]
-    assert len(modules) == 9, "The curriculum must contain nine modules."
+    assert len(modules) == 30, "The curriculum must contain thirty modules."
 
     verified_files: set[str] = set()
     for day in days:
-        assert len(day["modules"]) == 3, f"{day['title']} must contain three modules."
+        assert len(day["modules"]) == 10, f"{day['title']} must contain ten modules."
         for module in day["modules"]:
             assert module["presentation_focus"], f"{module['id']} lacks a presentation focus."
             assert module["notation"], f"{module['id']} lacks formal notation."
             assert module["results"], f"{module['id']} lacks stated results."
-            assert module["worked_example"], f"{module['id']} lacks a worked example."
-            assert 3 <= len(module["byod"]) <= 5, f"{module['id']} must have 3–5 BYOD datasets."
-            files = [module["worked_example"]["file"], *[entry["file"] for entry in module["byod"]]]
+            assert module["demonstration"], f"{module['id']} lacks a demonstrated dataset."
+            assert 3 <= len(module["byod"]) <= 5, f"{module['id']} must have 3–5 public BYOD datasets."
+            assert module["upload_guidance"], f"{module['id']} lacks participant-upload guidance."
+            demonstration_file = module["demonstration"]["file"]
+            byod_files = [entry["file"] for entry in module["byod"]]
+            assert demonstration_file not in byod_files, f"{module['id']} reuses its demonstrated dataset for BYOD."
+            files = [demonstration_file, *byod_files]
             for filename in files:
                 path = DATA_DIR / filename
                 assert path.exists(), f"Missing required data file: {filename}"
@@ -37,7 +41,7 @@ def main() -> None:
                 assert not data.empty, f"Dataset is empty: {filename}"
                 verified_files.add(filename)
 
-    print(f"Validated {len(days)} days, {len(modules)} modules, and {len(verified_files)} referenced public datasets.")
+    print(f"Validated {len(days)} days, {len(modules)} modules, distinct demonstration/BYOD assignments, uploads, and {len(verified_files)} referenced public datasets.")
 
 
 if __name__ == "__main__":

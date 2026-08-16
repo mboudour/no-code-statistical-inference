@@ -68,7 +68,7 @@ def dataset_lookup(manifest: dict) -> dict[str, str]:
     """Return a readable name for each locally packaged dataset file."""
     lookup: dict[str, str] = {}
     for module in module_lookup(manifest).values():
-        lookup[module["worked_example"]["file"]] = module["worked_example"]["name"]
+        lookup[module["demonstration"]["file"]] = module["demonstration"]["name"]
         for dataset in module["byod"]:
             lookup[dataset["file"]] = dataset["name"]
     return lookup
@@ -127,18 +127,19 @@ def render_day_and_module(manifest: dict) -> dict:
     for result in module["results"]:
         st.markdown(f"- {result}")
 
-    st.markdown("### Worked example")
-    worked = module["worked_example"]
-    st.success(f"**{worked['name']}** — {worked['activity']}")
+    st.markdown("### Instructor demonstration dataset")
+    demonstration = module["demonstration"]
+    st.success(f"**{demonstration['name']}** — {demonstration['activity']}")
 
-    st.markdown("### BYOD dataset choices for this module")
+    st.markdown("### Separate public BYOD datasets for this module")
     choices = pd.DataFrame(module["byod"])
     choices.columns = ["Local file", "Public dataset"]
     st.dataframe(choices, width="stretch", hide_index=True)
     st.caption(
-        "The listed datasets are public and bundled locally with the app. No API key or "
-        "live external data request is required to use them."
+        "These public BYOD datasets are deliberately different from the instructor demonstration dataset. They are bundled locally, so no API key or live external data request is required."
     )
+    st.markdown("### Participant-upload route")
+    st.info(module["upload_guidance"])
     return module
 
 
@@ -147,7 +148,7 @@ def choose_data(manifest: dict, label_prefix: str) -> tuple[pd.DataFrame | None,
     names = dataset_lookup(manifest)
     source = st.radio(
         "Data source",
-        ["Module worked example", "Module BYOD choice", "Upload a CSV"],
+        ["Instructor demonstration", "Module public BYOD dataset", "Upload my own CSV"],
         horizontal=True,
         key=f"{label_prefix}_source",
     )
@@ -155,7 +156,7 @@ def choose_data(manifest: dict, label_prefix: str) -> tuple[pd.DataFrame | None,
     current_module_id = st.session_state.get("last_module")
     current_module = module_map.get(current_module_id) if current_module_id else None
 
-    if source == "Upload a CSV":
+    if source == "Upload my own CSV":
         uploaded_file = st.file_uploader("Upload a comma-separated values (CSV) file", type=["csv"], key=f"{label_prefix}_upload")
         data = read_uploaded_csv(uploaded_file)
         return data, "Participant upload", "Uploaded CSV held in memory for this session"
@@ -163,13 +164,13 @@ def choose_data(manifest: dict, label_prefix: str) -> tuple[pd.DataFrame | None,
     if current_module is None:
         current_module = next(iter(module_map.values()))
 
-    if source == "Module worked example":
-        filename = current_module["worked_example"]["file"]
-        return load_local_data(filename), current_module["worked_example"]["name"], f"Bundled public dataset: {filename}"
+    if source == "Instructor demonstration":
+        filename = current_module["demonstration"]["file"]
+        return load_local_data(filename), current_module["demonstration"]["name"], f"Instructor demonstration dataset: {filename}"
 
     byod_options = {entry["file"]: entry["name"] for entry in current_module["byod"]}
     filename = st.selectbox(
-        "Select a public BYOD dataset for the active module",
+        "Select a separate public BYOD dataset for the active module",
         options=list(byod_options),
         format_func=lambda item: f"{byod_options[item]} ({item})",
         key=f"{label_prefix}_byod_file",
@@ -180,7 +181,7 @@ def choose_data(manifest: dict, label_prefix: str) -> tuple[pd.DataFrame | None,
 def render_data_explorer(manifest: dict) -> None:
     st.title("Dataset Explorer")
     st.write(
-        "Use the active module's worked example or one of its 3–5 public BYOD datasets. "
+        "Use the active module's instructor demonstration, one of its three separate public BYOD datasets, or your own CSV upload. "
         "The app keeps the data experience no-code while showing the decisions needed for sound inference."
     )
     data, dataset_name, provenance = choose_data(manifest, "explorer")
@@ -461,8 +462,8 @@ def render_dataset_library(manifest: dict) -> None:
     records = []
     for day in manifest["days"]:
         for module in day["modules"]:
-            worked = module["worked_example"]
-            records.append({"Day": day["title"], "Module": module["title"], "Role": "Worked example", "Dataset": worked["name"], "File": worked["file"]})
+            demonstration = module["demonstration"]
+            records.append({"Day": day["title"], "Module": module["title"], "Role": "Instructor demonstration", "Dataset": demonstration["name"], "File": demonstration["file"]})
             for dataset in module["byod"]:
                 records.append({"Day": day["title"], "Module": module["title"], "Role": "BYOD choice", "Dataset": dataset["name"], "File": dataset["file"]})
     catalog = pd.DataFrame(records)
@@ -491,7 +492,7 @@ def render_reproducibility(manifest: dict) -> None:
         "| Interpretation | Results remain conditional on the data, design, variables, assumptions, and analytical choices. |"
     )
     st.markdown("### Repository resources")
-    st.write("The `data/module_manifest.json` file is the single source of truth for the curriculum, mathematical presentation prompts, worked examples, and BYOD datasets.")
+    st.write("The `data/module_manifest.json` file is the single source of truth for the curriculum, mathematical presentation prompts, instructor demonstrations, separate BYOD datasets, and participant-upload guidance.")
     st.write("The `app/engines/r/README.md` file defines the integration and validation boundary for R implementations.")
 
 
@@ -499,20 +500,19 @@ def render_home(manifest: dict) -> None:
     st.title(manifest["title"])
     st.subheader("A three-day, presentation-first seminar with a no-code research app")
     st.write(
-        "The seminar is organized as **three days**, each consisting of **three modules**. "
+        "The seminar is organized as **three three-hour days**, each consisting of **ten modules**. "
         "Every day begins with an introduction, and every module begins with a rigorous presentation of its concepts, notation, assumptions, and results—without proofs—before participants work with data."
     )
     overview = []
     for day in manifest["days"]:
-        overview.append({"Day": day["title"], "Modules": len(day["modules"]), "Worked examples": len(day["modules"]), "BYOD choices": sum(len(module["byod"]) for module in day["modules"])})
+        overview.append({"Day": day["title"], "Modules": len(day["modules"]), "Instructor demonstrations": len(day["modules"]), "Separate BYOD choices": sum(len(module["byod"]) for module in day["modules"])})
     st.dataframe(pd.DataFrame(overview), width="stretch", hide_index=True)
     st.info(
-        "Every module contains one worked public dataset and four public datasets for "
-        "participant-led BYOD activity. The app ships with these data locally, so no API key is required."
+        "Every module contains one instructor-demonstrated public dataset, three separate public BYOD datasets, and an upload route for a participant's own CSV. The app ships with public data locally, so no API key is required."
     )
     st.markdown("### Suggested seminar use")
     st.write(
-        "Begin in **Curriculum and Rigorous Presentation**, then inspect the worked dataset "
+        "Begin in **Curriculum and Rigorous Presentation**, then inspect the instructor demonstration dataset "
         "in **Dataset Explorer**. Use **Analysis Studio** only after the relevant mathematical "
         "and statistical presentation. The **Public Dataset Library** documents the available "
         "BYOD choices for each module."

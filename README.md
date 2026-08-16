@@ -16,15 +16,15 @@ The project is designed around a simple principle: **participants should be able
 
 ## Seminar Structure
 
-The seminar consists of **three days**, with **three modules per day**. Every day begins with an introduction. Every module begins with a mathematically rigorous presentation of concepts, notation, assumptions, and results—**without proofs**—before participants see a worked analysis or begin a BYOD activity.
+This is a **nine-hour seminar** consisting of **three three-hour days**, with **ten modules per day**. Every day begins with a ten-minute introduction. Every 17-minute module begins with a mathematically rigorous presentation of concepts, notation, assumptions, and results—**without proofs**—before an instructor demonstration and participant activity.
 
 | Day | Modules | Core theme |
 |---|---:|---|
-| 1 | 3 | Data-generating processes, estimators, sampling distributions, confidence intervals, bootstrap, and Monte Carlo reasoning |
-| 2 | 3 | Group comparisons, categorical association, and regression as conditional inference |
-| 3 | 3 | Logistic regression, diagnostics and sensitivity, validation, provenance, and reproducible BYOD workflows |
+| 1 | 10 | Data, measurement, distributions, sampling variation, confidence intervals, bootstrap, simulation, and analytical readiness |
+| 2 | 10 | Estimands, hypotheses, effect sizes, group comparisons, ANOVA, nonparametrics, categorical association, stratification, and design sensitivity |
+| 3 | 10 | Linear and logistic regression, prediction, diagnostics, validation, reproducibility, and transparent reporting |
 
-Every module has **one worked public dataset** and **four public datasets** for participant-led BYOD work. The curated files are stored in the repository, so the app uses no API keys or live data connection. See the [detailed seminar design](./docs/seminar_design.md) and [dataset library](./data/README.md).
+Every module has **three separate data pathways**. The instructor demonstrates one selected public dataset; participants choose from **three different public BYOD datasets** that are not the demonstrated dataset; and participants may upload their own CSV dataset for that same module. The curated public files are stored in the repository, so the app uses no API keys or live data connection. See the [detailed nine-hour design](./docs/seminar_design.md) and [dataset library](./data/README.md).
 
 ---
 
@@ -33,9 +33,10 @@ Every module has **one worked public dataset** and **four public datasets** for 
 The Streamlit companion app follows the same presentation-first sequence as the seminar:
 
 1. **Curriculum and Rigorous Presentation:** The active day and module show definitions, formal notation, assumptions, and results before any analysis interaction.
-2. **Dataset Explorer:** Participants inspect the module's worked dataset or choose one of its four locally bundled, public BYOD datasets.
-3. **Analysis Studio:** Guided interfaces support descriptive summaries, bootstrap intervals, two-group comparisons, contingency tables, simple linear regression, and a starter logistic-regression workflow.
-4. **Reproducibility:** The interface identifies data provenance, analytical settings, assumptions, and interpretation limits.
+2. **Instructor Demonstration:** The instructor-selected public dataset for the active module is labelled clearly and is never reused among that module's BYOD choices.
+3. **Module BYOD:** Participants choose one of three separate locally bundled public datasets assigned to the active module, or upload their own CSV for that module's workflow.
+4. **Analysis Studio:** Guided interfaces support descriptive summaries, bootstrap intervals, two-group comparisons, contingency tables, simple linear regression, and a starter logistic-regression workflow.
+5. **Reproducibility:** The interface identifies data provenance, analytical settings, assumptions, and interpretation limits.
 
 The interface is intentionally no-code. It never executes user-supplied code and reads uploaded CSV files in memory for the session.
 
