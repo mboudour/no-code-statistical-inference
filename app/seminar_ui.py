@@ -5,8 +5,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import plotly.express as px
+import seaborn as sns
 import streamlit as st
 from scipy import stats
 
@@ -72,7 +75,7 @@ def render_sidebar() -> None:
 
 
 def render_profile(data: pd.DataFrame, key: str) -> None:
-    """Dataset-agnostic descriptive workbench used by public and uploaded CSV data."""
+    """Dataset-agnostic descriptive workbench with interactive and static chart options."""
     a, b, c = st.columns(3)
     a.metric("Rows", f"{len(data):,}")
     b.metric("Columns", len(data.columns))
@@ -81,24 +84,109 @@ def render_profile(data: pd.DataFrame, key: str) -> None:
 
     nums = numerical(data)
     cats = categorical(data)
-    left, right = st.columns(2)
-    with left:
-        st.markdown("##### Numeric profile")
+    univariate, grouped, association, static = st.tabs(
+        ["Univariate distributions", "Numeric by group", "Two categorical variables", "Static teaching figure"]
+    )
+
+    with univariate:
+        left, right = st.columns(2)
+        with left:
+            st.markdown("##### Numeric: histogram and boxplot")
+            if nums:
+                variable = st.selectbox("Numeric variable", nums, key=f"{key}_numeric")
+                values = data[variable].dropna()
+                st.dataframe(values.describe().to_frame("Value").round(3), width="stretch")
+                bins = min(30, max(5, int(np.sqrt(max(1, len(values))))))
+                hist = px.histogram(
+                    data, x=variable, nbins=bins, marginal="box", title=f"Histogram of {variable}",
+                    labels={variable: variable, "count": "Count"}, template="plotly_white"
+                )
+                hist.update_layout(showlegend=False)
+                st.plotly_chart(hist, use_container_width=True, key=f"{key}_histogram")
+                box = px.box(data, y=variable, points="outliers", title=f"Boxplot of {variable}", template="plotly_white")
+                st.plotly_chart(box, use_container_width=True, key=f"{key}_boxplot")
+            else:
+                st.info("No numeric variable is available in this dataset.")
+        with right:
+            st.markdown("##### Categorical: count or proportion bar chart")
+            if cats:
+                variable = st.selectbox("Categorical variable", cats, key=f"{key}_categorical")
+                display = st.radio("Display", ["Counts", "Proportions"], horizontal=True, key=f"{key}_categorical_display")
+                summary = data[variable].astype(str).fillna("Missing").value_counts(dropna=False).rename_axis(variable).reset_index(name="Count")
+                if display == "Proportions":
+                    summary["Value"] = summary["Count"] / summary["Count"].sum()
+                    y_value, y_title = "Value", "Proportion"
+                    text_template = "%{y:.1%}"
+                else:
+                    summary["Value"] = summary["Count"]
+                    y_value, y_title = "Value", "Count"
+                    text_template = "%{y:.0f}"
+                bars = px.bar(
+                    summary, x=variable, y=y_value, text=y_value, title=f"{display[:-1]} of {variable}",
+                    labels={y_value: y_title}, template="plotly_white"
+                )
+                bars.update_traces(texttemplate=text_template, textposition="outside")
+                bars.update_layout(showlegend=False)
+                st.plotly_chart(bars, use_container_width=True, key=f"{key}_categorical_bar")
+            else:
+                st.info("No categorical variable is available in this dataset.")
+
+    with grouped:
+        st.markdown("##### Grouped boxplot: numeric outcome by categorical group")
+        if nums and cats:
+            outcome = st.selectbox("Numeric outcome", nums, key=f"{key}_box_outcome")
+            group = st.selectbox("Categorical grouping variable", cats, key=f"{key}_box_group")
+            subset = data[[outcome, group]].dropna().copy()
+            if subset.empty:
+                st.warning("The selected variables have no complete pairs.")
+            else:
+                subset[group] = subset[group].astype(str)
+                figure = px.box(
+                    subset, x=group, y=outcome, points="outliers", color=group,
+                    title=f"{outcome} by {group}", template="plotly_white"
+                )
+                figure.update_layout(showlegend=False)
+                st.plotly_chart(figure, use_container_width=True, key=f"{key}_group_boxplot")
+                st.caption("A boxplot is meaningful here because the x-axis is categorical and the plotted response is numeric.")
+        else:
+            st.info("A grouped boxplot requires both a numeric outcome and a categorical grouping variable.")
+
+    with association:
+        st.markdown("##### Association display: two categorical variables")
+        if len(cats) >= 2:
+            first = st.selectbox("First categorical variable", cats, key=f"{key}_first_category")
+            second = st.selectbox("Second categorical variable", [item for item in cats if item != first], key=f"{key}_second_category")
+            table = pd.crosstab(data[first].astype(str).fillna("Missing"), data[second].astype(str).fillna("Missing"))
+            st.dataframe(table, width="stretch")
+            heatmap = px.imshow(
+                table, text_auto=True, aspect="auto", color_continuous_scale="Blues",
+                title=f"Counts: {first} by {second}", labels={"x": second, "y": first, "color": "Count"}
+            )
+            st.plotly_chart(heatmap, use_container_width=True, key=f"{key}_categorical_heatmap")
+        else:
+            st.info("A two-categorical association display requires at least two categorical variables.")
+
+    with static:
+        st.markdown("##### Seaborn / Matplotlib static teaching figure")
+        st.caption("Use this fixed-style figure for slides, handouts, or discussion; use the Plotly charts above for interactive exploration.")
         if nums:
-            variable = st.selectbox("Numeric variable", nums, key=f"{key}_numeric")
-            values = data[variable].dropna()
-            st.dataframe(values.describe().to_frame("Value").round(3), width="stretch")
-            bins = min(30, max(5, int(np.sqrt(max(1, len(values))))))
-            st.bar_chart(np.histogram(values, bins=bins)[0])
+            variable = st.selectbox("Numeric variable for static figure", nums, key=f"{key}_static_numeric")
+            group_options = ["No grouping"] + cats
+            group = st.selectbox("Optional categorical grouping", group_options, key=f"{key}_static_group")
+            figure, axis = plt.subplots(figsize=(8, 4.5))
+            if group == "No grouping":
+                sns.histplot(data=data, x=variable, bins="auto", kde=True, color="#2C7FB8", ax=axis)
+                axis.set_title(f"Static distribution of {variable}")
+            else:
+                subset = data[[variable, group]].dropna().copy()
+                subset[group] = subset[group].astype(str)
+                sns.boxplot(data=subset, x=group, y=variable, hue=group, legend=False, ax=axis, color="#7FCDBB")
+                sns.stripplot(data=subset, x=group, y=variable, color="#253494", alpha=0.5, ax=axis)
+                axis.set_title(f"Static boxplot: {variable} by {group}")
+                axis.tick_params(axis="x", rotation=30)
+            st.pyplot(figure, clear_figure=True, use_container_width=True)
         else:
-            st.info("No numeric variable is available in this dataset.")
-    with right:
-        st.markdown("##### Categorical profile")
-        if cats:
-            variable = st.selectbox("Categorical variable", cats, key=f"{key}_categorical")
-            st.bar_chart(data[variable].astype(str).value_counts(dropna=False))
-        else:
-            st.info("No categorical variable is available in this dataset.")
+            st.info("A static numerical teaching figure requires a numeric variable.")
 
 
 def render_analysis(data: pd.DataFrame, key: str) -> None:

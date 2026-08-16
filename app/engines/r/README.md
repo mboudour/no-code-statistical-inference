@@ -23,6 +23,12 @@ The Python interface should never evaluate uploaded code or user-supplied R expr
 | One-way ANOVA | `stats::aov()` | `scipy.stats.f_oneway()` or a validated model library |
 | Linear regression | `stats::lm()` | `statsmodels` OLS |
 
+## Visualization standard
+
+The R engine uses **ggplot2** as its plotting standard. It should create `ggplot` objects with explicit data mappings, geometries, scales, labels, and themes, then save static figures through `ggsave()` at a documented size and resolution. The chart-selection policy mirrors the Streamlit application: histograms and boxplots for a numeric variable, count/proportion bars for a categorical variable, grouped boxplots for a numeric outcome by category, and count/proportion tables or heatmaps for two categorical variables. A boxplot must never be used for a categorical variable alone; it requires a numeric response grouped by a categorical variable.
+
+Generated figures should be returned through the integration contract as paths plus structured metadata stating the dataset, selected variables, missing-data rule, chart type, and rendering settings. See the [project visualization standard](../../../docs/visualization_standard.md) for the shared R/Python policy and examples.
+
 ## Dependency management
 
 The production image should pin the R version and packages through `renv.lock` or an equivalent reproducible environment definition. Do not install packages during an app request. The primary deployment should use a container that explicitly installs R alongside the pinned Python dependencies.
