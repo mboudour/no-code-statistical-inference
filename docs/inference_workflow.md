@@ -16,7 +16,9 @@ The companion app is a teaching environment for **guarded no-code statistical in
 
 ## Question-first pathway
 
-The **Guided Inference** page begins with the intended analytical purpose, outcome structure, explanatory/comparison structure, dependence/design, and inferential aim. It recommends relevant seminar modules and displays incompatibility warnings. It does not infer causal identification, valid pairing, independence, or a target population from a CSV file.
+The **Guided Inference** page begins with the research question, outcome structure, explanatory/comparison structure, dependence/design, and inferential aim. It then derives a transparent table of **compatible**, **caution**, and **not compatible** pathways with reasons and relevant seminar modules. It does not ask a novice to choose a test family before describing the design. When no simple app workflow is compatible, the interface refuses to force a method.
+
+Every implemented method passes a shared input-validation gate before fitting. Depending on the workflow, it checks finite complete cases, minimum group/pair counts, outcome variation, number of groups, degrees of freedom, predictor variation, design-matrix rank, class balance, and visible separation risk. These checks are necessary but not sufficient: the app still cannot infer random sampling, valid pairing, independence, causal identification, or a target population from a CSV file.
 
 ## Dataset audit contract
 
@@ -27,12 +29,12 @@ Every public dataset and CSV upload receives a common audit card before analysis
 | Analysis family | Estimate and uncertainty | Diagnostics / safeguards | Important limitation |
 |---|---|---|---|
 | Mean estimation | Sample mean and t confidence interval | Distributional shape and IQR outlier count | Does not establish representativeness or a target population. |
-| Independent groups | Mean difference, Welch interval, Cohen’s *d* | Group sizes, groupwise shape, outliers, variance evidence, planning-context power display | Does not establish causal effect or independence. |
+| Independent groups | Mean difference, Welch interval, Cohen’s *d* | Group sizes, groupwise shape, outliers, variance evidence, and a **user-specified prospective** power-planning panel | Does not establish causal effect or independence; observed effects are not used as planning effects. |
 | Paired measurements | Mean within-pair difference and interval | Difference distribution and outlying differences | Pair identity must be scientifically documented. |
 | One-way comparison | Group means, omnibus F test, eta-squared | Group sizes, groupwise shape, outliers, variance evidence | Does not identify which groups differ; post-hoc choices require an explicit plan. |
-| Categorical association | Contingency table, chi-square evidence, Cramér’s *V* | Expected-count warnings and Fisher exact result for 2×2 tables | Association is not causal direction or practical importance. |
+| Categorical association | Contingency table, chi-square evidence, Cramér’s *V* | Missing values are labelled before category conversion; expected-count warnings and promoted Fisher exact result for sparse 2×2 tables | Association is not causal direction or practical importance. |
 | Linear regression | Coefficients, intervals, R² | Residual shape, heteroskedasticity evidence, Cook’s distance, VIF | Coefficients are conditional model associations, not automatic causal effects. |
-| Logistic regression | Odds ratios, intervals, fitted-probability range | Outcome counts and probability-range checks | Odds ratios are not risk ratios; calibration and thresholds need further assessment. |
+| Logistic regression | Odds ratios, intervals, fitted-probability range | Outcome counts, minimum events per parameter, constant/rank-deficient predictor checks, visible separation risk, and convergence checks | Odds ratios are not risk ratios; calibration and thresholds need further assessment. |
 
 ## Standard result record
 

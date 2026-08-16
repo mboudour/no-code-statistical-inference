@@ -20,6 +20,7 @@ from inference_core import (
     independent_group_power,
     linear_regression,
     logistic_regression,
+    method_compatibility,
     numeric_columns,
     one_sample_mean,
     one_way_anova,
@@ -27,6 +28,7 @@ from inference_core import (
     renderable_diagnostics,
     two_group_welch,
 )
+from validation import InputValidationError
 
 APP_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = APP_DIR.parent
@@ -90,45 +92,44 @@ def render_dataset_audit(data: pd.DataFrame, key: str, dataset_name: str, filena
 
 
 def render_question_to_method(manifest: dict, key: str = "wizard") -> None:
-    """Render the Learn/Choose question-first decision aid."""
+    """Render a design-first, transparent recommendation pathway without asking for a test name."""
     st.title("Guided inference pathway")
-    st.caption("Start with a research question and study design. The app recommends a seminar pathway; it does not replace subject-matter or design judgment.")
-    purpose = st.selectbox(
-        "What is the main purpose of your analysis?",
-        list(METHOD_CARDS),
-        format_func=lambda item: METHOD_CARDS[item]["label"],
-        key=f"{key}_purpose",
-    )
-    card = METHOD_CARDS[purpose]
+    st.caption("Describe the question and design first. The app derives compatible seminar pathways; it does not infer study design or replace statistical judgment.")
+    question = st.text_area("1. State your research question in one sentence", placeholder="Example: How does mean birth weight differ between the selected groups?", key=f"{key}_question")
     left, middle, right = st.columns(3)
     with left:
-        outcome_type = st.selectbox("Outcome structure", ["Continuous / numeric", "Binary", "Categorical", "Count", "Ordinal", "Time-to-event"], key=f"{key}_outcome_type")
+        outcome_type = st.selectbox("2. Outcome structure", ["Continuous / numeric", "Binary", "Categorical", "Count", "Ordinal", "Time-to-event"], key=f"{key}_outcome_type")
     with middle:
-        explanatory_type = st.selectbox("Explanatory variable or comparison structure", ["None / estimation", "Two groups", "Three or more groups", "One or more predictors", "Two categorical variables"], key=f"{key}_explanatory_type")
+        explanatory_type = st.selectbox("3. Explanatory variable or comparison structure", ["None / estimation", "Two groups", "Three or more groups", "One or more predictors", "Two categorical variables"], key=f"{key}_explanatory_type")
     with right:
-        design = st.selectbox("Dependence / design", ["Independent observational units", "Paired or matched measurements", "Repeated / clustered / longitudinal", "Unknown — investigate before analysis"], key=f"{key}_design")
-    aim = st.selectbox("Primary inferential aim", ["Estimation", "Comparison", "Association", "Prediction", "Causal interpretation (requires design justification)"], key=f"{key}_aim")
-    question = st.text_area("State your research question in one sentence", placeholder="Example: How does mean birth weight differ between the selected groups?", key=f"{key}_question")
-    st.subheader(f"Recommended pathway: {card['method']}")
-    st.markdown(f"**Required data structure:** {card['requirements']}")
-    st.markdown("**Before calculation, check:**")
-    for warning in card["warnings"]:
-        st.warning(warning)
-    if purpose == "two_independent" and design != "Independent observational units":
-        st.warning("The selected design is not compatible with a simple independent-groups pathway. Consider the paired/repeated-measures material or seek design-specific advice.")
-    if purpose == "paired" and design != "Paired or matched measurements":
-        st.warning("A paired comparison requires documented matching or repeated measurement; do not infer pairing from similarly named columns.")
+        design = st.selectbox("4. Dependence / design", ["Independent observational units", "Paired or matched measurements", "Repeated / clustered / longitudinal", "Unknown — investigate before analysis"], key=f"{key}_design")
+    aim = st.selectbox("5. Primary inferential aim", ["Estimation", "Comparison", "Association", "Prediction", "Causal interpretation (requires design justification)"], key=f"{key}_aim")
     if aim == "Causal interpretation (requires design justification)":
-        st.warning("None of the automated method recommendations establishes causality. Record the intervention, identification strategy, confounding assumptions, and target population separately.")
+        st.warning("The app does not establish causality. Record the intervention, identification strategy, confounding assumptions, and target population before any causal claim.")
+    recommendations = method_compatibility(outcome_type, explanatory_type, design, aim)
+    compatible = [item for item in recommendations if item["status"] == "Compatible"]
+    caution = [item for item in recommendations if item["status"] == "Caution"]
+    st.subheader("Derived pathway compatibility")
+    if compatible:
+        st.success("Compatible pathways are shown below. Confirm the dataset-specific requirements in the next step before fitting a model.")
+    else:
+        st.warning("No simple app workflow is compatible with the recorded features. Review the design, use the relevant theory module, or seek design-specific advice rather than forcing a method.")
+    st.dataframe(pd.DataFrame(recommendations)[["status", "method", "reason", "modules"]], width="stretch", hide_index=True)
     module_map = {module["id"]: module for day in manifest["days"] for module in day["modules"]}
-    pathways = [module_map[module_id] for module_id in card["module_ids"] if module_id in module_map]
-    if pathways:
+    recommended_rows = []
+    for item in compatible + caution:
+        card = METHOD_CARDS[item["key"]]
+        for module_id in card["module_ids"]:
+            module = module_map.get(module_id)
+            if module:
+                recommended_rows.append({"Status": item["status"], "Module": module["id"].upper(), "Title": module["title"], "Question prompt": module["research_question_prompt"]})
+    if recommended_rows:
         st.markdown("**Relevant seminar modules:**")
-        st.dataframe(pd.DataFrame([{"Module": module["id"].upper(), "Title": module["title"], "Question prompt": module["research_question_prompt"]} for module in pathways]), width="stretch", hide_index=True)
+        st.dataframe(pd.DataFrame(recommended_rows), width="stretch", hide_index=True)
     if question.strip():
-        st.info("Your question has been recorded in the session and will be included in an exported analysis record when you run a compatible workflow.")
+        st.info("Your question and design summary are retained in this browser session and will be included in a compatible analysis record.")
         st.session_state[f"{key}_question_value"] = question.strip()
-        st.session_state[f"{key}_design_summary"] = {"outcome_type": outcome_type, "explanatory_type": explanatory_type, "design": design, "aim": aim}
+        st.session_state[f"{key}_design_summary"] = {"outcome_type": outcome_type, "explanatory_type": explanatory_type, "design": design, "aim": aim, "compatible_pathways": [item["method"] for item in compatible], "compatible_pathway_keys": [item["key"] for item in compatible]}
 
 
 def _display_result(result: dict[str, Any]) -> None:
@@ -168,21 +169,26 @@ def _display_result(result: dict[str, Any]) -> None:
 
 def _render_linear_diagnostics(result: dict[str, Any], predictor: str, outcome: str, data: pd.DataFrame, key: str) -> None:
     details = result["details"]
+    coefficient_count = len(details["coefficients"].index) - 1
+    if coefficient_count > 1:
+        st.caption(f"The observed outcome-versus-{predictor} panel is a first-predictor visualization only. It is not a partial-residual or adjusted-effect plot for the full multivariable model.")
     subset = data[[outcome, predictor]].dropna()
     plot_data = pd.DataFrame({"Fitted value": details["fitted"], "Residual": details["residuals"], "Cook's distance": details["cooks_distance"]})
     left, right = st.columns(2)
     with left:
         st.plotly_chart(px.scatter(plot_data, x="Fitted value", y="Residual", hover_data=["Cook's distance"], title="Residuals versus fitted values", template="plotly_white"), width="stretch", key=f"{key}_residuals")
     with right:
-        st.plotly_chart(px.scatter(subset, x=predictor, y=outcome, title=f"Observed {outcome} by {predictor}", template="plotly_white"), width="stretch", key=f"{key}_scatter")
+        st.plotly_chart(px.scatter(subset, x=predictor, y=outcome, title=f"Observed {outcome} by first selected predictor: {predictor}", template="plotly_white"), width="stretch", key=f"{key}_scatter")
 
 
 def render_guarded_analysis(data: pd.DataFrame, audit: dict[str, Any], key: str) -> dict[str, Any] | None:
     """Render analysis families with test-specific data checks and a common output structure."""
     st.subheader("Guided analysis")
     st.caption("Use this after the audit. The calculation is conditional on the selected variables and cannot verify study design, causal identification, or substantive relevance.")
-    available = ["estimate_mean"]
+    available: list[str] = []
     nums, cats = numeric_columns(data), categorical_columns(data)
+    if nums:
+        available.append("estimate_mean")
     if nums and cats:
         available.extend(["two_independent", "anova"])
     if len(nums) >= 2:
@@ -192,7 +198,19 @@ def render_guarded_analysis(data: pd.DataFrame, audit: dict[str, Any], key: str)
     binary_candidates = [name for name in cats if data[name].dropna().astype(str).nunique() == 2]
     if binary_candidates and nums:
         available.append("logistic_regression")
-    method_key = st.selectbox("Analysis purpose", available, format_func=lambda item: METHOD_CARDS[item]["label"], key=f"{key}_analysis_purpose")
+    guided_keys = st.session_state.get("wizard_design_summary", {}).get("compatible_pathway_keys", [])
+    if guided_keys:
+        compatible_available = [item for item in available if item in guided_keys]
+        if compatible_available:
+            available = compatible_available
+            st.info("The available analyses are filtered to pathways compatible with your recorded question and design. Revisit Guided Inference to change the design description.")
+        else:
+            st.warning("The recorded design has no compatible simple workflow for this dataset. Revisit Guided Inference or seek design-specific advice; the app will not force a method.")
+            return None
+    if not available:
+        st.warning("This dataset has no supported analysis pathway with its currently detected variable structure. Use the data audit to verify variable coding or choose another workflow.")
+        return None
+    method_key = st.selectbox("Compatible analysis pathway", available, format_func=lambda item: METHOD_CARDS[item]["label"], key=f"{key}_analysis_purpose")
     result: dict[str, Any] | None = None
     selections: dict[str, Any] = {"analysis purpose": METHOD_CARDS[method_key]["label"]}
     try:
@@ -213,8 +231,13 @@ def render_guarded_analysis(data: pd.DataFrame, audit: dict[str, Any], key: str)
                 return None
             selections.update({"outcome": outcome, "group": group, "levels": chosen})
             result = two_group_welch(data, outcome, group, chosen)
-            power = independent_group_power(abs(result["details"]["cohen_d"]) if np.isfinite(result["details"]["cohen_d"]) else 0.2, min(result["details"]["n_first"], result["details"]["n_second"]))
-            st.info(f"Planning context only: with the observed standardized difference and smaller group size, estimated two-sided power is {power['power']:.2f}. About {power['n_per_group_for_80_percent_power']:.0f} observations per group are required for 80% power at the same assumed effect size. Do not use a post-hoc calculation as a substitute for prospective design planning.")
+            st.markdown("##### Prospective planning context")
+            st.caption("Choose a substantively meaningful standardized effect size for future study planning. The observed effect is intentionally not used as the planning effect.")
+            planning_effect = st.number_input("Target standardized effect size (Cohen's d)", min_value=0.01, max_value=5.0, value=0.50, step=0.05, key=f"{key}_planning_effect")
+            target_power = st.select_slider("Target power", options=[0.70, 0.80, 0.90, 0.95], value=0.80, key=f"{key}_target_power")
+            power = independent_group_power(float(planning_effect), min(result["details"]["n_first"], result["details"]["n_second"]), target_power=float(target_power))
+            st.info(f"For a planning effect size of d = {power['planning_effect_size']:.2f}, current smaller-group size {min(result['details']['n_first'], result['details']['n_second'])}, and target power {power['target_power']:.0%}, estimated power is {power['power']:.2f}. About {power['n_per_group_for_target_power']:.0f} observations per group are required under these prospective assumptions.")
+            selections.update({"planning effect size": planning_effect, "target power": target_power})
         elif method_key == "paired":
             first = st.selectbox("First paired measurement", nums, key=f"{key}_paired_first")
             second = st.selectbox("Second paired measurement", [name for name in nums if name != first], key=f"{key}_paired_second")
@@ -254,6 +277,9 @@ def render_guarded_analysis(data: pd.DataFrame, audit: dict[str, Any], key: str)
                 return None
             selections.update({"outcome": outcome, "predictors": predictors})
             result = logistic_regression(data, outcome, predictors)
+    except InputValidationError as error:
+        st.warning(f"This analysis is not available for the current selections: {error}")
+        return None
     except (ValueError, np.linalg.LinAlgError) as error:
         st.error(f"This model could not be fit with the current selections: {error}")
         return None

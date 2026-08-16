@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from typing import Any
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -16,6 +17,9 @@ from scipy import stats
 from statsmodels.stats.diagnostic import het_breuschpagan
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 from statsmodels.stats.power import TTestIndPower
+from statsmodels.tools.sm_exceptions import ConvergenceWarning, PerfectSeparationError
+
+from validation import InputValidationError, validate_inputs
 
 RESULT_SECTIONS = [
     "Question",
@@ -83,6 +87,37 @@ METHOD_CARDS: dict[str, dict[str, Any]] = {
         "warnings": ["Odds ratios are not risk ratios.", "Classification thresholds encode consequences and should not be chosen solely to maximize accuracy."],
     },
 }
+
+
+def method_compatibility(
+    outcome_type: str,
+    explanatory_type: str,
+    design: str,
+    aim: str,
+) -> list[dict[str, str]]:
+    """Return transparent compatibility statuses from design features, not test names."""
+    independent = design == "Independent observational units"
+    paired = design == "Paired or matched measurements"
+    unknown_design = design in {"Unknown — investigate before analysis", "Repeated / clustered / longitudinal"}
+    rules = {
+        "estimate_mean": outcome_type == "Continuous / numeric" and explanatory_type == "None / estimation" and aim == "Estimation",
+        "two_independent": outcome_type == "Continuous / numeric" and explanatory_type == "Two groups" and aim == "Comparison" and independent,
+        "paired": outcome_type == "Continuous / numeric" and explanatory_type == "Two groups" and aim == "Comparison" and paired,
+        "anova": outcome_type == "Continuous / numeric" and explanatory_type == "Three or more groups" and aim == "Comparison" and independent,
+        "association": outcome_type in {"Binary", "Categorical"} and explanatory_type == "Two categorical variables" and aim == "Association" and independent,
+        "linear_regression": outcome_type == "Continuous / numeric" and explanatory_type == "One or more predictors" and aim in {"Association", "Prediction"} and independent,
+        "logistic_regression": outcome_type == "Binary" and explanatory_type == "One or more predictors" and aim in {"Association", "Prediction"} and independent,
+    }
+    recommendations: list[dict[str, str]] = []
+    for key, card in METHOD_CARDS.items():
+        if rules[key]:
+            status, reason = "Compatible", "The recorded outcome, explanatory structure, dependence assumption, and aim match this pathway."
+        elif unknown_design:
+            status, reason = "Caution", "Dependence is unknown or clustered/repeated. This app’s simple workflow is not automatically appropriate; establish the design before calculation."
+        else:
+            status, reason = "Not compatible", "The recorded outcome, explanatory structure, design, or aim does not match this pathway."
+        recommendations.append({"key": key, "status": status, "method": card["method"], "reason": reason, "modules": ", ".join(module_id.upper() for module_id in card["module_ids"])})
+    return recommendations
 
 
 def numeric_columns(data: pd.DataFrame) -> list[str]:
@@ -193,14 +228,15 @@ def mean_interval(values: np.ndarray, confidence: float = 0.95) -> dict[str, flo
 
 
 def one_sample_mean(data: pd.DataFrame, outcome: str, confidence: float = 0.95) -> dict[str, Any]:
-    values = data[outcome].dropna().to_numpy(dtype=float)
+    validation = validate_inputs("estimate_mean", data, outcome=outcome)
+    values = pd.to_numeric(data[outcome], errors="coerce").replace([np.inf, -np.inf], np.nan).dropna().to_numpy(dtype=float)
     interval = mean_interval(values, confidence)
     return {
         "method": "Mean with t confidence interval",
         "question": f"What is the mean of {outcome} in the stated target population?",
         "data_design": f"{len(values)} non-missing observations of {outcome}.",
         "assumptions": ["Observations represent the stated target population.", "Observations are independent under the study design.", "A mean and t interval are appropriate summaries for this outcome and sample size."],
-        "diagnostics": {"shape": shapiro_diagnostic(values), "outliers_iqr": iqr_outlier_count(values)},
+        "diagnostics": {"shape": shapiro_diagnostic(values), "outliers_iqr": iqr_outlier_count(values), "input_validation": list(validation.warnings)},
         "estimate": interval["mean"],
         "uncertainty": f"{confidence:.0%} CI [{interval['low']:.3f}, {interval['high']:.3f}]",
         "effect_size": "Not applicable for a single mean without a reference value.",
@@ -213,10 +249,11 @@ def one_sample_mean(data: pd.DataFrame, outcome: str, confidence: float = 0.95) 
 
 
 def two_group_welch(data: pd.DataFrame, outcome: str, group: str, levels: list[str], confidence: float = 0.95) -> dict[str, Any]:
+    validation = validate_inputs("two_independent", data, outcome=outcome, group=group, levels=levels)
     subset = data[[outcome, group]].dropna().copy()
     subset[group] = subset[group].astype(str)
-    first = subset.loc[subset[group] == levels[0], outcome].to_numpy(dtype=float)
-    second = subset.loc[subset[group] == levels[1], outcome].to_numpy(dtype=float)
+    first = pd.to_numeric(subset.loc[subset[group] == str(levels[0]), outcome], errors="coerce").dropna().to_numpy(dtype=float)
+    second = pd.to_numeric(subset.loc[subset[group] == str(levels[1]), outcome], errors="coerce").dropna().to_numpy(dtype=float)
     n1, n2 = len(first), len(second)
     mean1, mean2 = float(np.mean(first)), float(np.mean(second))
     diff = mean2 - mean1
@@ -240,6 +277,7 @@ def two_group_welch(data: pd.DataFrame, outcome: str, group: str, levels: list[s
             f"shape_{levels[1]}": shapiro_diagnostic(second),
             "variance_structure": {"statistic": float(levene.statistic), "p_value": float(levene.pvalue), "message": "Welch's procedure does not impose equal variances, but large variance differences remain substantively informative."} if levene else {},
             "outliers_iqr": {levels[0]: iqr_outlier_count(first), levels[1]: iqr_outlier_count(second)},
+            "input_validation": list(validation.warnings),
         },
         "estimate": diff,
         "uncertainty": f"{confidence:.0%} CI for mean difference [{diff - critical * se:.3f}, {diff + critical * se:.3f}]",
@@ -253,7 +291,8 @@ def two_group_welch(data: pd.DataFrame, outcome: str, group: str, levels: list[s
 
 
 def paired_comparison(data: pd.DataFrame, first_name: str, second_name: str, confidence: float = 0.95) -> dict[str, Any]:
-    subset = data[[first_name, second_name]].dropna()
+    validation = validate_inputs("paired", data, first_name=first_name, second_name=second_name)
+    subset = data[[first_name, second_name]].apply(pd.to_numeric, errors="coerce").replace([np.inf, -np.inf], np.nan).dropna()
     differences = (subset[second_name] - subset[first_name]).to_numpy(dtype=float)
     interval = mean_interval(differences, confidence)
     test = stats.ttest_1samp(differences, 0)
@@ -262,7 +301,7 @@ def paired_comparison(data: pd.DataFrame, first_name: str, second_name: str, con
         "question": f"What is the mean within-unit difference ({second_name} minus {first_name})?",
         "data_design": f"{len(differences)} complete row pairs. The analyst must verify that each row is a valid matched pair.",
         "assumptions": ["Rows are valid pairs measured on the same unit or a documented matched design.", "Pairs are independent of other pairs.", "Inference concerns the distribution of within-pair differences."],
-        "diagnostics": {"difference_shape": shapiro_diagnostic(differences), "outliers_iqr": iqr_outlier_count(differences)},
+        "diagnostics": {"difference_shape": shapiro_diagnostic(differences), "outliers_iqr": iqr_outlier_count(differences), "input_validation": list(validation.warnings)},
         "estimate": interval["mean"],
         "uncertainty": f"{confidence:.0%} CI [{interval['low']:.3f}, {interval['high']:.3f}]",
         "effect_size": f"Standardized paired difference = {interval['mean'] / np.std(differences, ddof=1):.3f}" if np.std(differences, ddof=1) else "Undefined because the difference standard deviation is zero.",
@@ -275,7 +314,10 @@ def paired_comparison(data: pd.DataFrame, first_name: str, second_name: str, con
 
 
 def one_way_anova(data: pd.DataFrame, outcome: str, group: str) -> dict[str, Any]:
+    validation = validate_inputs("anova", data, outcome=outcome, group=group)
     subset = data[[outcome, group]].dropna().copy()
+    subset[outcome] = pd.to_numeric(subset[outcome], errors="coerce")
+    subset = subset.dropna()
     subset[group] = subset[group].astype(str)
     groups = [values.to_numpy(dtype=float) for _, values in subset.groupby(group, sort=True)[outcome]]
     labels = [str(label) for label, _ in subset.groupby(group, sort=True)[outcome]]
@@ -285,7 +327,7 @@ def one_way_anova(data: pd.DataFrame, outcome: str, group: str) -> dict[str, Any
     total = sum((subset[outcome] - overall) ** 2)
     eta_sq = between / total if total else float("nan")
     levene = stats.levene(*groups, center="median")
-    diagnostics = {"variance_structure": {"statistic": float(levene.statistic), "p_value": float(levene.pvalue), "message": "A small p-value is evidence against equal variance under this diagnostic model, not an automatic decision rule."}}
+    diagnostics = {"variance_structure": {"statistic": float(levene.statistic), "p_value": float(levene.pvalue), "message": "A small p-value is evidence against equal variance under this diagnostic model, not an automatic decision rule."}, "input_validation": list(validation.warnings)}
     for label, values in zip(labels, groups, strict=True):
         diagnostics[f"shape_{label}"] = shapiro_diagnostic(values)
         diagnostics.setdefault("outliers_iqr", {})[label] = iqr_outlier_count(values)
@@ -307,8 +349,16 @@ def one_way_anova(data: pd.DataFrame, outcome: str, group: str) -> dict[str, Any
 
 
 def categorical_association(data: pd.DataFrame, first: str, second: str) -> dict[str, Any]:
-    table = pd.crosstab(data[first].astype(str).fillna("Missing"), data[second].astype(str).fillna("Missing"))
-    chi2, p_value, df, expected = stats.chi2_contingency(table)
+    validation = validate_inputs("association", data, first=first, second=second)
+    first_values = data[first].where(data[first].notna(), "Missing").astype(str)
+    second_values = data[second].where(data[second].notna(), "Missing").astype(str)
+    table = pd.crosstab(first_values, second_values)
+    if table.shape[0] < 2 or table.shape[1] < 2:
+        raise InputValidationError("The selected variables produce fewer than two observed categories in at least one dimension after missing-value handling.")
+    try:
+        chi2, p_value, df, expected = stats.chi2_contingency(table)
+    except ValueError as error:
+        raise InputValidationError(f"The chi-square reference calculation is undefined for this table: {error}") from error
     n = table.to_numpy().sum()
     phi2 = chi2 / n if n else float("nan")
     r, c = table.shape
@@ -323,12 +373,12 @@ def categorical_association(data: pd.DataFrame, first: str, second: str) -> dict
         "question": f"Are {first} and {second} associated in the observed table?",
         "data_design": f"Contingency table with {n} observed records, {r} by {c} cells.",
         "assumptions": ["Rows represent independent observational units.", "Categories are mutually exclusive under the chosen coding.", "Expected counts are large enough for the chi-square reference approximation."],
-        "diagnostics": {"minimum_expected_count": float(expected.min()), "cells_expected_below_5": small_expected, "fisher_exact": fisher, "message": "When expected counts are small, consider Fisher's exact test for a 2x2 table or a simulation-based alternative."},
+        "diagnostics": {"minimum_expected_count": float(expected.min()), "cells_expected_below_5": small_expected, "fisher_exact": fisher, "input_validation": list(validation.warnings), "message": "When expected counts are small, Fisher's exact result is promoted for a 2×2 table; larger sparse tables require a simulation-based or collapsed-category analysis outside this workflow."},
         "estimate": "Observed conditional distributions are shown in the contingency table.",
         "uncertainty": "The chi-square reference distribution is approximate and depends on expected-count conditions.",
         "effect_size": f"Cramer's V = {cramer_v:.3f}",
-        "test": f"Chi-square({df}) = {chi2:.3f}, p = {p_value:.4f}",
-        "interpretation": "The test evaluates evidence against an independence model, not the practical importance or causal direction of the association.",
+        "test": (f"Fisher exact p = {fisher['p_value']:.4f}; odds ratio = {fisher['odds_ratio']:.3f} (promoted because {small_expected} expected cell(s) are below 5)." if fisher and small_expected else f"Chi-square({df}) = {chi2:.3f}, p = {p_value:.4f}"),
+        "interpretation": ("For this sparse 2×2 table, Fisher's exact result is the primary small-sample reference calculation. It still does not measure practical importance or causal direction." if fisher and small_expected else "The test evaluates evidence against an independence model, not the practical importance or causal direction of the association."),
         "limitations": "Sparse cells, dependent observations, and post-hoc category selection can invalidate a simple interpretation.",
         "next_step": "Inspect conditional proportions, cell counts, expected counts, and the study design before reporting an association.",
         "details": {"table": table, "expected": pd.DataFrame(expected, index=table.index, columns=table.columns), "n": int(n), "chi2": float(chi2), "df": int(df), "p_value": float(p_value), "cramer_v": float(cramer_v)},
@@ -336,7 +386,8 @@ def categorical_association(data: pd.DataFrame, first: str, second: str) -> dict
 
 
 def linear_regression(data: pd.DataFrame, outcome: str, predictors: list[str]) -> dict[str, Any]:
-    subset = data[[outcome, *predictors]].dropna().astype(float)
+    validation = validate_inputs("linear_regression", data, outcome=outcome, predictors=predictors)
+    subset = data[[outcome, *predictors]].apply(pd.to_numeric, errors="coerce").replace([np.inf, -np.inf], np.nan).dropna().astype(float)
     y = subset[outcome]
     x = sm.add_constant(subset[predictors], has_constant="add")
     model = sm.OLS(y, x).fit()
@@ -354,7 +405,7 @@ def linear_regression(data: pd.DataFrame, outcome: str, predictors: list[str]) -
         "question": f"How is {outcome} conditionally associated with {', '.join(predictors)} under a linear model?",
         "data_design": f"{len(subset)} complete cases; all selected predictors are treated as numeric.",
         "assumptions": ["Rows are independent under the study design.", "The conditional mean structure is adequately represented by the specified linear form.", "Residual diagnostics are interpreted together with substantive knowledge and data collection conditions."],
-        "diagnostics": {"residual_shape": shapiro_diagnostic(residuals), "breusch_pagan": {"statistic": float(bp_stat), "p_value": float(bp_pvalue), "message": "This diagnostic tests a particular heteroskedasticity pattern and is not a universal model-validity test."}, "largest_cooks_distance": float(np.max(cooks)), "vif": vifs},
+        "diagnostics": {"residual_shape": shapiro_diagnostic(residuals), "breusch_pagan": {"statistic": float(bp_stat), "p_value": float(bp_pvalue), "message": "This diagnostic tests a particular heteroskedasticity pattern and is not a universal model-validity test."}, "largest_cooks_distance": float(np.max(cooks)), "vif": vifs, "input_validation": list(validation.warnings)},
         "estimate": coefficient_table,
         "uncertainty": "Coefficient intervals are conditional on the specified model, predictors, and assumptions.",
         "effect_size": f"R² = {model.rsquared:.3f}; adjusted R² = {model.rsquared_adj:.3f}",
@@ -367,13 +418,23 @@ def linear_regression(data: pd.DataFrame, outcome: str, predictors: list[str]) -
 
 
 def logistic_regression(data: pd.DataFrame, outcome: str, predictors: list[str]) -> dict[str, Any]:
-    subset = data[[outcome, *predictors]].dropna().copy()
+    validation = validate_inputs("logistic_regression", data, outcome=outcome, predictors=predictors)
+    subset = data[[outcome, *predictors]].copy()
+    subset[predictors] = subset[predictors].apply(pd.to_numeric, errors="coerce")
+    subset = subset.replace([np.inf, -np.inf], np.nan).dropna()
     levels = sorted(subset[outcome].astype(str).unique().tolist())
-    if len(levels) != 2:
-        raise ValueError("The selected outcome must have exactly two observed levels for logistic regression.")
     y = (subset[outcome].astype(str) == levels[1]).astype(int)
     x = sm.add_constant(subset[predictors].astype(float), has_constant="add")
-    model = sm.Logit(y, x).fit(disp=False)
+    try:
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always", ConvergenceWarning)
+            model = sm.Logit(y, x).fit(disp=False, maxiter=100)
+        if not bool(model.mle_retvals.get("converged", False)) or any(issubclass(item.category, ConvergenceWarning) for item in caught):
+            raise InputValidationError("The logistic model did not converge reliably. Simplify the predictor set, check separation/sparse outcomes, or use a penalized method outside this workflow.")
+    except PerfectSeparationError as error:
+        raise InputValidationError("Perfect separation was detected: one or more predictor patterns distinguish outcome classes completely. Standard logistic coefficients are not finite; simplify the model or use a penalized method outside this workflow.") from error
+    except np.linalg.LinAlgError as error:
+        raise InputValidationError("The logistic information matrix is singular. This commonly reflects separation, quasi-separation, or redundant predictor information; simplify the model or use a penalized method outside this workflow.") from error
     probabilities = model.predict(x)
     coefficient_table = pd.DataFrame({"Log-odds estimate": model.params, "Odds ratio": np.exp(model.params), "CI low OR": np.exp(model.conf_int().iloc[:, 0]), "CI high OR": np.exp(model.conf_int().iloc[:, 1]), "p-value": model.pvalues}).round(4)
     return {
@@ -381,7 +442,7 @@ def logistic_regression(data: pd.DataFrame, outcome: str, predictors: list[str])
         "question": f"How is the probability of {levels[1]} conditionally associated with {', '.join(predictors)}?",
         "data_design": f"{len(subset)} complete records; binary outcome coded as {levels[0]} / {levels[1]}.",
         "assumptions": ["Rows are independent under the study design.", "The selected predictors have an appropriate relationship with the log-odds under the specified model.", "There are adequate observations in both outcome classes."],
-        "diagnostics": {"outcome_counts": y.value_counts().to_dict(), "minimum_predicted_probability": float(probabilities.min()), "maximum_predicted_probability": float(probabilities.max())},
+        "diagnostics": {"outcome_counts": y.value_counts().to_dict(), "minimum_predicted_probability": float(probabilities.min()), "maximum_predicted_probability": float(probabilities.max()), "input_validation": list(validation.warnings)},
         "estimate": coefficient_table,
         "uncertainty": "Odds-ratio intervals are conditional on the specified model and predictor scale.",
         "effect_size": f"McFadden pseudo R² = {model.prsquared:.3f}",
@@ -393,11 +454,18 @@ def logistic_regression(data: pd.DataFrame, outcome: str, predictors: list[str])
     }
 
 
-def independent_group_power(effect_size: float, group_size: int, alpha: float = 0.05) -> dict[str, float]:
+def independent_group_power(planning_effect_size: float, group_size: int, alpha: float = 0.05, target_power: float = 0.80) -> dict[str, float]:
+    """Prospective two-group planning calculation using a user-specified meaningful effect size."""
+    if not np.isfinite(planning_effect_size) or planning_effect_size <= 0:
+        raise InputValidationError("Choose a positive, substantively meaningful standardized planning effect size; do not use a zero or observed post-hoc effect by default.")
+    if group_size < 2:
+        raise InputValidationError("Current group size must be at least two for a two-group planning calculation.")
+    if not 0 < target_power < 1:
+        raise InputValidationError("Target power must be strictly between 0 and 1.")
     analysis = TTestIndPower()
-    power = float(analysis.power(effect_size=effect_size, nobs1=group_size, alpha=alpha, ratio=1.0, alternative="two-sided"))
-    required = float(analysis.solve_power(effect_size=effect_size, power=0.80, alpha=alpha, ratio=1.0, alternative="two-sided"))
-    return {"power": power, "n_per_group_for_80_percent_power": required}
+    power = float(analysis.power(effect_size=planning_effect_size, nobs1=group_size, alpha=alpha, ratio=1.0, alternative="two-sided"))
+    required = float(analysis.solve_power(effect_size=planning_effect_size, power=target_power, alpha=alpha, ratio=1.0, alternative="two-sided"))
+    return {"power": power, "n_per_group_for_target_power": required, "planning_effect_size": float(planning_effect_size), "target_power": float(target_power)}
 
 
 def renderable_diagnostics(diagnostics: dict[str, Any]) -> list[str]:
