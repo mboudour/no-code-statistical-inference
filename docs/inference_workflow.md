@@ -28,11 +28,11 @@ Every public dataset and CSV upload receives a common audit card before analysis
 
 | Analysis family | Estimate and uncertainty | Diagnostics / safeguards | Important limitation |
 |---|---|---|---|
-| Mean estimation | Sample mean and t confidence interval | Distributional shape and IQR outlier count | Does not establish representativeness or a target population. |
+| Mean estimation | Sample mean and t confidence interval; descriptive-only fallback for a constant outcome | Distributional shape and IQR outlier count; constant outcomes do not receive a fabricated standard error | Does not establish representativeness or a target population. |
 | Independent groups | Mean difference, Welch interval, Cohen’s *d* | Group sizes, groupwise shape, outliers, variance evidence, and a **user-specified prospective** power-planning panel | Does not establish causal effect or independence; observed effects are not used as planning effects. |
 | Paired measurements | Mean within-pair difference and interval | Difference distribution and outlying differences | Pair identity must be scientifically documented. |
 | One-way comparison | Group means, omnibus F test, eta-squared | Group sizes, groupwise shape, outliers, variance evidence | Does not identify which groups differ; post-hoc choices require an explicit plan. |
-| Categorical association | Contingency table, chi-square evidence, Cramér’s *V* | Missing values are labelled before category conversion; expected-count warnings and promoted Fisher exact result for sparse 2×2 tables | Association is not causal direction or practical importance. |
+| Categorical association | Contingency table, chi-square evidence, Cramér’s *V* | Missing values are labelled before category conversion; expected-count warnings, high-cardinality warning, and promoted Fisher exact result for sparse 2×2 tables | Association is not causal direction or practical importance. |
 | Linear regression | Coefficients, intervals, R² | Residual shape, heteroskedasticity evidence, Cook’s distance, VIF | Coefficients are conditional model associations, not automatic causal effects. |
 | Logistic regression | Odds ratios, intervals, fitted-probability range | Outcome counts, minimum events per parameter, constant/rank-deficient predictor checks, visible separation risk, and convergence checks | Odds ratios are not risk ratios; calibration and thresholds need further assessment. |
 
@@ -57,7 +57,7 @@ The American Statistical Association states that p-values can indicate incompati
 
 ## Reproducibility record
 
-After an analysis, participants may download a Markdown record containing the dataset audit, selected variables, research-question and design details retained in session, method, assumptions, diagnostics, numerical results, interpretation, limitations, and software context. The file is intentionally a compact record, not a claim of complete analytical reproducibility: users must also preserve the original data, source documentation, and any design decisions outside the app.
+After an analysis, participants may download a Markdown record containing the dataset audit, selected variables, research-question and design details retained in session, method, assumptions, diagnostics, numerical results, interpretation, limitations, and software context. They may also select an optional detailed appendix with available contingency tables, expected counts, coefficient tables, scalar diagnostic details, and a visualization record describing the interactive figures rendered in the app. The file is intentionally a compact record, not a claim of complete analytical reproducibility: users must also preserve the original data, source documentation, and any design decisions outside the app.
 
 ## Quality assurance
 

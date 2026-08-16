@@ -80,7 +80,12 @@ def validate_inputs(method: str, data: pd.DataFrame, **selection: Any) -> Valida
             raise InputValidationError("Select two distinct categorical variables for an association analysis.")
         if data[[first, second]].dropna(how="all").empty:
             raise InputValidationError("No observed values are available for the selected categorical variables.")
-        return ValidationSummary(method, int(len(data)))
+        first_levels = data[first].where(data[first].notna(), "Missing").astype(str).nunique()
+        second_levels = data[second].where(data[second].notna(), "Missing").astype(str).nunique()
+        warnings = []
+        if max(first_levels, second_levels) > 20:
+            warnings.append(f"At least one selected variable has more than 20 observed categories ({first_levels} and {second_levels}). This app can form the table, but a high-cardinality sparse table may be pedagogically unhelpful and can weaken simple approximations.")
+        return ValidationSummary(method, int(len(data)), tuple(warnings))
 
     if method == "linear_regression":
         outcome, predictors = selection["outcome"], list(selection["predictors"])
@@ -131,7 +136,7 @@ def validate_inputs(method: str, data: pd.DataFrame, **selection: Any) -> Valida
             values_one = subset.loc[y == 1, predictor]
             if values_zero.max() < values_one.min() or values_one.max() < values_zero.min():
                 separation_risks.append(predictor)
-        warnings = tuple(["Complete range separation is visible for: " + ", ".join(separation_risks) + ". Logistic coefficients may be non-finite; simplify the model or use a penalized method outside this workflow."] if separation_risks else [])
+        warnings = tuple(["Visible single-predictor range separation risk for: " + ", ".join(separation_risks) + ". This is a screen, not proof that multivariable separation is absent or present. Logistic coefficients may be non-finite; simplify the model or use a penalized method outside this workflow."] if separation_risks else [])
         return ValidationSummary(method, len(subset), warnings)
 
     raise InputValidationError(f"Unknown validation method: {method}.")

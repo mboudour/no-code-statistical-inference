@@ -203,6 +203,8 @@ def shapiro_diagnostic(values: np.ndarray) -> dict[str, Any]:
     values = np.asarray(values, dtype=float)
     if len(values) < 3:
         return {"available": False, "message": "At least three observations are required for this shape diagnostic."}
+    if np.unique(values).size < 2:
+        return {"available": False, "message": "The selected values have zero observed variation, so a normality/shape diagnostic is not informative."}
     if len(values) > 5000:
         values = values[:5000]
         sampled = True
@@ -225,6 +227,29 @@ def mean_interval(values: np.ndarray, confidence: float = 0.95) -> dict[str, flo
     se = float(stats.sem(values))
     critical = float(stats.t.ppf((1 + confidence) / 2, len(values) - 1))
     return {"mean": mean, "se": se, "low": mean - critical * se, "high": mean + critical * se}
+
+
+def descriptive_numeric_summary(data: pd.DataFrame, outcome: str) -> dict[str, Any]:
+    """Return a non-inferential numeric summary when a standard error is undefined."""
+    values = pd.to_numeric(data[outcome], errors="coerce").replace([np.inf, -np.inf], np.nan).dropna().to_numpy(dtype=float)
+    if len(values) < 1:
+        raise InputValidationError(f"A descriptive summary of {outcome} requires at least one finite, non-missing observation.")
+    summary = {"n": int(len(values)), "mean": float(np.mean(values)), "median": float(np.median(values)), "minimum": float(np.min(values)), "maximum": float(np.max(values)), "unique_values": int(len(np.unique(values)))}
+    return {
+        "method": "Descriptive numeric summary only",
+        "question": f"What values of {outcome} were observed in this selected dataset?",
+        "data_design": f"{len(values)} finite, non-missing observations of {outcome}. No inferential reference calculation is attempted.",
+        "assumptions": ["This is descriptive only; it does not require a sampling distribution assumption.", "The values and unit of observation still require substantive verification."],
+        "diagnostics": {"shape": shapiro_diagnostic(values), "outliers_iqr": iqr_outlier_count(values), "input_validation": ["The selected outcome has zero observed variation, so a standard error and t confidence interval are undefined. The app provides a descriptive-only fallback."]},
+        "estimate": f"Mean = {summary['mean']:.3f}; median = {summary['median']:.3f}; range = [{summary['minimum']:.3f}, {summary['maximum']:.3f}]",
+        "uncertainty": "No standard error, confidence interval, or hypothesis test is reported because the observed outcome has zero variation.",
+        "effect_size": "Not applicable for a descriptive-only constant outcome.",
+        "test": "No inferential test was performed.",
+        "interpretation": f"All {summary['n']} observed non-missing values equal {summary['mean']:.3f}. This describes the selected data; it does not establish that the population value is known without uncertainty.",
+        "limitations": "A constant observed variable can reflect true homogeneity, rounding, coding, truncation, or a data-processing issue. Inspect the original measurement process.",
+        "next_step": "Verify coding and measurement. If a population inference is needed, obtain data with observed variation or reconsider the estimand.",
+        "details": summary,
+    }
 
 
 def one_sample_mean(data: pd.DataFrame, outcome: str, confidence: float = 0.95) -> dict[str, Any]:
@@ -485,8 +510,8 @@ def renderable_diagnostics(diagnostics: dict[str, Any]) -> list[str]:
     return lines
 
 
-def build_report(result: dict[str, Any], audit: dict[str, Any], selections: dict[str, Any]) -> str:
-    """Build a compact reproducibility record that can be downloaded as Markdown."""
+def build_report(result: dict[str, Any], audit: dict[str, Any], selections: dict[str, Any], include_details: bool = False) -> str:
+    """Build a reproducibility record, optionally including detailed tables and diagnostics."""
     created = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
     lines = ["# No-Code Statistical Inference Record", "", f"Generated: {created}", "", "## Dataset audit", f"- Dataset: {audit['dataset']}", f"- Rows / columns: {audit['rows']} / {audit['columns']}", f"- Complete rows: {audit['complete_rows']}", f"- Duplicate rows: {audit['duplicate_rows']}", f"- Missing cells: {audit['missing_cells']}", f"- Source: {audit['source']}", f"- Unit of observation: {audit['unit_of_observation']}", "", "## Selections"]
     lines.extend(f"- {key}: {value}" for key, value in selections.items())
@@ -503,5 +528,19 @@ def build_report(result: dict[str, Any], audit: dict[str, Any], selections: dict
         lines.append("")
     lines.append("### Diagnostics")
     lines.extend(f"- {item}" for item in renderable_diagnostics(result.get("diagnostics", {})))
+    if include_details:
+        lines.extend(["", "## Detailed appendix"])
+        details = result.get("details", {})
+        for name, value in details.items():
+            heading = name.replace("_", " ").title()
+            if isinstance(value, pd.DataFrame):
+                lines.extend([f"### {heading}", "", value.to_markdown(), ""])
+            elif isinstance(value, pd.Series):
+                lines.extend([f"### {heading}", "", value.to_frame(name=name).to_markdown(), ""])
+            elif isinstance(value, np.ndarray):
+                lines.append(f"- {heading}: numerical vector with {value.size} value(s); inspect the interactive app for the corresponding diagnostic plot.")
+            elif isinstance(value, (str, int, float, np.integer, np.floating)):
+                lines.append(f"- {heading}: {value}")
+        lines.extend(["", "### Visualization record", "- Interactive visualizations are rendered in the app from the selected data and variables. This Markdown record does not embed image files; retain exported figures separately if a static review artifact is required."])
     lines.extend(["", "## Software", "- Python analysis engine: pandas, SciPy, statsmodels, Plotly, Seaborn, and Streamlit.", "- Results are conditional on the data, selections, model, and stated assumptions. A no-code result is not a substitute for study-design knowledge or substantive judgment."])
     return "\n".join(lines)

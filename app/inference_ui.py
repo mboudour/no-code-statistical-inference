@@ -17,6 +17,7 @@ from inference_core import (
     build_report,
     categorical_association,
     categorical_columns,
+    descriptive_numeric_summary,
     independent_group_power,
     linear_regression,
     logistic_regression,
@@ -217,7 +218,12 @@ def render_guarded_analysis(data: pd.DataFrame, audit: dict[str, Any], key: str)
         if method_key == "estimate_mean":
             outcome = st.selectbox("Numeric outcome", nums, key=f"{key}_mean_outcome")
             selections["outcome"] = outcome
-            result = one_sample_mean(data, outcome)
+            finite_values = pd.to_numeric(data[outcome], errors="coerce").replace([np.inf, -np.inf], np.nan).dropna()
+            if finite_values.nunique() < 2:
+                st.info("The selected outcome is constant after missing-value handling. A t interval is undefined, so the app provides a descriptive-only summary rather than forcing an inferential calculation.")
+                result = descriptive_numeric_summary(data, outcome)
+            else:
+                result = one_sample_mean(data, outcome)
         elif method_key == "two_independent":
             outcome = st.selectbox("Numeric outcome", nums, key=f"{key}_two_outcome")
             group = st.selectbox("Grouping variable", cats, key=f"{key}_two_group")
@@ -293,7 +299,8 @@ def render_guarded_analysis(data: pd.DataFrame, audit: dict[str, Any], key: str)
     for selection_name, selection_value in guided_design.items():
         selections[f"guided {selection_name.replace('_', ' ')}"] = selection_value
     _display_result(result)
-    report = build_report(result, audit, selections)
+    include_details = st.checkbox("Include detailed tables, expected counts / coefficient tables, and diagnostic references in the report", value=False, key=f"{key}_report_details")
+    report = build_report(result, audit, selections, include_details=include_details)
     st.download_button("Download reproducibility record (Markdown)", report, file_name=f"{key}_inference_record.md", mime="text/markdown", key=f"{key}_report")
     return result
 
