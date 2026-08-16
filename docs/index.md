@@ -30,13 +30,14 @@ This project includes a Streamlit companion application that supports interactiv
 
 **[Launch the Interactive App](https://no-code-statistical-inference.streamlit.app)** *(Deployment link will be activated when the app is published.)*
 
-The app provides a presentation-first workflow for each module:
+The app provides a **day-first, theory-led workflow**:
 
-1. **Curriculum and Rigorous Presentation:** Formal concepts, notation, assumptions, and results are displayed before analysis interaction.
-2. **Instructor Demonstration:** The public dataset selected for the module demonstration is clearly labelled.
-3. **Module BYOD:** Participants select one of three **different** public datasets assigned to that module, or upload their own CSV file.
-4. **Analysis Studio:** No-code workflows support descriptive summaries, bootstrap intervals, two-group comparisons, contingency tables, simple linear regression, and a starter logistic-regression workflow.
-5. **Reproducibility:** Dataset provenance, analytical choices, and interpretation limits are made explicit.
+1. **Select a day:** Participants choose Day 1, Day 2, or Day 3.
+2. **Day theory:** The selected day opens with its theoretical introduction and a map of all ten modules and their instructor-selected public datasets.
+3. **Select a module:** Participants enter one of the ten modules belonging to that day.
+4. **Module theory:** Formal concepts, notation, assumptions, and results are displayed before analysis interaction.
+5. **Worked-out public dataset:** The selected public dataset is processed in a generic no-code workbench; every other bundled public dataset can also be processed there.
+6. **BYOD upload:** Participants upload a CSV inside the selected module and process it through the same generic workbench. Uploads are held in memory only for the session.
 
 ### R and Python support
 

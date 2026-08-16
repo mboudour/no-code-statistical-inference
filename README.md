@@ -30,15 +30,16 @@ Every module has **three separate data pathways**. The instructor demonstrates o
 
 ## Interactive Companion App
 
-The Streamlit companion app follows the same presentation-first sequence as the seminar:
+The Streamlit companion app follows a **day-first, theory-led sequence**:
 
-1. **Curriculum and Rigorous Presentation:** The active day and module show definitions, formal notation, assumptions, and results before any analysis interaction.
-2. **Instructor Demonstration:** The instructor-selected public dataset for the active module is labelled clearly and is never reused among that module's BYOD choices.
-3. **Module BYOD:** Participants choose one of three separate locally bundled public datasets assigned to the active module, or upload their own CSV for that module's workflow.
-4. **Analysis Studio:** Guided interfaces support descriptive summaries, bootstrap intervals, two-group comparisons, contingency tables, simple linear regression, and a starter logistic-regression workflow.
-5. **Reproducibility:** The interface identifies data provenance, analytical settings, assumptions, and interpretation limits.
+1. **Select a day:** Participants choose **Day 1**, **Day 2**, or **Day 3**.
+2. **Day theory:** The chosen day opens with its general theoretical introduction and a ten-module map identifying the selected worked-out public dataset for each module.
+3. **Select a module:** Participants enter one of the ten modules belonging to the selected day.
+4. **Module theory:** Each module presents its definitions, notation, assumptions, and results before any analysis interaction.
+5. **Worked-out public dataset:** The instructor-selected dataset is processed in a no-code profile and analysis workbench. An optional selector makes every bundled public dataset processable through the same workbench.
+6. **BYOD upload:** Participants upload a CSV dataset within the selected module. The file remains in memory for the session and is processed through the same generic workbench.
 
-The interface is intentionally no-code. It never executes user-supplied code and reads uploaded CSV files in memory for the session.
+The interface is intentionally no-code. It never executes user-supplied code, and it keeps participant-uploaded CSV files in memory only.
 
 ### Bilingual analysis architecture
 
