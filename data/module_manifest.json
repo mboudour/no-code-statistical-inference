@@ -1,0 +1,158 @@
+{
+  "title": "No-Code Statistical Inference: Understanding Data, Uncertainty, and Evidence",
+  "dataset_source": {
+    "name": "Rdatasets public CSV archive",
+    "catalog_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "repository_url": "https://github.com/vincentarelbundock/Rdatasets",
+    "access": "Public files vendored locally for this app; no API key or runtime network connection is required."
+  },
+  "days": [
+    {
+      "id": "day_1",
+      "title": "Foundations of inference: data, variation, and uncertainty",
+      "introduction": "Day 1 establishes the probabilistic language of inference. Each module begins with a rigorous presentation of definitions and results, without proofs, before participants explore a worked public dataset and select a public dataset for their own module activity.",
+      "modules": [
+        {
+          "id": "d1m1",
+          "title": "Data-generating processes, populations, samples, and estimands",
+          "presentation_focus": "Define an observational unit, a random variable, a population distribution F, a sample, a parameter, an estimator, and the distinction between description, estimation, and prediction.",
+          "notation": "Let X_1, ..., X_n be observations from a distribution F with mean μ = E_F[X] and variance σ² = Var_F(X). The sample mean is X̄ = n⁻¹ Σᵢ Xᵢ.",
+          "results": ["E[X̄] = μ when the mean exists.", "Var(X̄) = σ²/n for independent observations with common variance σ².", "A statistic is a function of the observed sample; a parameter is a feature of the population distribution."],
+          "worked_example": {"file": "iris.csv", "name": "Iris", "activity": "Construct variable summaries, compare species-specific distributions, and identify the parameter-estimator distinction."},
+          "byod": [
+            {"file": "mtcars.csv", "name": "Motor Trend Car Road Tests"},
+            {"file": "airquality.csv", "name": "New York Air Quality"},
+            {"file": "us_arrests.csv", "name": "US Arrest Rates"},
+            {"file": "faithful.csv", "name": "Old Faithful Eruptions"}
+          ]
+        },
+        {
+          "id": "d1m2",
+          "title": "Sampling distributions, the central limit theorem, and confidence intervals",
+          "presentation_focus": "Define the sampling distribution of an estimator, standard error, normal approximation, confidence procedures, and coverage.",
+          "notation": "For iid observations with finite variance, √n(X̄ − μ)/σ converges in distribution to N(0,1). An approximate 1−α confidence interval is X̄ ± z_(1−α/2) SE(X̄).",
+          "results": ["The central limit theorem concerns the distribution of an estimator over repeated samples, not the shape of the observed data.", "A 95% confidence procedure has long-run coverage 0.95 under its stated assumptions.", "Increasing n reduces the standard error of the mean at rate 1/√n."],
+          "worked_example": {"file": "airquality.csv", "name": "New York Air Quality", "activity": "Estimate the mean temperature, construct an interval, and use repeated resampling to examine coverage intuition."},
+          "byod": [
+            {"file": "quakes.csv", "name": "Earthquake Locations and Magnitudes"},
+            {"file": "trees.csv", "name": "Black Cherry Trees"},
+            {"file": "women.csv", "name": "Average Heights and Weights for American Women"},
+            {"file": "cars.csv", "name": "Speed and Stopping Distances"}
+          ]
+        },
+        {
+          "id": "d1m3",
+          "title": "Bootstrap and Monte Carlo reasoning",
+          "presentation_focus": "Define the empirical distribution, resampling with replacement, Monte Carlo approximation, bootstrap standard errors, and percentile confidence intervals.",
+          "notation": "The empirical distribution F̂_n places mass 1/n on each observed value. A bootstrap replicate θ̂* is computed from a sample drawn with replacement from F̂_n.",
+          "results": ["Monte Carlo error declines at rate 1/√B as the number B of independent simulations increases.", "Bootstrap intervals approximate sampling uncertainty by using the empirical distribution as a stand-in for the unknown population distribution.", "Resampling does not repair a biased sampling design or resolve an ill-defined estimand."],
+          "worked_example": {"file": "motorcycle.csv", "name": "Motorcycle Accident Simulation Data", "activity": "Bootstrap the mean acceleration and compare resampled uncertainty with a normal-approximation interval."},
+          "byod": [
+            {"file": "tooth_growth.csv", "name": "Tooth Growth"},
+            {"file": "insect_sprays.csv", "name": "Insect Sprays"},
+            {"file": "birth_weight.csv", "name": "Birth Weight"},
+            {"file": "housing.csv", "name": "Boston Housing"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "day_2",
+      "title": "Statistical tests and regression as inferential models",
+      "introduction": "Day 2 moves from uncertainty quantification to formal comparisons and models. Presentations state the null and alternative hypotheses, test statistics, reference distributions, assumptions, and effect-size interpretations before the app is used.",
+      "modules": [
+        {
+          "id": "d2m1",
+          "title": "Two-group and multi-group comparisons",
+          "presentation_focus": "Introduce null and alternative hypotheses, t statistics, Welch's two-sample procedure, one-way ANOVA, post-hoc questions, standardized mean differences, and practical significance.",
+          "notation": "For two means, H₀: μ₁ − μ₂ = 0. Welch's statistic is T = (X̄₁ − X̄₂)/√(s₁²/n₁ + s₂²/n₂). Cohen's d standardizes a mean difference by a within-group standard deviation.",
+          "results": ["A p-value is P(T at least as incompatible with H₀ as the observed value | H₀ and model assumptions).", "Failure to reject H₀ is not proof that an effect is exactly zero.", "Effect estimates and confidence intervals are required for interpretable reporting."],
+          "worked_example": {"file": "tooth_growth.csv", "name": "Tooth Growth", "activity": "Compare tooth length by supplement type at a selected dose and report the estimate, interval, test result, and effect size."},
+          "byod": [
+            {"file": "plant_growth.csv", "name": "Plant Growth"},
+            {"file": "warpbreaks.csv", "name": "Warp Breaks"},
+            {"file": "insect_sprays.csv", "name": "Insect Sprays"},
+            {"file": "chick_weight.csv", "name": "Chick Weight"}
+          ]
+        },
+        {
+          "id": "d2m2",
+          "title": "Categorical data, association, and contingency tables",
+          "presentation_focus": "Define joint, marginal, and conditional distributions; expected counts; chi-square statistics; odds ratios; and the distinction between association and causation.",
+          "notation": "For a contingency table, Eᵢⱼ = (row totalᵢ × column totalⱼ)/N and X² = Σᵢⱼ (Oᵢⱼ − Eᵢⱼ)²/Eᵢⱼ.",
+          "results": ["The chi-square reference approximation requires independent observational units and adequately large expected cell counts.", "An association in observational data does not by itself identify a causal effect.", "Conditional probabilities and risk differences often communicate findings more directly than a test statistic alone."],
+          "worked_example": {"file": "arthritis.csv", "name": "Arthritis Treatment Data", "activity": "Examine treatment and improvement, compute a contingency table, and interpret association with explicit design cautions."},
+          "byod": [
+            {"file": "titanic.csv", "name": "Titanic Passenger Survival"},
+            {"file": "ucb_admissions.csv", "name": "UC Berkeley Admissions"},
+            {"file": "default.csv", "name": "Credit Card Default"},
+            {"file": "health_insurance.csv", "name": "Health Insurance"}
+          ]
+        },
+        {
+          "id": "d2m3",
+          "title": "Linear regression as the language of conditional inference",
+          "presentation_focus": "Introduce the conditional mean function, simple and multiple linear regression, least squares, residuals, coefficients, confidence intervals, fitted values, and model diagnostics.",
+          "notation": "In Y = β₀ + β₁X₁ + ... + β_pX_p + ε, ordinary least squares chooses β̂ to minimize Σᵢ (Yᵢ − xᵢᵀβ)².",
+          "results": ["A regression coefficient is conditional on the model specification and the included covariates.", "A confidence interval for a coefficient quantifies sampling uncertainty under the model and design assumptions.", "Residual patterns can reveal nonlinearity, heteroscedasticity, influential observations, or data-quality concerns."],
+          "worked_example": {"file": "auto.csv", "name": "Automobile Data", "activity": "Model miles per gallon as a function of vehicle characteristics and examine coefficient interpretation and residual diagnostics."},
+          "byod": [
+            {"file": "carseats.csv", "name": "Carseats"},
+            {"file": "college.csv", "name": "College"},
+            {"file": "credit.csv", "name": "Credit"},
+            {"file": "ca_schools.csv", "name": "California Schools"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "day_3",
+      "title": "Prediction, diagnostics, sensitivity, and reproducible research apps",
+      "introduction": "Day 3 connects statistical modelling to transparent analytical applications. Presentations distinguish explanatory and predictive goals, state diagnostic and validation principles, and make the app's provenance visible before participants conduct a BYOD workflow.",
+      "modules": [
+        {
+          "id": "d3m1",
+          "title": "Binary outcomes and logistic regression",
+          "presentation_focus": "Introduce binary response variables, probability models, odds, log-odds, logistic regression, odds ratios, classification thresholds, calibration, and discrimination.",
+          "notation": "For Y ∈ {0,1}, logit[P(Y=1|X=x)] = log[p(x)/(1−p(x))] = β₀ + xᵀβ. Exponentiating βⱼ gives a conditional odds ratio.",
+          "results": ["Predicted probabilities depend on the full covariate pattern and the fitted model.", "An odds ratio is not generally a risk ratio.", "A classification threshold encodes a decision rule and should be justified by its context and consequences."],
+          "worked_example": {"file": "default.csv", "name": "Credit Card Default", "activity": "Model default as a function of balance, income, and student status; compare predicted probabilities across meaningful cases."},
+          "byod": [
+            {"file": "pima_train.csv", "name": "Pima Indians Diabetes Training Data"},
+            {"file": "birth_weight.csv", "name": "Birth Weight"},
+            {"file": "health_insurance.csv", "name": "Health Insurance"},
+            {"file": "smoke_ban.csv", "name": "Smoke Ban"}
+          ]
+        },
+        {
+          "id": "d3m2",
+          "title": "Diagnostics, model comparison, and sensitivity analysis",
+          "presentation_focus": "Define residual diagnostics, leverage, influence, misspecification, out-of-sample error, alternative specifications, and sensitivity analysis.",
+          "notation": "For a fitted value ŷᵢ, the residual is eᵢ = yᵢ − ŷᵢ. Sensitivity analysis evaluates how an estimand or conclusion changes over a defensible set of analytical choices.",
+          "results": ["A model can fit one summary well while failing important diagnostics.", "In-sample fit and out-of-sample predictive performance answer different questions.", "Sensitivity analysis makes analytical dependence visible; it does not eliminate substantive uncertainty."],
+          "worked_example": {"file": "carseats.csv", "name": "Carseats", "activity": "Fit competing sales models, inspect residual patterns, and compare how a change in specification changes an estimated association."},
+          "byod": [
+            {"file": "auto.csv", "name": "Automobile Data"},
+            {"file": "college.csv", "name": "College"},
+            {"file": "credit.csv", "name": "Credit"},
+            {"file": "house_prices.csv", "name": "House Prices"}
+          ]
+        },
+        {
+          "id": "d3m3",
+          "title": "Reproducible analysis, resampling validation, and the BYOD workflow",
+          "presentation_focus": "Define computational reproducibility, a data-analysis contract, train-test evaluation, resampling validation, provenance, and transparent reporting.",
+          "notation": "For predictions ŷᵢ, mean squared prediction error is MSPE = m⁻¹Σᵢ₌₁ᵐ(yᵢ−ŷᵢ)² on held-out observations. A reproducible result is conditional on a documented dataset, transformation, model, software environment, and random seed.",
+          "results": ["A held-out test set estimates performance on future observations only when its relationship to the training data is appropriate to the target use case.", "Reproducibility requires recording data versions, preprocessing, settings, software, and random seeds where relevant.", "No-code interfaces should reveal assumptions and provenance rather than conceal them."],
+          "worked_example": {"file": "pima_train.csv", "name": "Pima Indians Diabetes Training Data", "activity": "Specify a transparent binary-outcome workflow, reserve the linked test data for evaluation, and produce a reproducibility record."},
+          "byod": [
+            {"file": "pima_test.csv", "name": "Pima Indians Diabetes Test Data"},
+            {"file": "doctor_visits.csv", "name": "Doctor Visits"},
+            {"file": "housing.csv", "name": "Boston Housing"},
+            {"file": "house_prices.csv", "name": "House Prices"}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -16,23 +16,28 @@ The project is designed around a simple principle: **participants should be able
 
 ## Seminar Structure
 
-| Day | Theme | Practical focus |
-|---|---|---|
-| 1 | Understanding statistical inference through interactive exploration | Data-generating processes, sampling, uncertainty, confidence intervals, bootstrap, and Monte Carlo demonstrations |
-| 2 | Classical and modern methods in a no-code environment | Hypothesis tests, regression, model diagnostics, effect sizes, sensitivity analysis, and interpretation |
-| 3 | Reproducible research apps and BYOD workshop | GitHub workflows, analysis provenance, interactive dashboards, AI-assisted development, and participants' own data |
+The seminar consists of **three days**, with **three modules per day**. Every day begins with an introduction. Every module begins with a mathematically rigorous presentation of concepts, notation, assumptions, and results—**without proofs**—before participants see a worked analysis or begin a BYOD activity.
+
+| Day | Modules | Core theme |
+|---|---:|---|
+| 1 | 3 | Data-generating processes, estimators, sampling distributions, confidence intervals, bootstrap, and Monte Carlo reasoning |
+| 2 | 3 | Group comparisons, categorical association, and regression as conditional inference |
+| 3 | 3 | Logistic regression, diagnostics and sensitivity, validation, provenance, and reproducible BYOD workflows |
+
+Every module has **one worked public dataset** and **four public datasets** for participant-led BYOD work. The curated files are stored in the repository, so the app uses no API keys or live data connection. See the [detailed seminar design](./docs/seminar_design.md) and [dataset library](./data/README.md).
 
 ---
 
 ## Interactive Companion App
 
-The Streamlit companion app will provide three connected experiences:
+The Streamlit companion app follows the same presentation-first sequence as the seminar:
 
-1. **Inference Explorer:** Interactive simulations that make sampling variation, confidence intervals, and resampling visible.
-2. **Analysis Studio:** Guided interfaces for descriptives, comparisons, regression, diagnostics, and interpretation.
-3. **BYOD Workshop:** A privacy-conscious upload workflow for applying seminar methods to a participant's own tabular data during the workshop.
+1. **Curriculum and Rigorous Presentation:** The active day and module show definitions, formal notation, assumptions, and results before any analysis interaction.
+2. **Dataset Explorer:** Participants inspect the module's worked dataset or choose one of its four locally bundled, public BYOD datasets.
+3. **Analysis Studio:** Guided interfaces support descriptive summaries, bootstrap intervals, two-group comparisons, contingency tables, simple linear regression, and a starter logistic-regression workflow.
+4. **Reproducibility:** The interface identifies data provenance, analytical settings, assumptions, and interpretation limits.
 
-The interface is intentionally no-code. Its **Reproducibility** panel will nevertheless expose the method, assumptions, data treatment, computational engine, and downloadable analysis artefacts where appropriate.
+The interface is intentionally no-code. It never executes user-supplied code and reads uploaded CSV files in memory for the session.
 
 ### Bilingual analysis architecture
 
@@ -54,11 +59,12 @@ R-backed procedures require a local R installation and the packages documented i
 
 | Folder | Contents |
 |---|---|
-| [`app/`](./app) | Streamlit companion app, Python modules, and R-engine boundary |
-| [`docs/`](./docs) | Public seminar site and method/reproducibility documentation |
+| [`app/`](./app) | Module-driven Streamlit companion app, Python analysis workflows, and R-engine boundary |
+| [`data/`](./data) | Machine-readable curriculum manifest and curated public no-key datasets |
+| [`docs/`](./docs) | Public seminar site, detailed day/module design, and reproducibility documentation |
 | [`paper/`](./paper) | Position paper and related scholarly materials |
 | [`scripts/`](./scripts) | Reusable instructor demonstrations and validation utilities |
-| [`slides/`](./slides) | Seminar slide decks organised by session |
+| [`slides/`](./slides) | Seminar slide decks organised by module |
 
 ---
 

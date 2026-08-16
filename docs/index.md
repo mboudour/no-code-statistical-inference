@@ -14,19 +14,15 @@ The seminar is grounded in a simple premise: statistical inference should be und
 
 ## Seminar Structure
 
-The seminar spans three days. Each day combines conceptual material with interactive demonstrations and applied exercises.
+The seminar spans **three days**, each composed of **three modules**. Every day begins with an introduction, and every module begins with a formal presentation of the relevant concepts, notation, assumptions, and statistical results. These presentations are mathematically rigorous but do not include proofs.
 
-### Day 1: Understanding Statistical Inference through Interactive Exploration
+| Day | Modules | Focus |
+|---|---:|---|
+| Day 1 | 3 | Data-generating processes, estimators, sampling distributions, confidence intervals, bootstrap, and Monte Carlo reasoning |
+| Day 2 | 3 | Group comparisons, categorical association, and linear regression as conditional inference |
+| Day 3 | 3 | Logistic regression, diagnostics and sensitivity, validation, provenance, and reproducible BYOD workflows |
 
-Participants examine data-generating processes, random variation, sampling distributions, confidence intervals, bootstrap intuition, and Monte Carlo demonstrations. The focus is on how uncertainty arises and how inferential summaries communicate it.
-
-### Day 2: Classical and Modern Methods in a No-Code Environment
-
-Participants use guided interfaces for t-tests, chi-square tests, ANOVA, nonparametric methods, linear regression, logistic regression, diagnostics, effect sizes, and sensitivity analysis. The focus is on method selection, assumptions, and interpretation rather than formula memorisation.
-
-### Day 3: Reproducible Research Apps and BYOD Workshop
-
-Participants explore repository structure, app provenance, transparent analysis reporting, and AI-assisted extension of analytical tools. In the BYOD workshop, participants apply the seminar workflow to their own data under guided supervision.
+Each module uses one public dataset as a worked example and provides four public datasets for participant-led BYOD activity. The data are vendored locally with the project, so no API key or runtime network connection is required. See the full [day-and-module design](./seminar_design.md) and [dataset documentation](../data/README.md).
 
 ## Interactive Companion App
 
@@ -34,11 +30,12 @@ This project includes a Streamlit companion application that supports interactiv
 
 **[Launch the Interactive App](https://no-code-statistical-inference.streamlit.app)** *(Deployment link will be activated when the app is published.)*
 
-The application is organised around three modes:
+The app provides a presentation-first workflow for each module:
 
-1. **Inference Explorer:** Visual demonstrations of sampling variation, confidence intervals, bootstrap procedures, and simulation-based reasoning.
-2. **Analysis Studio:** Guided forms for common statistical procedures, with data validation, assumption prompts, tables, graphics, and interpretation notes.
-3. **Bring Your Own Data:** A session-based upload environment for analysing a participant's own tabular data. The final deployment will document data-retention and privacy behaviour explicitly.
+1. **Curriculum and Rigorous Presentation:** Formal concepts, notation, assumptions, and results are displayed before analysis interaction.
+2. **Dataset Explorer:** Participants inspect the module worked example or select one of its public BYOD datasets.
+3. **Analysis Studio:** No-code workflows support descriptive summaries, bootstrap intervals, two-group comparisons, contingency tables, simple linear regression, and a starter logistic-regression workflow.
+4. **Reproducibility:** Dataset provenance, analytical choices, and interpretation limits are made explicit.
 
 ### R and Python support
 
@@ -51,10 +48,11 @@ The repository will include the following seminar resources as they are prepared
 | Resource | Location |
 |---|---|
 | Companion application | [`app/`](../app) |
-| Method notes and reproducibility guidance | [`docs/`](.) |
+| Module curriculum and statistical presentations | [`seminar_design.md`](./seminar_design.md) |
+| Curated public no-key datasets | [`data/`](../data) |
 | Position paper | [`paper/`](../paper) |
 | Instructor scripts and examples | [`scripts/`](../scripts) |
-| Session slides | [`slides/`](../slides) |
+| Module slide decks | [`slides/`](../slides) |
 
 ---
 
