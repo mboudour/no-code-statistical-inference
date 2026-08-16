@@ -1,0 +1,27 @@
+name: Test seminar companion
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install application and test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r app/requirements.txt -r requirements-dev.txt
+      - name: Validate curriculum, datasets, and visualizations
+        run: |
+          python scripts/validate_curriculum_data.py
+          python scripts/validate_app_data_processing.py
+          python scripts/validate_visualizations.py
+      - name: Run inference core and Streamlit app tests
+        run: pytest tests/

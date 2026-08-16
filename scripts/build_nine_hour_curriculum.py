@@ -49,6 +49,54 @@ def dataset(filename: str) -> dict[str, str]:
     return {"file": filename, "name": DATASETS[filename]}
 
 
+def module_contract(module_id: str, title: str) -> dict[str, str]:
+    """Return the common pedagogical contract that accompanies every module."""
+    if module_id.startswith("d1"):
+        question = "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?"
+        variables = "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary."
+        assumptions = "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim."
+        diagnostics = "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices."
+    elif module_id in {"d2m07", "d2m08", "d2m09"}:
+        question = "Are two categorical variables associated in the observed population or sample, under the stated design?"
+        variables = "Select two categorical variables with mutually exclusive, documented categories."
+        assumptions = "State whether rows are independent and whether table categories and expected counts support the proposed reference distribution."
+        diagnostics = "Inspect cell counts, expected counts, conditional proportions, and sparse-category warnings."
+    elif module_id == "d2m04":
+        question = "What is the average within-unit difference between two valid paired measurements?"
+        variables = "Select two numeric variables that form scientifically valid pairs on the same unit."
+        assumptions = "Verify pair identity, independence between pairs, and the distribution of within-pair differences."
+        diagnostics = "Inspect the paired-difference distribution, missing pairs, and outlying differences."
+    elif module_id in {"d2m03", "d2m05", "d2m06", "d2m10"}:
+        question = "How do numeric outcomes compare across the selected groups under the stated study design?"
+        variables = "Select one numeric outcome and a documented categorical grouping variable."
+        assumptions = "State group formation, independence, outcome scale, variance structure, and any planned comparison strategy."
+        diagnostics = "Inspect group sizes, grouped distributions, outliers, and variance evidence before interpreting a test."
+    elif module_id.startswith("d2"):
+        question = "What estimand, reference model, and practical interpretation are appropriate for this comparison?"
+        variables = "Identify the outcome, grouping/predictor variable, and the unit of analysis."
+        assumptions = "State the design, null/reference model, and whether inference targets a mean, proportion, association, or effect size."
+        diagnostics = "Use graphical summaries and sensitivity checks before treating a test statistic as decisive."
+    elif module_id in {"d3m05", "d3m06", "d3m07"}:
+        question = "How is a binary outcome conditionally associated with the selected predictors under a logistic model?"
+        variables = "Select a binary outcome and documented predictors; define the outcome reference category."
+        assumptions = "State independence, adequate outcome representation, predictor coding, and the conditional-model interpretation."
+        diagnostics = "Inspect outcome balance, fitted probabilities, classification consequences, and calibration/discrimination evidence."
+    else:
+        question = "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?"
+        variables = "Select a numeric outcome, predictor(s), and the intended unit of analysis."
+        assumptions = "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise."
+        diagnostics = "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence."
+    return {
+        "learning_objective": f"Apply the logic of {title.lower()} to a documented research question, dataset audit, and interpretation.",
+        "research_question_prompt": question,
+        "required_variable_types": variables,
+        "assumption_focus": assumptions,
+        "diagnostic_focus": diagnostics,
+        "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+        "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations.",
+    }
+
+
 def module(
     module_id: str,
     title: str,
@@ -71,7 +119,8 @@ def module(
         "results": results,
         "demonstration": {**dataset(demonstration), "activity": activity},
         "byod": [dataset(filename) for filename in byod_files],
-        "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions.",
+        "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+        **module_contract(module_id, title),
     }
 
 

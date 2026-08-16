@@ -59,7 +59,14 @@
               "name": "New York Air Quality"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of observational units, variables, populations, and samples to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d1m02",
@@ -93,7 +100,14 @@
               "name": "Doctor Visits"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of measurement scales, coding, and data quality to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d1m03",
@@ -127,7 +141,14 @@
               "name": "Iris"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of distributional summaries: centre, spread, and shape to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d1m04",
@@ -161,7 +182,14 @@
               "name": "Motorcycle Accident Simulation Data"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of visual evidence and exploratory data analysis to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d1m05",
@@ -195,7 +223,14 @@
               "name": "New York Air Quality"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of random variation and repeated sampling to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d1m06",
@@ -229,7 +264,14 @@
               "name": "House Prices"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of sampling distributions and the central limit theorem to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d1m07",
@@ -263,7 +305,14 @@
               "name": "Motorcycle Accident Simulation Data"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of standard errors and confidence intervals to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d1m08",
@@ -297,7 +346,14 @@
               "name": "Plant Growth"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of bootstrap confidence intervals to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d1m09",
@@ -331,7 +387,14 @@
               "name": "Credit"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of monte carlo simulation and numerical uncertainty to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d1m10",
@@ -365,7 +428,14 @@
               "name": "Doctor Visits"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of assumptions, outliers, and analytical readiness to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What are the observational units, variables, target population, and uncertainty-relevant features of this dataset?",
+          "required_variable_types": "Identify numeric, categorical, binary, and potential grouping variables before computing an inferential summary.",
+          "assumption_focus": "Document the sampling process, unit of observation, missingness, and whether the data can support a target-population claim.",
+          "diagnostic_focus": "Inspect missingness, duplicates, distributions, outliers, and measurement/coding choices.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         }
       ]
     },
@@ -409,7 +479,14 @@
               "name": "Chick Weight"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of estimands, hypotheses, and null reference distributions to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What estimand, reference model, and practical interpretation are appropriate for this comparison?",
+          "required_variable_types": "Identify the outcome, grouping/predictor variable, and the unit of analysis.",
+          "assumption_focus": "State the design, null/reference model, and whether inference targets a mean, proportion, association, or effect size.",
+          "diagnostic_focus": "Use graphical summaries and sensitivity checks before treating a test statistic as decisive.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d2m02",
@@ -443,7 +520,14 @@
               "name": "Warp Breaks"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of effect sizes and practical significance to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What estimand, reference model, and practical interpretation are appropriate for this comparison?",
+          "required_variable_types": "Identify the outcome, grouping/predictor variable, and the unit of analysis.",
+          "assumption_focus": "State the design, null/reference model, and whether inference targets a mean, proportion, association, or effect size.",
+          "diagnostic_focus": "Use graphical summaries and sensitivity checks before treating a test statistic as decisive.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d2m03",
@@ -477,7 +561,14 @@
               "name": "Chick Weight"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of independent two-group comparisons to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How do numeric outcomes compare across the selected groups under the stated study design?",
+          "required_variable_types": "Select one numeric outcome and a documented categorical grouping variable.",
+          "assumption_focus": "State group formation, independence, outcome scale, variance structure, and any planned comparison strategy.",
+          "diagnostic_focus": "Inspect group sizes, grouped distributions, outliers, and variance evidence before interpreting a test.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d2m04",
@@ -511,7 +602,14 @@
               "name": "Pima Indians Diabetes Training Data"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of paired and repeated-measures comparisons to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "What is the average within-unit difference between two valid paired measurements?",
+          "required_variable_types": "Select two numeric variables that form scientifically valid pairs on the same unit.",
+          "assumption_focus": "Verify pair identity, independence between pairs, and the distribution of within-pair differences.",
+          "diagnostic_focus": "Inspect the paired-difference distribution, missing pairs, and outlying differences.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d2m05",
@@ -545,7 +643,14 @@
               "name": "Chick Weight"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of analysis of variance and multi-group questions to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How do numeric outcomes compare across the selected groups under the stated study design?",
+          "required_variable_types": "Select one numeric outcome and a documented categorical grouping variable.",
+          "assumption_focus": "State group formation, independence, outcome scale, variance structure, and any planned comparison strategy.",
+          "diagnostic_focus": "Inspect group sizes, grouped distributions, outliers, and variance evidence before interpreting a test.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d2m06",
@@ -579,7 +684,14 @@
               "name": "Plant Growth"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of nonparametric and permutation approaches to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How do numeric outcomes compare across the selected groups under the stated study design?",
+          "required_variable_types": "Select one numeric outcome and a documented categorical grouping variable.",
+          "assumption_focus": "State group formation, independence, outcome scale, variance structure, and any planned comparison strategy.",
+          "diagnostic_focus": "Inspect group sizes, grouped distributions, outliers, and variance evidence before interpreting a test.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d2m07",
@@ -613,7 +725,14 @@
               "name": "Smoke Ban"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of categorical variables and conditional probabilities to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "Are two categorical variables associated in the observed population or sample, under the stated design?",
+          "required_variable_types": "Select two categorical variables with mutually exclusive, documented categories.",
+          "assumption_focus": "State whether rows are independent and whether table categories and expected counts support the proposed reference distribution.",
+          "diagnostic_focus": "Inspect cell counts, expected counts, conditional proportions, and sparse-category warnings.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d2m08",
@@ -647,7 +766,14 @@
               "name": "Credit Card Default"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of contingency tables and chi-square inference to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "Are two categorical variables associated in the observed population or sample, under the stated design?",
+          "required_variable_types": "Select two categorical variables with mutually exclusive, documented categories.",
+          "assumption_focus": "State whether rows are independent and whether table categories and expected counts support the proposed reference distribution.",
+          "diagnostic_focus": "Inspect cell counts, expected counts, conditional proportions, and sparse-category warnings.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d2m09",
@@ -681,7 +807,14 @@
               "name": "Health Insurance"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of stratification, confounding, and simpson-type reversals to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "Are two categorical variables associated in the observed population or sample, under the stated design?",
+          "required_variable_types": "Select two categorical variables with mutually exclusive, documented categories.",
+          "assumption_focus": "State whether rows are independent and whether table categories and expected counts support the proposed reference distribution.",
+          "diagnostic_focus": "Inspect cell counts, expected counts, conditional proportions, and sparse-category warnings.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d2m10",
@@ -715,7 +848,14 @@
               "name": "Health Insurance"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of randomization tests and sensitivity to design choices to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How do numeric outcomes compare across the selected groups under the stated study design?",
+          "required_variable_types": "Select one numeric outcome and a documented categorical grouping variable.",
+          "assumption_focus": "State group formation, independence, outcome scale, variance structure, and any planned comparison strategy.",
+          "diagnostic_focus": "Inspect group sizes, grouped distributions, outliers, and variance evidence before interpreting a test.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         }
       ]
     },
@@ -759,7 +899,14 @@
               "name": "College"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of simple linear regression and conditional means to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
+          "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
+          "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
+          "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d3m02",
@@ -793,7 +940,14 @@
               "name": "House Prices"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of multiple regression and adjustment to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
+          "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
+          "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
+          "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d3m03",
@@ -827,7 +981,14 @@
               "name": "College"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of regression uncertainty and coefficient intervals to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
+          "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
+          "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
+          "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d3m04",
@@ -861,7 +1022,14 @@
               "name": "Boston Housing"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of nonlinearity, transformations, and model specification to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
+          "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
+          "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
+          "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d3m05",
@@ -895,7 +1063,14 @@
               "name": "Health Insurance"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of logistic regression, odds, and predicted probabilities to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a binary outcome conditionally associated with the selected predictors under a logistic model?",
+          "required_variable_types": "Select a binary outcome and documented predictors; define the outcome reference category.",
+          "assumption_focus": "State independence, adequate outcome representation, predictor coding, and the conditional-model interpretation.",
+          "diagnostic_focus": "Inspect outcome balance, fitted probabilities, classification consequences, and calibration/discrimination evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d3m06",
@@ -929,7 +1104,14 @@
               "name": "Health Insurance"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of binary-outcome prediction and classification thresholds to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a binary outcome conditionally associated with the selected predictors under a logistic model?",
+          "required_variable_types": "Select a binary outcome and documented predictors; define the outcome reference category.",
+          "assumption_focus": "State independence, adequate outcome representation, predictor coding, and the conditional-model interpretation.",
+          "diagnostic_focus": "Inspect outcome balance, fitted probabilities, classification consequences, and calibration/discrimination evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d3m07",
@@ -963,7 +1145,14 @@
               "name": "Smoke Ban"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of calibration, discrimination, and probability communication to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a binary outcome conditionally associated with the selected predictors under a logistic model?",
+          "required_variable_types": "Select a binary outcome and documented predictors; define the outcome reference category.",
+          "assumption_focus": "State independence, adequate outcome representation, predictor coding, and the conditional-model interpretation.",
+          "diagnostic_focus": "Inspect outcome balance, fitted probabilities, classification consequences, and calibration/discrimination evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d3m08",
@@ -997,7 +1186,14 @@
               "name": "Carseats"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of diagnostics, influence, and sensitivity analysis to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
+          "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
+          "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
+          "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d3m09",
@@ -1031,7 +1227,14 @@
               "name": "Health Insurance"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of training, testing, and out-of-sample validation to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
+          "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
+          "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
+          "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         },
         {
           "id": "d3m10",
@@ -1065,7 +1268,14 @@
               "name": "California Schools"
             }
           ],
-          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the same module workflow; results must be interpreted in relation to the research design and variable definitions."
+          "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
+          "learning_objective": "Apply the logic of reproducible no-code workflows and transparent reporting to a documented research question, dataset audit, and interpretation.",
+          "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
+          "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
+          "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
+          "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
+          "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
+          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
         }
       ]
     }

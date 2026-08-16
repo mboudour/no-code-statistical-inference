@@ -30,14 +30,14 @@ This project includes a Streamlit companion application that supports interactiv
 
 **[Launch the Interactive App](https://no-code-statistical-inference.streamlit.app)** *(Deployment link will be activated when the app is published.)*
 
-The app provides a **day-first, theory-led workflow**:
+The app provides a **day-first, theory-led workflow** and three shared safeguards around the curriculum:
 
-1. **Select a day:** Participants choose Day 1, Day 2, or Day 3.
-2. **Day theory:** The selected day opens with its theoretical introduction and a map of all ten modules and their instructor-selected public datasets.
-3. **Select a module:** Participants enter one of the ten modules belonging to that day.
-4. **Module theory:** Formal concepts, notation, assumptions, and results are displayed before analysis interaction.
-5. **Worked-out public dataset:** The selected public dataset is processed in a generic no-code workbench; every other bundled public dataset can also be processed there.
-6. **BYOD upload:** Participants upload a CSV inside the selected module and process it through the same generic workbench. Uploads are held in memory only for the session.
+1. **Three direct day pages:** Participants open Day 1, Day 2, or Day 3 from the sidebar. Each page begins with theory and then provides ten module panels.
+2. **Question and module contract:** Every module presents its research-question prompt, variable requirements, assumption focus, diagnostics, interpretation template, and pre-analysis audit prompt before an analysis interaction.
+3. **Guided Inference:** A question-first page records outcome structure, comparison/predictor structure, dependence/design, and inferential aim before recommending compatible seminar modules and warning about incompatible choices.
+4. **Dataset Laboratory:** Every bundled public CSV and participant upload receives a dataset-audit card, including inferred types, missingness, duplicates, constant variables, source/use guidance, known limitations, and suitable modules.
+5. **Guarded analysis:** Supported analysis families use a standard result sequence: question; data and design; method; assumptions; diagnostics; estimate; uncertainty; effect size; test evidence where relevant; interpretation; limitations; and next step.
+6. **Reproducibility and audit:** Participants can download a Markdown record of the selections and result, then use a dedicated Audit mode and day-synthesis page to critique the scope of an inferential claim. CSV and Excel uploads remain in memory only for the session, and the laboratory supports manual entry of small practice tables.
 
 ### R and Python support
 
@@ -51,7 +51,8 @@ The repository will include the following seminar resources as they are prepared
 |---|---|
 | Companion application | [`app/`](../app) |
 | Module curriculum and statistical presentations | [`seminar_design.md`](./seminar_design.md) |
-| Curated public no-key datasets | [`data/`](../data) |
+| Curated public no-key datasets and metadata cards | [`data/`](../data) |
+| Guided workflow and result contract | [`inference_workflow.md`](./inference_workflow.md) |
 | Position paper | [`paper/`](../paper) |
 | Instructor scripts and examples | [`scripts/`](../scripts) |
 | Module slide decks | [`slides/`](../slides) |

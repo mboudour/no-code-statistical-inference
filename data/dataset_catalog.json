@@ -1,0 +1,2213 @@
+{
+  "airquality.csv": {
+    "name": "New York Air Quality",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 153,
+    "columns": 6,
+    "variables": [
+      {
+        "name": "Ozone",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 37,
+        "distinct_values": 67,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Solar.R",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 7,
+        "distinct_values": 117,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Wind",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 31,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Temp",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 40,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Month",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 5,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Day",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 31,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M01",
+      "D1M02",
+      "D1M05",
+      "D1M10"
+    ]
+  },
+  "arthritis.csv": {
+    "name": "Arthritis Treatment Data",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 84,
+    "columns": 5,
+    "variables": [
+      {
+        "name": "ID",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 84,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Treatment",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Sex",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 36,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Improved",
+        "inferred_type": "binary categorical",
+        "missing_values": 42,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D2M07",
+      "D2M08",
+      "D2M09",
+      "D2M10",
+      "D3M07"
+    ]
+  },
+  "auto.csv": {
+    "name": "Automobile Data",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 392,
+    "columns": 9,
+    "variables": [
+      {
+        "name": "mpg",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 127,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "cylinders",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 5,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "displacement",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 81,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "horsepower",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 93,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "weight",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 346,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "acceleration",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 95,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "year",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 13,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "origin",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "name",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 301,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M06",
+      "D1M09",
+      "D3M01",
+      "D3M02",
+      "D3M03",
+      "D3M04",
+      "D3M08"
+    ]
+  },
+  "birth_weight.csv": {
+    "name": "Birth Weight",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 189,
+    "columns": 10,
+    "variables": [
+      {
+        "name": "low",
+        "inferred_type": "binary numeric",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 24,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "lwt",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 75,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "race",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "smoke",
+        "inferred_type": "binary numeric",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "ptl",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 4,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "ht",
+        "inferred_type": "binary numeric",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "ui",
+        "inferred_type": "binary numeric",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "ftv",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 6,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "bwt",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 131,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M08",
+      "D2M01",
+      "D2M02",
+      "D2M03",
+      "D3M05",
+      "D3M06"
+    ]
+  },
+  "ca_schools.csv": {
+    "name": "California Schools",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 420,
+    "columns": 14,
+    "variables": [
+      {
+        "name": "district",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 420,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "school",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 409,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "county",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 45,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "grades",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "students",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 391,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "teachers",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 374,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "calworks",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 411,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "lunch",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 407,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "computer",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 270,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "expenditure",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 420,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "income",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 337,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "english",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 372,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "read",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 322,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "math",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 324,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D3M08",
+      "D3M10"
+    ]
+  },
+  "cars.csv": {
+    "name": "Speed and Stopping Distances",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 50,
+    "columns": 2,
+    "variables": [
+      {
+        "name": "speed",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 19,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "dist",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 35,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M03",
+      "D1M05",
+      "D1M07"
+    ]
+  },
+  "carseats.csv": {
+    "name": "Carseats",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 400,
+    "columns": 11,
+    "variables": [
+      {
+        "name": "Sales",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 336,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "CompPrice",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 73,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Income",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 98,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Advertising",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 28,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Population",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 275,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Price",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 101,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "ShelveLoc",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 56,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Education",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 9,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Urban",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "US",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M09",
+      "D3M01",
+      "D3M02",
+      "D3M03",
+      "D3M04",
+      "D3M08"
+    ]
+  },
+  "chick_weight.csv": {
+    "name": "Chick Weight",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 578,
+    "columns": 4,
+    "variables": [
+      {
+        "name": "weight",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 212,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Time",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 12,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Chick",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 50,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Diet",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 4,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D2M01",
+      "D2M03",
+      "D2M04",
+      "D2M05"
+    ]
+  },
+  "college.csv": {
+    "name": "College",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 777,
+    "columns": 18,
+    "variables": [
+      {
+        "name": "Private",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Apps",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 711,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Accept",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 693,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Enroll",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 581,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Top10perc",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 82,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Top25perc",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 89,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "F.Undergrad",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 714,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "P.Undergrad",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 566,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Outstate",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 640,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Room.Board",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 553,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Books",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 122,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Personal",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 294,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "PhD",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 78,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Terminal",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 65,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "S.F.Ratio",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 173,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "perc.alumni",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 61,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Expend",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 744,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Grad.Rate",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 81,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M02",
+      "D1M10",
+      "D3M01",
+      "D3M03",
+      "D3M08"
+    ]
+  },
+  "cpus.csv": {
+    "name": "Cpus",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 209,
+    "columns": 9,
+    "variables": [
+      {
+        "name": "name",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 209,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "syct",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 60,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "mmin",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 25,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "mmax",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 23,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "cach",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 22,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "chmin",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 15,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "chmax",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 31,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "perf",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 116,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "estperf",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 104,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": []
+  },
+  "credit.csv": {
+    "name": "Credit",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 400,
+    "columns": 12,
+    "variables": [
+      {
+        "name": "ID",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 400,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Income",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 399,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Limit",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 387,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Rating",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 283,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Cards",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 9,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 68,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Education",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 16,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Gender",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Student",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Married",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Ethnicity",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Balance",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 284,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M09",
+      "D3M01",
+      "D3M02",
+      "D3M03"
+    ]
+  },
+  "default.csv": {
+    "name": "Credit Card Default",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 10000,
+    "columns": 4,
+    "variables": [
+      {
+        "name": "default",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "student",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "balance",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 9502,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "income",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 10000,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D2M07",
+      "D2M08",
+      "D2M10",
+      "D3M05",
+      "D3M06",
+      "D3M07",
+      "D3M09"
+    ]
+  },
+  "doctor_visits.csv": {
+    "name": "Doctor Visits",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 5190,
+    "columns": 12,
+    "variables": [
+      {
+        "name": "visits",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 10,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "gender",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 12,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "income",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 14,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "illness",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 6,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "reduced",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 15,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "health",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 13,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "private",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "freepoor",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "freerepat",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "nchronic",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "lchronic",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M02",
+      "D1M10",
+      "D3M10"
+    ]
+  },
+  "faithful.csv": {
+    "name": "Old Faithful Eruptions",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 272,
+    "columns": 2,
+    "variables": [
+      {
+        "name": "eruptions",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 126,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "waiting",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 51,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M04",
+      "D1M05"
+    ]
+  },
+  "health_insurance.csv": {
+    "name": "Health Insurance",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 8802,
+    "columns": 11,
+    "variables": [
+      {
+        "name": "health",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 45,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "limit",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "gender",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "insurance",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "married",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "selfemp",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "family",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 13,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "region",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 4,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "ethnicity",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "education",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 7,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M02",
+      "D2M07",
+      "D2M09",
+      "D2M10",
+      "D3M05",
+      "D3M06",
+      "D3M07",
+      "D3M09"
+    ]
+  },
+  "house_prices.csv": {
+    "name": "House Prices",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 546,
+    "columns": 12,
+    "variables": [
+      {
+        "name": "price",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 219,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "lotsize",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 284,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "bedrooms",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 6,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "bathrooms",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 4,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "stories",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 4,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "driveway",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "recreation",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "fullbase",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "gasheat",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "aircon",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "garage",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 4,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "prefer",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M06",
+      "D1M10",
+      "D3M02",
+      "D3M04",
+      "D3M10"
+    ]
+  },
+  "housing.csv": {
+    "name": "Boston Housing",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 72,
+    "columns": 5,
+    "variables": [
+      {
+        "name": "Sat",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Infl",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Type",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 4,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Cont",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Freq",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 39,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D3M04",
+      "D3M10"
+    ]
+  },
+  "insect_sprays.csv": {
+    "name": "Insect Sprays",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 72,
+    "columns": 2,
+    "variables": [
+      {
+        "name": "count",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 24,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "spray",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 6,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D2M05",
+      "D2M06"
+    ]
+  },
+  "iris.csv": {
+    "name": "Iris",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 150,
+    "columns": 5,
+    "variables": [
+      {
+        "name": "Sepal.Length",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 35,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Sepal.Width",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 23,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Petal.Length",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 43,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Petal.Width",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 22,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Species",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M01",
+      "D1M03",
+      "D1M05"
+    ]
+  },
+  "motorcycle.csv": {
+    "name": "Motorcycle Accident Simulation Data",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 133,
+    "columns": 2,
+    "variables": [
+      {
+        "name": "times",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 94,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "accel",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 69,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M04",
+      "D1M07",
+      "D1M08"
+    ]
+  },
+  "mtcars.csv": {
+    "name": "Motor Trend Car Road Tests",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 32,
+    "columns": 11,
+    "variables": [
+      {
+        "name": "mpg",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 25,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "cyl",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "disp",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 27,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "hp",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 22,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "drat",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 22,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "wt",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 29,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "qsec",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 30,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "vs",
+        "inferred_type": "binary numeric",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "am",
+        "inferred_type": "binary numeric",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "gear",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "carb",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 6,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M01",
+      "D1M03",
+      "D1M09"
+    ]
+  },
+  "pima_test.csv": {
+    "name": "Pima Indians Diabetes Test Data",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 332,
+    "columns": 8,
+    "variables": [
+      {
+        "name": "npreg",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 16,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "glu",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 107,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "bp",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 36,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "skin",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 47,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "bmi",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 183,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "ped",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 289,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 42,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "type",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D3M09"
+    ]
+  },
+  "pima_train.csv": {
+    "name": "Pima Indians Diabetes Training Data",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 200,
+    "columns": 8,
+    "variables": [
+      {
+        "name": "npreg",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 15,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "glu",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 98,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "bp",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 34,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "skin",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 45,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "bmi",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 120,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "ped",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 178,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 39,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "type",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D2M04",
+      "D3M05",
+      "D3M06",
+      "D3M09"
+    ]
+  },
+  "plant_growth.csv": {
+    "name": "Plant Growth",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 30,
+    "columns": 2,
+    "variables": [
+      {
+        "name": "weight",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 29,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "group",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M08",
+      "D2M01",
+      "D2M02",
+      "D2M03",
+      "D2M04",
+      "D2M05",
+      "D2M06"
+    ]
+  },
+  "quakes.csv": {
+    "name": "Earthquake Locations and Magnitudes",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 1000,
+    "columns": 5,
+    "variables": [
+      {
+        "name": "lat",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 721,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "long",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 605,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "depth",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 422,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "mag",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 22,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "stations",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 102,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M04"
+    ]
+  },
+  "smoke_ban.csv": {
+    "name": "Smoke Ban",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 10000,
+    "columns": 7,
+    "variables": [
+      {
+        "name": "smoker",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "ban",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 65,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "education",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 5,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "afam",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "hispanic",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "gender",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D2M07",
+      "D2M10",
+      "D3M07"
+    ]
+  },
+  "titanic.csv": {
+    "name": "Titanic Passenger Survival",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 32,
+    "columns": 5,
+    "variables": [
+      {
+        "name": "Class",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 4,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Sex",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Age",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Survived",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Freq",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 22,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D2M08",
+      "D2M09"
+    ]
+  },
+  "tooth_growth.csv": {
+    "name": "Tooth Growth",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 60,
+    "columns": 3,
+    "variables": [
+      {
+        "name": "len",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 43,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "supp",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "dose",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M08",
+      "D2M01",
+      "D2M02",
+      "D2M03",
+      "D2M04",
+      "D2M06"
+    ]
+  },
+  "trees.csv": {
+    "name": "Black Cherry Trees",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 31,
+    "columns": 3,
+    "variables": [
+      {
+        "name": "Girth",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 27,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Height",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 21,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Volume",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 30,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M04",
+      "D1M06",
+      "D1M07"
+    ]
+  },
+  "ucb_admissions.csv": {
+    "name": "UC Berkeley Admissions",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 24,
+    "columns": 4,
+    "variables": [
+      {
+        "name": "Admit",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Gender",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Dept",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 6,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Freq",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 23,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D2M08",
+      "D2M09"
+    ]
+  },
+  "us_arrests.csv": {
+    "name": "US Arrest Rates",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 50,
+    "columns": 4,
+    "variables": [
+      {
+        "name": "Murder",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 43,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Assault",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 45,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "UrbanPop",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 36,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "Rape",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 48,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M01"
+    ]
+  },
+  "wage.csv": {
+    "name": "Wage",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 3000,
+    "columns": 11,
+    "variables": [
+      {
+        "name": "year",
+        "inferred_type": "discrete numeric",
+        "missing_values": 0,
+        "distinct_values": 7,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "age",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 61,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "maritl",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 5,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "race",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 4,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "education",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 5,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "region",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 1,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "jobclass",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "health",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "health_ins",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "logwage",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 508,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "wage",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 508,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": []
+  },
+  "warpbreaks.csv": {
+    "name": "Warp Breaks",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 54,
+    "columns": 3,
+    "variables": [
+      {
+        "name": "breaks",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 31,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "wool",
+        "inferred_type": "binary categorical",
+        "missing_values": 0,
+        "distinct_values": 2,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "tension",
+        "inferred_type": "categorical",
+        "missing_values": 0,
+        "distinct_values": 3,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D2M02",
+      "D2M05",
+      "D2M06"
+    ]
+  },
+  "women.csv": {
+    "name": "Average Heights and Weights for American Women",
+    "source": "Rdatasets public archive; consult upstream package documentation for original collection and attribution.",
+    "source_url": "https://vincentarelbundock.github.io/Rdatasets/datasets.html",
+    "license": "Consult the upstream original dataset/package documentation before use outside classroom demonstration.",
+    "unit_of_observation": "Not fully specified in the local CSV; participants must identify the unit from the upstream documentation before inference.",
+    "known_limitations": "Teaching dataset. The CSV alone does not establish sampling frame, measurement process, target population, or causal design.",
+    "rows": 15,
+    "columns": 2,
+    "variables": [
+      {
+        "name": "height",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 15,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      },
+      {
+        "name": "weight",
+        "inferred_type": "continuous / numeric",
+        "missing_values": 0,
+        "distinct_values": 15,
+        "description": "Local CSV column; confirm substantive meaning in the upstream dataset documentation."
+      }
+    ],
+    "suitable_modules": [
+      "D1M03",
+      "D1M06",
+      "D1M07"
+    ]
+  }
+}

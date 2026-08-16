@@ -20,9 +20,15 @@ MANIFEST_PATH = PROJECT_DIR / "data" / "module_manifest.json"
 
 
 @st.cache_data
-def load_manifest() -> dict:
+def _load_manifest(version: int) -> dict:
+    """Load a manifest version; the file timestamp invalidates stale Streamlit sessions."""
     with MANIFEST_PATH.open(encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def load_manifest() -> dict:
+    """Return the current generated manifest, invalidating cache when the file is rebuilt."""
+    return _load_manifest(MANIFEST_PATH.stat().st_mtime_ns)
 
 
 @st.cache_data
@@ -31,12 +37,18 @@ def load_public_data(filename: str) -> pd.DataFrame:
 
 
 def read_upload(uploaded_file) -> pd.DataFrame | None:
+    """Read an in-memory participant CSV or Excel workbook without persisting it."""
     if uploaded_file is None:
         return None
     try:
-        return pd.read_csv(uploaded_file).drop(columns="rownames", errors="ignore")
-    except (UnicodeDecodeError, pd.errors.ParserError) as error:
-        st.error(f"This file could not be read as a CSV: {error}")
+        filename = getattr(uploaded_file, "name", "").lower()
+        if filename.endswith((".xlsx", ".xls")):
+            data = pd.read_excel(uploaded_file)
+        else:
+            data = pd.read_csv(uploaded_file)
+        return data.drop(columns="rownames", errors="ignore")
+    except (UnicodeDecodeError, pd.errors.ParserError, ValueError, ImportError) as error:
+        st.error(f"This file could not be read as a CSV or Excel workbook: {error}")
         return None
 
 
@@ -102,9 +114,9 @@ def render_profile(data: pd.DataFrame, key: str) -> None:
                     labels={variable: variable, "count": "Count"}, template="plotly_white"
                 )
                 hist.update_layout(showlegend=False)
-                st.plotly_chart(hist, use_container_width=True, key=f"{key}_histogram")
+                st.plotly_chart(hist, width="stretch", key=f"{key}_histogram")
                 box = px.box(data, y=variable, points="outliers", title=f"Boxplot of {variable}", template="plotly_white")
-                st.plotly_chart(box, use_container_width=True, key=f"{key}_boxplot")
+                st.plotly_chart(box, width="stretch", key=f"{key}_boxplot")
             else:
                 st.info("No numeric variable is available in this dataset.")
         with right:
@@ -127,7 +139,7 @@ def render_profile(data: pd.DataFrame, key: str) -> None:
                 )
                 bars.update_traces(texttemplate=text_template, textposition="outside")
                 bars.update_layout(showlegend=False)
-                st.plotly_chart(bars, use_container_width=True, key=f"{key}_categorical_bar")
+                st.plotly_chart(bars, width="stretch", key=f"{key}_categorical_bar")
             else:
                 st.info("No categorical variable is available in this dataset.")
 
@@ -146,7 +158,7 @@ def render_profile(data: pd.DataFrame, key: str) -> None:
                     title=f"{outcome} by {group}", template="plotly_white"
                 )
                 figure.update_layout(showlegend=False)
-                st.plotly_chart(figure, use_container_width=True, key=f"{key}_group_boxplot")
+                st.plotly_chart(figure, width="stretch", key=f"{key}_group_boxplot")
                 st.caption("A boxplot is meaningful here because the x-axis is categorical and the plotted response is numeric.")
         else:
             st.info("A grouped boxplot requires both a numeric outcome and a categorical grouping variable.")
@@ -162,7 +174,7 @@ def render_profile(data: pd.DataFrame, key: str) -> None:
                 table, text_auto=True, aspect="auto", color_continuous_scale="Blues",
                 title=f"Counts: {first} by {second}", labels={"x": second, "y": first, "color": "Count"}
             )
-            st.plotly_chart(heatmap, use_container_width=True, key=f"{key}_categorical_heatmap")
+            st.plotly_chart(heatmap, width="stretch", key=f"{key}_categorical_heatmap")
         else:
             st.info("A two-categorical association display requires at least two categorical variables.")
 
@@ -184,7 +196,7 @@ def render_profile(data: pd.DataFrame, key: str) -> None:
                 sns.stripplot(data=subset, x=group, y=variable, color="#253494", alpha=0.5, ax=axis)
                 axis.set_title(f"Static boxplot: {variable} by {group}")
                 axis.tick_params(axis="x", rotation=30)
-            st.pyplot(figure, clear_figure=True, use_container_width=True)
+            st.pyplot(figure, clear_figure=True, width="stretch")
         else:
             st.info("A static numerical teaching figure requires a numeric variable.")
 
@@ -266,9 +278,18 @@ def render_analysis(data: pd.DataFrame, key: str) -> None:
     st.scatter_chart(subset, x=predictor, y=outcome)
 
 
-def render_dataset_workspace(data: pd.DataFrame, key: str) -> None:
-    render_profile(data, key)
-    render_analysis(data, key)
+def render_dataset_workspace(
+    data: pd.DataFrame,
+    key: str,
+    dataset_name: str = "Participant dataset",
+    filename: str | None = None,
+) -> None:
+    """Render the common Learn / Practice / Audit workflow for all data pathways."""
+    from inference_ui import render_workspace
+
+    render_workspace(data, key, dataset_name, filename)
+    with st.expander("Visual exploration and descriptive graphics"):
+        render_profile(data, key)
 
 
 def render_module(module: dict, manifest: dict) -> None:
@@ -279,13 +300,26 @@ def render_module(module: dict, manifest: dict) -> None:
         st.write(module["presentation_focus"])
         st.markdown("**Formal notation.** " + module["notation"])
         st.markdown("**Results to state.** " + " ".join(module["results"]))
+        with st.expander("Question, assumptions, and interpretation contract"):
+            st.markdown("**Learning objective.** " + module["learning_objective"])
+            st.markdown("**Question prompt.** " + module["research_question_prompt"])
+            st.markdown("**Required variable structure.** " + module["required_variable_types"])
+            st.markdown("**Assumption focus.** " + module["assumption_focus"])
+            st.markdown("**Diagnostic focus.** " + module["diagnostic_focus"])
+            st.markdown("**Interpretation template.** " + module["interpretation_template"])
+            st.markdown("**Pre-analysis audit.** " + module["audit_prompt"])
         st.markdown("---")
         st.markdown("#### 📋 Worked-out public dataset")
         st.success(f"**{demonstration['name']}** — {demonstration['activity']}")
         st.caption(f"Selected public file: `{demonstration['file']}`")
         if st.checkbox("Open the worked dataset analysis", key=f"{module['id']}_open_worked"):
             worked_data = load_public_data(demonstration["file"])
-            render_dataset_workspace(worked_data, f"{module['id']}_worked")
+            render_dataset_workspace(
+                worked_data,
+                f"{module['id']}_worked",
+                dataset_name=demonstration["name"],
+                filename=demonstration["file"],
+            )
             st.download_button(
                 "Download the worked dataset as CSV",
                 worked_data.to_csv(index=False).encode("utf-8"),
@@ -297,8 +331,8 @@ def render_module(module: dict, manifest: dict) -> None:
         st.markdown("#### 🔬 BYOD — upload your own dataset")
         st.write(module["upload_guidance"])
         uploaded_file = st.file_uploader(
-            "Upload a CSV dataset for this module",
-            type=["csv"],
+            "Upload a CSV or Excel dataset for this module",
+            type=["csv", "xlsx", "xls"],
             key=f"{module['id']}_upload",
         )
         uploaded = read_upload(uploaded_file)
@@ -306,7 +340,11 @@ def render_module(module: dict, manifest: dict) -> None:
             st.caption("Upload processing is in memory only for this browser session.")
         else:
             st.caption("Participant-uploaded dataset — processed in session memory only.")
-            render_dataset_workspace(uploaded, f"{module['id']}_upload")
+            render_dataset_workspace(
+                uploaded,
+                f"{module['id']}_upload",
+                dataset_name="Participant-uploaded dataset",
+            )
         st.markdown("---")
         with st.expander("Process another available public dataset"):
             labels = public_dataset_labels(manifest)
@@ -317,7 +355,12 @@ def render_module(module: dict, manifest: dict) -> None:
                 key=f"{module['id']}_public_file",
             )
             if st.checkbox("Open this public dataset", key=f"{module['id']}_open_public"):
-                render_dataset_workspace(load_public_data(filename), f"{module['id']}_public")
+                render_dataset_workspace(
+                    load_public_data(filename),
+                    f"{module['id']}_public",
+                    dataset_name=labels[filename],
+                    filename=filename,
+                )
 
 
 def render_day(day_id: str) -> None:
@@ -331,8 +374,8 @@ def render_day(day_id: str) -> None:
     st.subheader(day["general_theme"])
     st.info(day["introduction"])
     st.markdown(
-        "Each module below begins with theory, continues with a selected public worked dataset, "
-        "and provides a participant CSV-upload BYOD workflow."
+        "Each module below begins with theory, makes its question-and-assumption contract explicit, "
+        "continues with a selected public worked dataset, and provides a Learn / Practice / Audit workflow for participant CSV uploads."
     )
     st.markdown("---")
     st.header("📋 Modules")

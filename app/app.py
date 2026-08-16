@@ -42,6 +42,11 @@ st.markdown(
     "with its theory introduction and contains ten expandable modules. Every module includes a formal "
     "presentation without proofs, a selected public worked dataset, and a CSV-upload BYOD workflow."
 )
+st.markdown(
+    "The app now adds three common modes around the curriculum: **Guided Inference** begins with a research question "
+    "and recommends compatible seminar pathways; the **Dataset Laboratory** audits public or uploaded data before analysis; "
+    "and **Day Synthesis** links each day’s ten modules into a common inference workflow."
+)
 rows = []
 for day in manifest["days"]:
     rows.append(
@@ -49,7 +54,7 @@ for day in manifest["days"]:
             "Day": day["title"],
             "General theme": day["general_theme"],
             "Modules": len(day["modules"]),
-            "Module workflow": "Theory → worked public dataset → BYOD CSV upload",
+            "Module workflow": "Theory → question/assumption contract → Learn / Practice / Audit",
         }
     )
 st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
@@ -59,8 +64,12 @@ st.markdown("---")
 st.header("Public datasets and BYOD")
 st.markdown(
     "The application contains **34 bundled public CSV datasets** and can process every one through "
-    "the same descriptive and inferential workbench. Each module identifies one selected public dataset "
+    "the same dataset audit, descriptive, and guarded-inference workflow. Each module identifies one selected public dataset "
     "for its worked example. Participants may also upload their own CSV dataset inside every module."
+)
+st.markdown(
+    "Every analysis uses a common reporting sequence: **question → data and design → method → assumptions → diagnostics → "
+    "estimate → uncertainty → effect size → model-based test evidence → interpretation → limitations → next step**."
 )
 st.markdown(
     "> **Privacy notice:** Participant CSV uploads are processed in session memory only. They are not written to disk by the app."

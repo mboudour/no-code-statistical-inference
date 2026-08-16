@@ -37,9 +37,21 @@ The Streamlit companion app follows the **multipage pattern used by the previous
 3. **Ten expandable modules:** The selected day then presents its ten modules as labelled expandable sections.
 4. **Module theory:** Each module states its definitions, notation, assumptions, and results before any analysis interaction.
 5. **Worked-out public dataset:** Every module identifies and can open its instructor-selected public dataset in the no-code workbench. A secondary public-data selector makes every bundled dataset processable.
-6. **BYOD upload:** Every module has its own CSV uploader. The file remains in memory for the session and is processed through the same generic workbench.
+6. **BYOD upload:** Every module has its own CSV or Excel uploader. Files remain in memory for the session and are processed through the same generic workbench; the Dataset Laboratory also supports manual entry of small practice tables.
 
 The interface is intentionally no-code. It never executes user-supplied code, and it keeps participant-uploaded CSV files in memory only.
+
+### Responsible inference workflow
+
+The project is now a **seminar companion with guarded analysis workflows**, not an unrestricted test calculator. The sidebar adds three shared modes:
+
+1. **Guided Inference** begins with a research question and recommends compatible seminar pathways rather than asking a novice to select a test by name.
+2. **Dataset Laboratory** provides an audit card for every bundled public dataset and for participant-uploaded CSV files, including inferred types, missingness, duplicates, constant variables, source/use guidance, and suitable modules.
+3. **Day Synthesis** makes each day’s conceptual dependencies explicit and prompts participants to audit their own inferential claims.
+
+Implemented analysis families are a mean with a t interval, Welch independent-group comparison, paired comparison, one-way ANOVA, categorical association, linear regression, and logistic regression. Each follows one visible result contract: **question → data and design → method → assumptions → diagnostics → estimate → uncertainty → effect size → test statistic/p-value where relevant → interpretation → limitations → next step**. Results are accompanied by explicit reminders that diagnostics do not establish study-design assumptions and that p-values are not measures of practical importance, effect magnitude, or the probability of a hypothesis.
+
+A Markdown **reproducibility record** can be downloaded after every guided analysis. It includes the audit, selections, assumptions, diagnostics, results, interpretations, limitations, and software context.
 
 ### Bilingual analysis architecture
 
@@ -70,9 +82,11 @@ R-backed procedures require a local R installation and the packages documented i
 
 ---
 
-## Reproducibility and Responsible Use
+## Reproducibility, Testing, and Responsible Use
+The project treats statistical conclusions as conditional on the data, model, assumptions, and analytical choices. Each implemented procedure identifies its data/design description, assumptions, diagnostics, estimates, uncertainty, effect size where applicable, warnings, and software provenance. Results generated in the app are learning aids and should be interpreted in relation to the research design and subject-matter context.
 
-The project treats statistical conclusions as conditional on the data, model, assumptions, and analytical choices. Each implemented procedure should therefore identify its sample treatment, parameterisation, inferential settings, warnings, and software provenance. Results generated in the app are learning aids and should be interpreted in relation to the research design and subject-matter context.
+The repository includes deterministic calculation tests, app-level Streamlit `AppTest` checks for the landing page and all six supplemental pages, curriculum/data validators, public-dataset processing checks, and visualization smoke tests. GitHub Actions runs these checks on pushes and pull requests. Install development dependencies with `python -m pip install -r requirements-dev.txt`, then run `pytest tests/` from the repository root.
+
 
 ---
 
