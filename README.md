@@ -1,5 +1,7 @@
 # No-Code Statistical Inference
+
 **instats Seminar — September 28, 29, and 30, 2026**
+
 **Instructor:** Moses Boudourides, Data Science Graduate Program, School of Professional Studies, Northwestern University
 
 [![Streamlit App](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white)](https://no-code-statistical-inference.streamlit.app/) [Open the Streamlit App](https://no-code-statistical-inference.streamlit.app/)
