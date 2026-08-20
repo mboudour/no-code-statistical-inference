@@ -1,6 +1,6 @@
 # No-Code Statistical Inference
 
-**instats Seminar — Dates to be announced**
+**instats Seminar — September 28-30, 2026**
 
 **Instructor:** Moses Boudourides, Data Science Graduate Program, School of Professional Studies, Northwestern University
 
