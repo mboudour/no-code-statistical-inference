@@ -13,6 +13,8 @@ import seaborn as sns
 import streamlit as st
 from scipy import stats
 
+from day2_dataset_options import day2_dataset_options, day2_preparation_guidance
+
 APP_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = APP_DIR.parent
 DATA_DIR = PROJECT_DIR / "data" / "public"
@@ -71,6 +73,28 @@ def public_dataset_labels(manifest: dict) -> dict[str, str]:
     for file in DATA_DIR.glob("*.csv"):
         labels.setdefault(file.name, file.stem.replace("_", " ").title())
     return labels
+
+
+def public_dataset_options_for_module(module: dict, manifest: dict) -> list[dict[str, str]] | None:
+    """Return curated public data choices for Day 2, or ``None`` for other days.
+
+    Day 1 and Day 3 preserve the existing full-library picker.  Day 2 uses the
+    compatibility registry so that a module presents only data whose current
+    columns fit its intended structure.  The returned method, rationale, and
+    caution are displayed before a participant opens the generic workspace.
+    """
+
+    curated = day2_dataset_options(module["id"])
+    if curated is None:
+        return None
+    labels = public_dataset_labels(manifest)
+    options = []
+    for option in curated:
+        filename = option["file"]
+        if filename not in labels:
+            raise ValueError(f"Day 2 option {filename!r} is not available in the public dataset library.")
+        options.append({"file": filename, "name": labels[filename], **option})
+    return options
 
 
 def render_sidebar() -> None:
@@ -347,20 +371,49 @@ def render_module(module: dict, manifest: dict) -> None:
             )
         st.markdown("---")
         with st.expander("Process another available public dataset"):
-            labels = public_dataset_labels(manifest)
-            filename = st.selectbox(
-                "Available public dataset",
-                sorted(labels),
-                format_func=lambda item: f"{labels[item]} ({item})",
-                key=f"{module['id']}_public_file",
-            )
-            if st.checkbox("Open this public dataset", key=f"{module['id']}_open_public"):
-                render_dataset_workspace(
-                    load_public_data(filename),
-                    f"{module['id']}_public",
-                    dataset_name=labels[filename],
-                    filename=filename,
+            curated_options = public_dataset_options_for_module(module, manifest)
+            if curated_options is None:
+                # Day 1 and Day 3 retain their existing all-public-data route.
+                labels = public_dataset_labels(manifest)
+                filename = st.selectbox(
+                    "Available public dataset",
+                    sorted(labels),
+                    format_func=lambda item: f"{labels[item]} ({item})",
+                    key=f"{module['id']}_public_file",
                 )
+                if st.checkbox("Open this public dataset", key=f"{module['id']}_open_public"):
+                    render_dataset_workspace(
+                        load_public_data(filename),
+                        f"{module['id']}_public",
+                        dataset_name=labels[filename],
+                        filename=filename,
+                    )
+            elif not curated_options:
+                st.info(day2_preparation_guidance(module["id"]) or "No ready-to-run public dataset is available for this module.")
+                st.caption("Use BYOD to upload data prepared for the module's required design.")
+            else:
+                st.caption(
+                    "Only public datasets compatible with this Day 2 module are shown. "
+                    "Compatibility concerns variable structure; participants must still verify design, coding, and assumptions."
+                )
+                by_file = {option["file"]: option for option in curated_options}
+                filename = st.selectbox(
+                    "Method-compatible public dataset",
+                    list(by_file),
+                    format_func=lambda item: f"{by_file[item]['name']} — {by_file[item]['method']}",
+                    key=f"{module['id']}_public_file",
+                )
+                selected = by_file[filename]
+                st.info(f"**Method appropriateness:** {selected['method']}")
+                st.caption(f"**Why it fits:** {selected['rationale']}")
+                st.warning(f"**Use with care:** {selected['caution']}")
+                if st.checkbox("Open this public dataset", key=f"{module['id']}_open_public"):
+                    render_dataset_workspace(
+                        load_public_data(filename),
+                        f"{module['id']}_public",
+                        dataset_name=selected["name"],
+                        filename=filename,
+                    )
 
 
 def render_day(day_id: str) -> None:
