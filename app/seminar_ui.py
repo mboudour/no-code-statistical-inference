@@ -352,24 +352,6 @@ def render_module(module: dict, manifest: dict) -> None:
                 key=f"{module['id']}_download_worked",
             )
         st.markdown("---")
-        st.markdown("#### 🔬 BYOD — upload your own dataset")
-        st.write(module["upload_guidance"])
-        uploaded_file = st.file_uploader(
-            "Upload a CSV or Excel dataset for this module",
-            type=["csv", "xlsx", "xls"],
-            key=f"{module['id']}_upload",
-        )
-        uploaded = read_upload(uploaded_file)
-        if uploaded is None:
-            st.caption("Upload processing is in memory only for this browser session.")
-        else:
-            st.caption("Participant-uploaded dataset — processed in session memory only.")
-            render_dataset_workspace(
-                uploaded,
-                f"{module['id']}_upload",
-                dataset_name="Participant-uploaded dataset",
-            )
-        st.markdown("---")
         with st.expander("Process another available public dataset"):
             curated_options = public_dataset_options_for_module(module, manifest)
             if curated_options is None:
@@ -414,6 +396,24 @@ def render_module(module: dict, manifest: dict) -> None:
                         dataset_name=selected["name"],
                         filename=filename,
                     )
+        st.markdown("---")
+        st.markdown("#### 🔬 BYOD — upload your own dataset")
+        st.write(module["upload_guidance"])
+        uploaded_file = st.file_uploader(
+            "Upload a CSV or Excel dataset for this module",
+            type=["csv", "xlsx", "xls"],
+            key=f"{module['id']}_upload",
+        )
+        uploaded = read_upload(uploaded_file)
+        if uploaded is None:
+            st.caption("Upload processing is in memory only for this browser session.")
+        else:
+            st.caption("Participant-uploaded dataset — processed in session memory only.")
+            render_dataset_workspace(
+                uploaded,
+                f"{module['id']}_upload",
+                dataset_name="Participant-uploaded dataset",
+            )
 
 
 def render_day(day_id: str) -> None:
