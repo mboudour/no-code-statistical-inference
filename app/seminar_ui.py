@@ -311,7 +311,14 @@ def render_dataset_workspace(
     filename: str | None = None,
     module_id: str | None = None,
 ) -> None:
-    """Render the common Learn / Practice / Audit workflow for all data pathways."""
+    """Render the module-appropriate practical workspace."""
+    if module_id and module_id.startswith("d3m"):
+        from day3_ui import render_day3_computation_workspace
+        from inference_core import audit_dataset
+
+        audit = audit_dataset(data, dataset_name, {})
+        render_day3_computation_workspace(data, audit, key, dataset_name, filename, module_id)
+        return
     from inference_ui import render_workspace
 
     render_workspace(data, key, dataset_name, filename, module_id=module_id)
@@ -321,25 +328,33 @@ def render_dataset_workspace(
 
 def render_module(module: dict, manifest: dict) -> None:
     module_id = module["id"].upper()
+    is_day3 = module["id"].startswith("d3m")
     demonstration = module["demonstration"]
     with st.expander(f"**{module_id} — {module['title']}**", expanded=False):
-        st.markdown("#### Theory")
-        st.write(module["presentation_focus"])
-        st.markdown("**Formal notation.** " + module["notation"])
-        st.markdown("**Results to state.** " + " ".join(module["results"]))
-        with st.expander("Question, assumptions, and interpretation contract"):
-            st.markdown("**Learning objective.** " + module["learning_objective"])
-            st.markdown("**Question prompt.** " + module["research_question_prompt"])
-            st.markdown("**Required variable structure.** " + module["required_variable_types"])
-            st.markdown("**Assumption focus.** " + module["assumption_focus"])
-            st.markdown("**Diagnostic focus.** " + module["diagnostic_focus"])
-            st.markdown("**Interpretation template.** " + module["interpretation_template"])
-            st.markdown("**Pre-analysis audit.** " + module["audit_prompt"])
-        st.markdown("---")
-        st.markdown("#### 📋 Worked-out public dataset")
+        if is_day3:
+            st.markdown("#### Day 3 computation")
+            st.write(module["presentation_focus"])
+            st.caption("**Formal notation:** " + module["notation"])
+            st.markdown("#### 📋 Worked-out public computation")
+        else:
+            st.markdown("#### Theory")
+            st.write(module["presentation_focus"])
+            st.markdown("**Formal notation.** " + module["notation"])
+            st.markdown("**Results to state.** " + " ".join(module["results"]))
+            with st.expander("Question, assumptions, and interpretation contract"):
+                st.markdown("**Learning objective.** " + module["learning_objective"])
+                st.markdown("**Question prompt.** " + module["research_question_prompt"])
+                st.markdown("**Required variable structure.** " + module["required_variable_types"])
+                st.markdown("**Assumption focus.** " + module["assumption_focus"])
+                st.markdown("**Diagnostic focus.** " + module["diagnostic_focus"])
+                st.markdown("**Interpretation template.** " + module["interpretation_template"])
+                st.markdown("**Pre-analysis context.** " + module["audit_prompt"])
+            st.markdown("---")
+            st.markdown("#### 📋 Worked-out public dataset")
         st.success(f"**{demonstration['name']}** — {demonstration['activity']}")
         st.caption(f"Selected public file: `{demonstration['file']}`")
-        if st.checkbox("Open the worked dataset analysis", key=f"{module['id']}_open_worked"):
+        worked_label = "Run the worked computation" if is_day3 else "Open the worked dataset analysis"
+        if st.checkbox(worked_label, key=f"{module['id']}_open_worked"):
             worked_data = load_public_data(demonstration["file"])
             render_dataset_workspace(
                 worked_data,
@@ -359,7 +374,6 @@ def render_module(module: dict, manifest: dict) -> None:
         with st.expander("Process another available public dataset"):
             curated_options = public_dataset_options_for_module(module, manifest)
             if curated_options is None:
-                    # Day 1 retains the existing all-public-data route.
                 labels = public_dataset_labels(manifest)
                 filename = st.selectbox(
                     "Available public dataset",
@@ -373,13 +387,14 @@ def render_module(module: dict, manifest: dict) -> None:
                         f"{module['id']}_public",
                         dataset_name=labels[filename],
                         filename=filename,
+                        module_id=module["id"],
                     )
             elif not curated_options:
                 st.info(day2_preparation_guidance(module["id"]) or "No ready-to-run public dataset is available for this module.")
                 st.caption("Use BYOD to upload data prepared for the module's required design.")
             else:
                 st.caption(
-                    "Only public datasets compatible with this module's current method are shown. "
+                    "Only public datasets compatible with this module's current computation are shown. "
                     "Compatibility concerns variable structure; participants must still verify design, coding, and assumptions."
                 )
                 by_file = {option["file"]: option for option in curated_options}
@@ -393,7 +408,8 @@ def render_module(module: dict, manifest: dict) -> None:
                 st.info(f"**Method appropriateness:** {selected['method']}")
                 st.caption(f"**Why it fits:** {selected['rationale']}")
                 st.warning(f"**Use with care:** {selected['caution']}")
-                if st.checkbox("Open this public dataset", key=f"{module['id']}_open_public"):
+                open_label = "Run this computation" if is_day3 else "Open this public dataset"
+                if st.checkbox(open_label, key=f"{module['id']}_open_public"):
                     render_dataset_workspace(
                         load_public_data(filename),
                         f"{module['id']}_public",
@@ -402,7 +418,7 @@ def render_module(module: dict, manifest: dict) -> None:
                         module_id=module["id"],
                     )
         st.markdown("---")
-        st.markdown("#### 🔬 BYOD — upload your own dataset")
+        st.markdown("#### 🔬 Use another dataset — upload your own" if is_day3 else "#### 🔬 BYOD — upload your own dataset")
         st.write(module["upload_guidance"])
         uploaded_file = st.file_uploader(
             "Upload a CSV or Excel dataset for this module",
@@ -429,16 +445,24 @@ def render_day(day_id: str) -> None:
     st.title(day["title"])
     st.caption("No-Code Statistical Inference · 3-hour seminar day")
     st.markdown("---")
-    st.header("📘 Theory")
-    st.subheader(day["general_theme"])
-    st.info(day["introduction"])
-    st.markdown(
-        "Each module below begins with theory, makes its question-and-assumption contract explicit, "
-        "continues with a selected public worked dataset, and provides a Learn / Practice / Audit workflow for participant CSV uploads."
-    )
+    if day_id == "day_3":
+        st.header("🧮 Slide-aligned computation sequence")
+        st.subheader(day["general_theme"])
+        st.info("Each Day 3 module opens a worked computation introduced in the revised slides. Select the worked dataset, run the calculation, then use only a method-compatible alternative public dataset or an upload. A single final model review appears after all ten computations.")
+    else:
+        st.header("📘 Theory")
+        st.subheader(day["general_theme"])
+        st.info(day["introduction"])
+        st.markdown(
+            "Each module below begins with theory, makes its question-and-assumption contract explicit, "
+            "continues with a selected public worked dataset, and provides a Learn / Practice / Audit workflow for participant CSV uploads."
+        )
     st.markdown("---")
-    st.header("📋 Modules")
+    st.header("🧮 Computations" if day_id == "day_3" else "📋 Modules")
     for module in day["modules"]:
         render_module(module, manifest)
+    if day_id == "day_3":
+        from day3_ui import render_day3_final_review
+        render_day3_final_review()
     st.markdown("---")
     st.caption(f"{day['title']} · No-Code Statistical Inference · © 2026 Moses Boudourides")

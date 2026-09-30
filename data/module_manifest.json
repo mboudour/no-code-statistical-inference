@@ -862,28 +862,28 @@
     {
       "id": "day_3",
       "title": "Day 3 — Regression, prediction, diagnostics, and reproducibility",
-      "general_theme": "Conditional modelling, prediction, diagnostics, and reproducibility",
+      "general_theme": "Regression computations, prediction performance, validation, and reproducibility",
       "duration_minutes": 180,
       "introduction_minutes": 10,
-      "introduction": "Day 3 treats regression and prediction as transparent conditional models. Each module separates a public demonstration from a distinct BYOD data choice and gives participants an upload path for their own tabular data.",
+      "introduction": "Day 3 is a computation-first sequence. Every module implements a new calculation introduced in the revised Day 3 slides; the final review follows all ten computations.",
       "modules": [
         {
           "id": "d3m01",
-          "title": "Simple linear regression and conditional means",
+          "title": "Simple linear regression: fitted values, residuals, and uncertainty",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Introduce the conditional mean function, simple linear model, least squares, fitted values, residuals, slope, intercept, and the conditional interpretation of a coefficient.",
-          "notation": "In Y=β_0+β_1X+ε, ordinary least squares selects β̂ to minimize Σ_i(Y_i−β_0−β_1X_i)².",
+          "presentation_focus": "Fit the least-squares line, inspect fitted values and residuals, interpret the slope as a conditional association, and display coefficient uncertainty.",
+          "notation": "For Y=β_0+β_1X+ε, ordinary least squares selects β̂ to minimize Σ_i(Y_i−β_0−β_1X_i)².",
           "results": [
-            "A slope estimates a conditional linear association under the model specification.",
-            "A regression line does not establish causation without design and substantive assumptions."
+            "Compute fitted values, residuals, R-squared, and coefficient intervals.",
+            "Interpret the fitted slope as a conditional linear association rather than an automatic causal effect."
           ],
           "demonstration": {
             "file": "auto.csv",
             "name": "Automobile Data",
-            "activity": "Model miles per gallon as a function of weight, interpret the fitted slope, and inspect the residual definition."
+            "activity": "Fit miles per gallon as a function of weight, inspect fitted values and residuals, and read the slope and uncertainty table."
           },
           "byod": [
             {
@@ -900,31 +900,31 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of simple linear regression and conditional means to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
           "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
           "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
           "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         },
         {
           "id": "d3m02",
-          "title": "Multiple regression and adjustment",
+          "title": "Multiple regression: partial comparisons and collinearity",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Define multiple linear regression, partial regression coefficients, covariate adjustment, reference coding, omitted variables, and conditional versus marginal effects.",
-          "notation": "In Y=β_0+β_1X_1+…+β_pX_p+ε, β_j is the model-based change in E[Y|X] per unit X_j holding other included X variables fixed.",
+          "presentation_focus": "Fit an adjusted linear model, interpret partial coefficients, inspect treatment-coded factors where appropriate, and examine collinearity.",
+          "notation": "In Y=Xβ+ε, β_j is the model-based change in E[Y|X] for a one-unit difference in X_j while included predictors are held fixed.",
           "results": [
-            "Adjustment changes the estimand and requires a substantive rationale for included variables.",
-            "Holding variables fixed in a model is not equivalent to experimental control."
+            "Compute conditional coefficients, conventional and robust intervals, and variance-inflation factors.",
+            "Distinguish mathematical adjustment from a causal design argument."
           ],
           "demonstration": {
             "file": "carseats.csv",
             "name": "Carseats",
-            "activity": "Fit a sales model using price and advertising, then compare the conditional interpretation with a marginal scatterplot."
+            "activity": "Fit sales by price, income, and advertising, then inspect partial coefficients and collinearity diagnostics."
           },
           "byod": [
             {
@@ -941,31 +941,31 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of multiple regression and adjustment to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
           "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
           "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
           "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         },
         {
           "id": "d3m03",
-          "title": "Regression uncertainty and coefficient intervals",
+          "title": "Categorical predictors: reference coding and contrasts",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Introduce coefficient standard errors, confidence intervals, tests, model degrees of freedom, and the distinction between coefficient uncertainty and predictive uncertainty.",
-          "notation": "An approximate coefficient interval is β̂_j ± t_(1−α/2,df)SE(β̂_j) under the fitted-model assumptions.",
+          "presentation_focus": "Encode a categorical predictor with a declared reference group, calculate fitted group means, and display model-based contrasts.",
+          "notation": "With a K-level factor and intercept, use K−1 indicators; each coefficient is a difference from the declared reference group.",
           "results": [
-            "A coefficient interval is conditional on the model, the observed covariates, and the sampling/design assumptions.",
-            "Statistical significance should not be used as a substitute for model comparison or substantive interpretation."
+            "Compute treatment-coded coefficients and fitted means for every group.",
+            "Compare groups using explicit contrasts rather than reading labels as causal effects."
           ],
           "demonstration": {
-            "file": "credit.csv",
-            "name": "Credit",
-            "activity": "Estimate a simple credit-balance relationship and interpret a coefficient interval together with the scale of the variables."
+            "file": "carseats.csv",
+            "name": "Carseats",
+            "activity": "Model sales by shelf location, identify the reference category, and inspect fitted group means and contrasts."
           },
           "byod": [
             {
@@ -982,31 +982,31 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of regression uncertainty and coefficient intervals to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
           "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
           "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
           "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         },
         {
           "id": "d3m04",
-          "title": "Nonlinearity, transformations, and model specification",
+          "title": "Unadjusted and adjusted comparisons: confounding awareness",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Define functional form, transformations, polynomial terms, interaction terms, residual patterns, and the risks of specification search.",
-          "notation": "A transformed model replaces X or Y with g(X) or h(Y); a polynomial specification augments E[Y|X] with powers such as X².",
+          "presentation_focus": "Compare an unadjusted focal coefficient with the same coefficient after explicitly named adjustment variables are included.",
+          "notation": "Compare Y=β_0+β_1A+ε with Y=β_0+β_1A+β_2Z_1+⋯+β_pZ_{p−1}+ε.",
           "results": [
-            "A transformation changes the scale and interpretation of model parameters.",
-            "Improved in-sample fit alone does not justify a more complex specification."
+            "Compute and display coefficient change across two declared specifications.",
+            "Treat adjustment as a model choice requiring temporal and causal rationale, not as proof of identification."
           ],
           "demonstration": {
-            "file": "house_prices.csv",
-            "name": "House Prices",
-            "activity": "Compare raw and transformed price relationships, then explain how the interpretation changes with the chosen scale."
+            "file": "credit.csv",
+            "name": "Credit",
+            "activity": "Compare the income coefficient for credit balance before and after adding named credit characteristics."
           },
           "byod": [
             {
@@ -1023,31 +1023,31 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of nonlinearity, transformations, and model specification to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
           "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
           "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
           "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         },
         {
           "id": "d3m05",
-          "title": "Logistic regression, odds, and predicted probabilities",
+          "title": "Interactions, nonlinearity, and transformations",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Introduce binary outcomes, probability models, log-odds, logistic links, odds ratios, and the difference between odds and probability.",
-          "notation": "logit[P(Y=1|X=x)] = log(p(x)/(1−p(x))) = β_0+x^Tβ; exp(β_j) is a conditional odds ratio.",
+          "presentation_focus": "Compare a baseline linear model with an explicitly declared quadratic term or numeric interaction, then inspect the nested-model calculation.",
+          "notation": "An interaction model adds X_1X_2; a quadratic specification adds X². Both change the conditional-mean shape.",
           "results": [
-            "An odds ratio is not generally a risk ratio.",
-            "Predicted probabilities depend on the covariate pattern and the model specification."
+            "Compute baseline and extended residual sums of squares, R-squared values, and the nested F comparison.",
+            "Use observed support, residual evidence, and scientific rationale rather than automatic specification search."
           ],
           "demonstration": {
-            "file": "default.csv",
-            "name": "Credit Card Default",
-            "activity": "Model default probability as a function of balance and interpret both predicted probabilities and an odds ratio."
+            "file": "house_prices.csv",
+            "name": "House Prices",
+            "activity": "Compare a baseline housing-price model with an explicitly selected quadratic or interaction extension."
           },
           "byod": [
             {
@@ -1064,31 +1064,31 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of logistic regression, odds, and predicted probabilities to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How is a binary outcome conditionally associated with the selected predictors under a logistic model?",
           "required_variable_types": "Select a binary outcome and documented predictors; define the outcome reference category.",
           "assumption_focus": "State independence, adequate outcome representation, predictor coding, and the conditional-model interpretation.",
           "diagnostic_focus": "Inspect outcome balance, fitted probabilities, classification consequences, and calibration/discrimination evidence.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         },
         {
           "id": "d3m06",
-          "title": "Binary-outcome prediction and classification thresholds",
+          "title": "Logistic regression: odds, probabilities, and separation",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Define fitted probability, classification threshold, false-positive and false-negative errors, sensitivity, specificity, and decision-dependent performance.",
-          "notation": "A threshold rule predicts Ŷ=I[p̂(X)≥c]; changing c changes the confusion matrix and its error trade-offs.",
+          "presentation_focus": "Fit a binary-outcome logistic model, display odds ratios and predicted probabilities, and identify warnings about sparse outcomes or separation.",
+          "notation": "log[p/(1−p)]=Xβ and p=1/(1+e^(−Xβ)); exp(β_j) is the conditional odds ratio for X_j.",
           "results": [
-            "A classification threshold encodes a decision and its consequences.",
-            "Accuracy alone can be misleading with imbalanced outcomes or unequal error costs."
+            "Compute log-odds coefficients, odds ratios, intervals, and fitted probabilities.",
+            "Translate odds-ratio output to the probability scale before communicating results."
           ],
           "demonstration": {
             "file": "pima_train.csv",
             "name": "Pima Indians Diabetes Training Data",
-            "activity": "Fit a binary-outcome model and compare classifications under two thresholds while holding the fitted probabilities fixed."
+            "activity": "Model default probability using balance and income, then inspect odds ratios and record-level fitted probabilities."
           },
           "byod": [
             {
@@ -1105,31 +1105,31 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of binary-outcome prediction and classification thresholds to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How is a binary outcome conditionally associated with the selected predictors under a logistic model?",
           "required_variable_types": "Select a binary outcome and documented predictors; define the outcome reference category.",
           "assumption_focus": "State independence, adequate outcome representation, predictor coding, and the conditional-model interpretation.",
           "diagnostic_focus": "Inspect outcome balance, fitted probabilities, classification consequences, and calibration/discrimination evidence.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         },
         {
           "id": "d3m07",
-          "title": "Calibration, discrimination, and probability communication",
+          "title": "Residual diagnostics and heteroskedasticity",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Define calibration, discrimination, predicted risk, calibration plots, and how probability estimates should be communicated to nontechnical audiences.",
-          "notation": "A calibrated model satisfies approximately P(Y=1|p̂(X)=p)≈p over relevant groups; discrimination concerns separation of outcome classes by scores.",
+          "presentation_focus": "Compute residual, quantile–quantile, and heteroskedasticity diagnostics and compare conventional with heteroskedasticity-consistent uncertainty.",
+          "notation": "Under unequal conditional variances, Var(β̂|X)=(XᵀX)⁻¹XᵀΩX(XᵀX)⁻¹ rather than σ²(XᵀX)⁻¹.",
           "results": [
-            "Good discrimination does not guarantee calibrated probabilities.",
-            "Probability statements should identify the model, population, horizon, and uncertainty."
+            "Display residual plots, a Breusch–Pagan calculation, and HC3 robust intervals.",
+            "Treat diagnostics as evidence to investigate rather than automatic transformation or deletion commands."
           ],
           "demonstration": {
-            "file": "health_insurance.csv",
-            "name": "Health Insurance",
-            "activity": "Choose a binary health-related outcome and examine how a simple model's predicted probabilities should be described responsibly."
+            "file": "cars.csv",
+            "name": "Speed and Stopping Distances",
+            "activity": "Fit stopping distance by speed, inspect residual patterns, and compare conventional and HC3 robust uncertainty."
           },
           "byod": [
             {
@@ -1146,31 +1146,31 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of calibration, discrimination, and probability communication to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How is a binary outcome conditionally associated with the selected predictors under a logistic model?",
           "required_variable_types": "Select a binary outcome and documented predictors; define the outcome reference category.",
           "assumption_focus": "State independence, adequate outcome representation, predictor coding, and the conditional-model interpretation.",
           "diagnostic_focus": "Inspect outcome balance, fitted probabilities, classification consequences, and calibration/discrimination evidence.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         },
         {
           "id": "d3m08",
-          "title": "Diagnostics, influence, and sensitivity analysis",
+          "title": "Leverage, influence, and sensitivity refits",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Define residual diagnostics, leverage, influence, influential cases, alternative specifications, and transparent analytical sensitivity analysis.",
-          "notation": "The residual is e_i=y_i−ŷ_i; sensitivity analysis compares estimates over a pre-specified or transparently reported set of defensible choices.",
+          "presentation_focus": "Calculate leverage, standardized residuals, Cook’s distance, and a transparent temporary case-exclusion sensitivity refit.",
+          "notation": "Leverage is h_ii, Cook’s distance summarizes coefficient change after removing a case, and neither is a deletion rule.",
           "results": [
-            "A model can fit a summary well while failing diagnostically important patterns.",
-            "Sensitivity analysis reveals dependence on choices; it does not eliminate substantive uncertainty."
+            "Display leverage, residual, and Cook’s-distance information for every fitted record.",
+            "Compare original and temporary-exclusion coefficients with the excluded row labels documented."
           ],
           "demonstration": {
             "file": "ca_schools.csv",
             "name": "California Schools",
-            "activity": "Fit a simple school-outcome model, inspect unusual observations, and compare a small set of transparent specifications."
+            "activity": "Fit a school-outcome model, inspect influential records, and compare a documented sensitivity refit."
           },
           "byod": [
             {
@@ -1187,31 +1187,31 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of diagnostics, influence, and sensitivity analysis to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
           "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
           "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
           "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         },
         {
           "id": "d3m09",
-          "title": "Training, testing, and out-of-sample validation",
+          "title": "Thresholds, calibration, and discrimination",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Define training data, test data, resampling, generalization, prediction error, data leakage, and the distinction between model fitting and model evaluation.",
-          "notation": "For held-out outcomes y_i and predictions ŷ_i, MSPE=m⁻¹Σ_i(y_i−ŷ_i)²; evaluation is valid only when the test relationship matches the target use case.",
+          "presentation_focus": "Move a classification threshold, compute the confusion matrix and threshold metrics, and distinguish calibration from discrimination.",
+          "notation": "At threshold c, predict Ŷ=I[p̂(X)≥c]; calibration compares observed event rates with p̂, while discrimination concerns score ranking.",
           "results": [
-            "In-sample fit and out-of-sample performance answer different questions.",
-            "A test set must be protected from model-selection decisions to serve as a final evaluation set."
+            "Compute sensitivity, specificity, predictive values, accuracy, Brier score, calibration bins, and receiver-operating-characteristic curve.",
+            "Treat thresholds as decisions with consequences, not inherent properties of a model."
           ],
           "demonstration": {
-            "file": "pima_test.csv",
-            "name": "Pima Indians Diabetes Test Data",
-            "activity": "Use the linked training/test context to explain why a held-out set must not guide repeated model tuning."
+            "file": "pima_train.csv",
+            "name": "Pima Indians Diabetes Training Data",
+            "activity": "Fit a diabetes-probability model, vary its threshold, and examine calibration and discrimination separately."
           },
           "byod": [
             {
@@ -1228,31 +1228,31 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of training, testing, and out-of-sample validation to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How does a documented linear or binary-outcome model perform on data kept out of its fitting process, and does that split represent the intended deployment setting?",
           "required_variable_types": "Select a documented continuous or binary outcome, numeric predictor(s), a held-out record set, and the intended deployment setting.",
           "assumption_focus": "State how the training/test split, outcome coding, preprocessing, and predictor measurement match the future setting; do not use test results to guide repeated model tuning.",
           "diagnostic_focus": "For continuous outcomes, inspect held-out error; for binary outcomes, inspect held-out calibration, discrimination, and threshold consequences.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         },
         {
           "id": "d3m10",
-          "title": "Reproducible no-code workflows and transparent reporting",
+          "title": "Validation, bootstrap optimism, and reproducibility",
           "duration_minutes": 17,
           "presentation_minutes": 6,
           "demonstration_minutes": 5,
           "byod_minutes": 6,
-          "presentation_focus": "Define computational reproducibility, data provenance, analysis specifications, software environments, seeds, versioned data, output records, and limits of app-generated reports.",
-          "notation": "A reproducible result is conditional on a documented dataset D, transformation A, model M, settings S, software environment E, and random seed r where relevant.",
+          "presentation_focus": "Compute held-out performance, k-fold cross-validation, and logistic bootstrap optimism; preserve an explicit computation record.",
+          "notation": "K-fold cross-validation evaluates each record with a model not fit on that record; bootstrap optimism compares bootstrap apparent performance with original-data performance.",
           "results": [
-            "No-code applications should make assumptions and provenance visible rather than conceal them.",
-            "Reproducibility is necessary but not sufficient for validity or causal interpretation."
+            "Compute holdout or separate-file performance and k-fold estimates.",
+            "For binary outcomes, compute a bootstrap optimism correction for area under the curve and Brier score, then download the documented record."
           ],
           "demonstration": {
-            "file": "doctor_visits.csv",
-            "name": "Doctor Visits",
-            "activity": "Create a compact reproducibility record: data source, variables, method, settings, assumptions, result, and interpretation caveat."
+            "file": "pima_test.csv",
+            "name": "Pima Indians Diabetes Test Data",
+            "activity": "Fit on the bundled Pima training file, evaluate once on the separate test file, then save the computation record."
           },
           "byod": [
             {
@@ -1269,13 +1269,13 @@
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
-          "learning_objective": "Apply the logic of reproducible no-code workflows and transparent reporting to a documented research question, dataset audit, and interpretation.",
+          "learning_objective": "Run the slide-aligned Day 3 computation and document both its output and limitations.",
           "research_question_prompt": "How is a numeric outcome conditionally associated with the selected predictors under a stated regression model?",
           "required_variable_types": "Select a numeric outcome, predictor(s), and the intended unit of analysis.",
           "assumption_focus": "State independence, functional form, residual structure, predictor coding, and the non-causal nature of an observational regression unless design justifies otherwise.",
           "diagnostic_focus": "Inspect residuals, influence, heteroskedasticity, collinearity, and functional-form evidence.",
           "interpretation_template": "State the estimate, uncertainty, effect size where applicable, p-value only as model-based evidence, practical meaning, and limitations.",
-          "audit_prompt": "Before analysis, identify the target population, unit of observation, measurement process, missing-data treatment, and design limitations."
+          "audit_prompt": "After all Day 3 computations, use the final model review to record the target, data support, computation evidence, limitations, and reproducibility information."
         }
       ]
     }
