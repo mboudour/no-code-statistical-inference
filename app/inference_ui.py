@@ -421,10 +421,11 @@ def _render_day3_linear_lab(data: pd.DataFrame, audit: dict[str, Any], key: str,
         return
     details = result["details"]
     cases = details["diagnostic_cases"]
+    largest_cooks_distance = cases["Cook's distance"].max()
     a, b, c, d = st.columns(4)
     a.metric("Complete records", details["n"])
     b.metric("R²", f"{result['_model'].rsquared:.3f}")
-    c.metric("Largest Cook's distance", f"{cases['Cook\'s distance'].max():.3f}")
+    c.metric("Largest Cook's distance", f"{largest_cooks_distance:.3f}")
     d.metric("Leverage screen", f"{result['diagnostics']['leverage_screen']:.3f}")
     model_tabs = st.tabs(["Coefficients and uncertainty", "Residual structure", "Influence and collinearity", "Interpretation record"])
     with model_tabs[0]:
