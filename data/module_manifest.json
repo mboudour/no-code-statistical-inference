@@ -969,16 +969,16 @@
           },
           "byod": [
             {
-              "file": "auto.csv",
-              "name": "Automobile Data"
-            },
-            {
-              "file": "carseats.csv",
-              "name": "Carseats"
-            },
-            {
               "file": "college.csv",
               "name": "College"
+            },
+            {
+              "file": "credit.csv",
+              "name": "Credit"
+            },
+            {
+              "file": "plant_growth.csv",
+              "name": "Plant Growth"
             }
           ],
           "upload_guidance": "Participants may instead upload their own CSV file. They select variables in the app and use the module workflow after recording the research question, unit of observation, and compatibility of variables.",
@@ -1215,12 +1215,12 @@
           },
           "byod": [
             {
-              "file": "pima_train.csv",
-              "name": "Pima Indians Diabetes Training Data"
-            },
-            {
               "file": "default.csv",
               "name": "Credit Card Default"
+            },
+            {
+              "file": "birth_weight.csv",
+              "name": "Birth Weight"
             },
             {
               "file": "health_insurance.csv",
