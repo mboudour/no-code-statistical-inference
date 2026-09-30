@@ -11,6 +11,13 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from day3_analysis import (
+    classification_metrics,
+    external_logistic_validation,
+    fit_day3_linear_model,
+    fit_day3_logistic_model,
+    holdout_validation,
+)
 from inference_core import (
     METHOD_CARDS,
     audit_dataset,
@@ -322,19 +329,388 @@ def render_guarded_analysis(data: pd.DataFrame, audit: dict[str, Any], key: str)
     return result
 
 
-def render_workspace(data: pd.DataFrame, key: str, dataset_name: str, filename: str | None = None) -> None:
-    """Render the common Learn / Practice / Audit workflow for a dataset."""
-    learn, practice, audit_mode = st.tabs(["1. Learn from the data", "2. Practice guided analysis", "3. Audit the claim"])
+def _day3_report_download(result: dict[str, Any], audit: dict[str, Any], selections: dict[str, Any], key: str) -> None:
+    """Offer the same explicit record for every Day 3 computation."""
+    report = build_report(result, audit, selections, include_details=True)
+    st.download_button(
+        "Download interpretation and reproducibility record (Markdown)",
+        report,
+        file_name=f"{key}_day3_model_record.md",
+        mime="text/markdown",
+        key=f"{key}_day3_report",
+    )
+
+
+def _day3_categorical_candidates(data: pd.DataFrame, outcome: str, numeric_selected: list[str]) -> list[str]:
+    """Offer only small, non-overlapping factors for transparent treatment coding."""
+    return [
+        name
+        for name in categorical_columns(data)
+        if name != outcome and name not in numeric_selected and 2 <= data[name].dropna().astype(str).nunique() <= 12
+    ]
+
+
+def _render_day3_linear_lab(data: pd.DataFrame, audit: dict[str, Any], key: str, module_id: str) -> None:
+    """Show linear regression, specification, uncertainty, and diagnostic calculations."""
+    st.subheader("Day 3 linear-model laboratory")
+    module_messages = {
+        "d3m01": "Fit one conditional-mean line, then read its fitted values and residuals.",
+        "d3m02": "Add predictors only when the conditional comparison and adjustment rationale are explicit.",
+        "d3m03": "Compare conventional and heteroskedasticity-consistent coefficient uncertainty; neither is a prediction interval.",
+        "d3m04": "Compare a defensible functional form, transformation, or numeric interaction without searching indiscriminately.",
+        "d3m08": "Use residual, leverage, Cook's-distance, and collinearity diagnostics as prompts for investigation rather than deletion rules.",
+        "d3m10": "Build an explicit specification and download the corresponding interpretation and reproducibility record.",
+    }
+    st.caption(module_messages.get(module_id, "Fit a documented linear model and inspect its diagnostics."))
+    numeric = numeric_columns(data)
+    if len(numeric) < 2:
+        st.info("This laboratory needs a numeric outcome and at least one distinct numeric predictor.")
+        return
+    outcome = st.selectbox("Numeric outcome", numeric, key=f"{key}_d3_linear_outcome")
+    available_numeric = [name for name in numeric if name != outcome]
+    if module_id == "d3m01":
+        numeric_predictors = [st.selectbox("Numeric predictor", available_numeric, key=f"{key}_d3_linear_predictor")]
+    else:
+        numeric_predictors = st.multiselect(
+            "Numeric predictor(s)",
+            available_numeric,
+            default=available_numeric[: min(2, len(available_numeric))],
+            key=f"{key}_d3_linear_predictors",
+        )
+    if not numeric_predictors:
+        st.info("Select at least one numeric predictor.")
+        return
+    categorical_predictors: list[str] = []
+    if module_id in {"d3m02", "d3m04", "d3m08", "d3m10"}:
+        categorical_predictors = st.multiselect(
+            "Optional categorical predictor(s) — treatment coded",
+            _day3_categorical_candidates(data, outcome, numeric_predictors),
+            key=f"{key}_d3_linear_categorical",
+        )
+    quadratic_predictor = None
+    log1p_predictor = None
+    interaction = None
+    if module_id == "d3m04":
+        with st.expander("Specification choices — record a rationale before comparing models", expanded=True):
+            form = st.selectbox(
+                "Functional form for one selected numeric predictor",
+                ["Linear only", "Add a quadratic term", "Add a log1p transformation"],
+                key=f"{key}_d3_form",
+            )
+            target = st.selectbox("Predictor for this form choice", numeric_predictors, key=f"{key}_d3_form_target")
+            if form == "Add a quadratic term":
+                quadratic_predictor = target
+            elif form == "Add a log1p transformation":
+                log1p_predictor = target
+            if len(numeric_predictors) >= 2 and st.checkbox("Add one numeric × numeric interaction", key=f"{key}_d3_interaction_enabled"):
+                left = st.selectbox("First interaction predictor", numeric_predictors, key=f"{key}_d3_interaction_left")
+                right = st.selectbox("Second interaction predictor", [name for name in numeric_predictors if name != left], key=f"{key}_d3_interaction_right")
+                interaction = (left, right)
+    try:
+        result = fit_day3_linear_model(
+            data,
+            outcome,
+            numeric_predictors,
+            categorical_predictors,
+            quadratic_predictor=quadratic_predictor,
+            log1p_predictor=log1p_predictor,
+            interaction=interaction,
+        )
+    except InputValidationError as error:
+        st.warning(f"This model is not available for the current selections: {error}")
+        return
+    details = result["details"]
+    cases = details["diagnostic_cases"]
+    a, b, c, d = st.columns(4)
+    a.metric("Complete records", details["n"])
+    b.metric("R²", f"{result['_model'].rsquared:.3f}")
+    c.metric("Largest Cook's distance", f"{cases['Cook\'s distance'].max():.3f}")
+    d.metric("Leverage screen", f"{result['diagnostics']['leverage_screen']:.3f}")
+    model_tabs = st.tabs(["Coefficients and uncertainty", "Residual structure", "Influence and collinearity", "Interpretation record"])
+    with model_tabs[0]:
+        st.caption("Terms in the fitted model: " + ", ".join(details["formula_terms"]))
+        left, right = st.columns(2)
+        with left:
+            st.markdown("**Conventional coefficient intervals**")
+            st.dataframe(details["coefficients"], width="stretch")
+        with right:
+            st.markdown("**HC3 robust coefficient intervals**")
+            st.dataframe(details["robust_hc3_coefficients"], width="stretch")
+        st.info("HC3 changes the coefficient uncertainty calculation when residual variance may vary; it does not repair an omitted variable, dependence, a poor functional form, or a causal-design problem.")
+    with model_tabs[1]:
+        left, right = st.columns(2)
+        with left:
+            residual_plot = px.scatter(cases, x="Fitted", y="Residual", hover_data=["Row", "Cook's distance"], title="Residuals versus fitted values", template="plotly_white")
+            residual_plot.add_hline(y=0, line_dash="dash", line_color="gray")
+            st.plotly_chart(residual_plot, width="stretch", key=f"{key}_d3_residual_plot")
+        with right:
+            qq = details["qq_points"]
+            qq_plot = px.scatter(qq, x="Normal theoretical quantile", y="Ordered standardized residual", title="Quantile–quantile diagnostic", template="plotly_white")
+            st.plotly_chart(qq_plot, width="stretch", key=f"{key}_d3_qq_plot")
+        st.caption("Curvature, a funnel pattern, or extreme tails are evidence to investigate measurement, functional form, variance structure, and support. They do not prove a single repair.")
+    with model_tabs[2]:
+        left, right = st.columns(2)
+        with left:
+            influence_plot = px.scatter(
+                cases,
+                x="Leverage",
+                y="Standardized residual",
+                size="Cook's distance",
+                hover_data=["Row", "Fitted", "Residual"],
+                title="Leverage, standardized residuals, and Cook's distance",
+                template="plotly_white",
+            )
+            influence_plot.add_vline(x=result["diagnostics"]["leverage_screen"], line_dash="dash", line_color="orange")
+            st.plotly_chart(influence_plot, width="stretch", key=f"{key}_d3_influence_plot")
+        with right:
+            st.markdown("**Variance-inflation factors**")
+            st.dataframe(details["vif"], width="stretch", hide_index=True)
+            st.markdown("**Diagnostic screens**")
+            st.write({
+                "Breusch–Pagan p-value": result["diagnostics"].get("breusch_pagan", {}).get("p_value"),
+                "Cases above leverage screen": result["diagnostics"]["observations_above_leverage_screen"],
+                "Cases above Cook's-distance screen": result["diagnostics"]["observations_above_cooks_screen"],
+            })
+        st.warning("A diagnostic screen identifies records or assumptions to investigate. Do not remove a case merely because it is influential or produces an inconvenient coefficient.")
+    with model_tabs[3]:
+        st.markdown("**Model-based interpretation**")
+        st.write(result["interpretation"])
+        st.markdown("**Limitations to record**")
+        st.write(result["limitations"])
+        _day3_report_download(
+            result,
+            audit,
+            {
+                "module": module_id.upper(),
+                "outcome": outcome,
+                "numeric predictors": numeric_predictors,
+                "categorical predictors": categorical_predictors,
+                "quadratic predictor": quadratic_predictor or "None",
+                "log1p predictor": log1p_predictor or "None",
+                "numeric interaction": " × ".join(interaction) if interaction else "None",
+            },
+            key,
+        )
+
+
+def _render_day3_logistic_lab(data: pd.DataFrame, audit: dict[str, Any], key: str, module_id: str) -> None:
+    """Show odds, probability, threshold, calibration, and receiver-operating-characteristic calculations."""
+    st.subheader("Day 3 binary-outcome prediction laboratory")
+    module_messages = {
+        "d3m05": "Fit log odds and translate selected results into predicted probabilities rather than treating an odds ratio as a risk ratio.",
+        "d3m06": "Move the threshold deliberately and inspect the resulting false-positive and false-negative trade-off.",
+        "d3m07": "Separate probability calibration from discrimination; a strong ranking is not necessarily a well-calibrated probability model.",
+    }
+    st.caption(module_messages.get(module_id, "Fit and examine a documented binary-outcome model."))
+    binary_outcomes = [name for name in categorical_columns(data) if data[name].dropna().astype(str).nunique() == 2]
+    numeric = numeric_columns(data)
+    if not binary_outcomes or not numeric:
+        st.info("This laboratory needs a documented binary outcome and at least one numeric predictor.")
+        return
+    outcome = st.selectbox("Binary outcome", binary_outcomes, key=f"{key}_d3_logit_outcome")
+    available_numeric = [name for name in numeric if name != outcome]
+    if not available_numeric:
+        st.info("Select a dataset with a numeric predictor distinct from the binary outcome.")
+        return
+    numeric_predictors = st.multiselect(
+        "Numeric predictor(s)",
+        available_numeric,
+        default=available_numeric[: min(2, len(available_numeric))],
+        key=f"{key}_d3_logit_predictors",
+    )
+    if not numeric_predictors:
+        st.info("Select at least one numeric predictor.")
+        return
+    categorical_predictors = st.multiselect(
+        "Optional categorical predictor(s) — treatment coded",
+        _day3_categorical_candidates(data, outcome, numeric_predictors),
+        key=f"{key}_d3_logit_categorical",
+    )
+    try:
+        result = fit_day3_logistic_model(data, outcome, numeric_predictors, categorical_predictors)
+    except InputValidationError as error:
+        st.warning(f"This logistic model is not available for the current selections: {error}")
+        return
+    details = result["details"]
+    probabilities = result["_probabilities"]
+    observed = result["_outcome"]
+    a, b, c, d = st.columns(4)
+    a.metric("Complete records", details["n"])
+    b.metric("Event outcome", details["event_level"])
+    c.metric("In-sample AUC", f"{result['diagnostics']['area_under_roc_curve']:.3f}")
+    d.metric("In-sample Brier score", f"{result['diagnostics']['brier_score']:.4f}")
+    model_tabs = st.tabs(["Odds and probabilities", "Calibration", "Threshold consequences", "Discrimination", "Interpretation record"])
+    with model_tabs[0]:
+        left, right = st.columns(2)
+        with left:
+            st.dataframe(details["coefficients"], width="stretch")
+        with right:
+            cases = details["probability_cases"]
+            probability_plot = px.scatter(
+                cases,
+                x="Row",
+                y="Predicted probability",
+                color="Observed event",
+                title="Predicted probabilities by observation",
+                template="plotly_white",
+            )
+            st.plotly_chart(probability_plot, width="stretch", key=f"{key}_d3_probability_plot")
+        st.info("Odds ratios compare odds, not probabilities. The probability impact of a predictor depends on the starting covariate values and the selected reference outcome.")
+    with model_tabs[1]:
+        calibration = details["calibration"]
+        calibration_plot = px.scatter(
+            calibration,
+            x="Mean_predicted_probability",
+            y="Observed_event_rate",
+            size="Records",
+            hover_data=["Bin", "Records"],
+            title="Binned calibration display",
+            template="plotly_white",
+        )
+        calibration_plot.add_shape(type="line", x0=0, y0=0, x1=1, y1=1, line={"dash": "dash", "color": "gray"})
+        st.plotly_chart(calibration_plot, width="stretch", key=f"{key}_d3_calibration_plot")
+        st.dataframe(calibration, width="stretch", hide_index=True)
+        st.caption("Binned calibration is descriptive and can be unstable in small bins. Calibration on the same data used to fit the model is optimistic.")
+    with model_tabs[2]:
+        threshold = st.slider("Classification threshold", min_value=0.05, max_value=0.95, value=0.50, step=0.05, key=f"{key}_d3_threshold")
+        metrics = classification_metrics(observed, probabilities, threshold)
+        first, second, third, fourth = st.columns(4)
+        first.metric("Sensitivity", f"{metrics['sensitivity']:.3f}")
+        second.metric("Specificity", f"{metrics['specificity']:.3f}")
+        third.metric("Positive predictive value", f"{metrics['positive_predictive_value']:.3f}")
+        fourth.metric("Accuracy", f"{metrics['accuracy']:.3f}")
+        st.dataframe(
+            pd.DataFrame(
+                [{"Predicted / observed": "Positive", "Observed event": metrics["true_positive"], "Observed non-event": metrics["false_positive"]}, {"Predicted / observed": "Negative", "Observed event": metrics["false_negative"], "Observed non-event": metrics["true_negative"]}],
+            ),
+            width="stretch",
+            hide_index=True,
+        )
+        st.warning("A threshold is a decision choice. Select it from the costs, benefits, and fairness implications of false positives and false negatives—not because 0.50 is conventional.")
+    with model_tabs[3]:
+        roc = details["roc"]
+        roc_plot = px.line(roc, x="False positive rate", y="True positive rate", title="Receiver-operating-characteristic curve", template="plotly_white")
+        roc_plot.add_shape(type="line", x0=0, y0=0, x1=1, y1=1, line={"dash": "dash", "color": "gray"})
+        st.plotly_chart(roc_plot, width="stretch", key=f"{key}_d3_roc_plot")
+        st.caption(f"Area under the curve = {result['diagnostics']['area_under_roc_curve']:.3f}. It is the tie-aware probability that a randomly selected event receives a higher score than a randomly selected non-event; it does not measure calibration.")
+    with model_tabs[4]:
+        st.markdown("**Model-based interpretation**")
+        st.write(result["interpretation"])
+        st.markdown("**Limitations to record**")
+        st.write(result["limitations"])
+        _day3_report_download(
+            result,
+            audit,
+            {"module": module_id.upper(), "binary outcome": outcome, "numeric predictors": numeric_predictors, "categorical predictors": categorical_predictors},
+            key,
+        )
+
+
+def _render_day3_validation_lab(data: pd.DataFrame, audit: dict[str, Any], key: str, filename: str | None = None) -> None:
+    """Show an internal split or the named Pima train/test validation calculation."""
+    st.subheader("Day 3 train/test validation laboratory")
+    numeric = numeric_columns(data)
+    named_pima_test = filename == "pima_test.csv"
+    if named_pima_test:
+        st.caption("This worked dataset is the named Pima test file. The app fits the selected logistic model on the bundled Pima training file and evaluates it once on this separate test file.")
+        outcome = "type"
+        predictors = st.multiselect(
+            "Numeric predictor(s) fitted on Pima training data",
+            [name for name in numeric if name != outcome],
+            default=[name for name in ["glu", "bmi", "age"] if name in numeric],
+            key=f"{key}_d3_external_validation_predictors",
+        )
+        if not predictors:
+            st.info("Select at least one numeric predictor.")
+            return
+        try:
+            training = pd.read_csv(PROJECT_DIR / "data" / "public" / "pima_train.csv").drop(columns="rownames", errors="ignore")
+            result = external_logistic_validation(training, data, outcome, predictors)
+        except InputValidationError as error:
+            st.warning(f"This external-file validation calculation is not available for the current selections: {error}")
+            return
+        model_kind = "logistic"
+        validation_selections = {"module": "D3M09", "validation design": "Bundled Pima training file → bundled Pima test file", "outcome": outcome, "model family": model_kind, "numeric predictors": predictors}
+    else:
+        st.caption("The app creates one deterministic internal split. It keeps test records out of fitting, but it does not replace grouped, temporal, or external validation when those match deployment.")
+        binary = [name for name in categorical_columns(data) if data[name].dropna().astype(str).nunique() == 2]
+        choices: list[tuple[str, str]] = [(name, "logistic") for name in binary] + [(name, "linear") for name in numeric if name not in binary]
+        if not choices:
+            st.info("This laboratory needs either a binary outcome or a numeric outcome plus numeric predictors.")
+            return
+        outcome, model_kind = st.selectbox(
+            "Outcome and model family",
+            choices,
+            format_func=lambda item: f"{item[0]} — {'binary logistic model' if item[1] == 'logistic' else 'continuous-outcome linear model'}",
+            key=f"{key}_d3_validation_outcome",
+        )
+        predictors = st.multiselect(
+            "Numeric predictor(s)",
+            [name for name in numeric if name != outcome],
+            default=[name for name in numeric if name != outcome][: min(2, max(0, len(numeric) - 1))],
+            key=f"{key}_d3_validation_predictors",
+        )
+        if not predictors:
+            st.info("Select at least one numeric predictor.")
+            return
+        first, second = st.columns(2)
+        with first:
+            test_fraction = st.select_slider("Test-set fraction", options=[0.20, 0.25, 0.30, 0.33], value=0.25, key=f"{key}_d3_validation_fraction")
+        with second:
+            seed = st.number_input("Split seed", min_value=1, max_value=999999, value=2026, step=1, key=f"{key}_d3_validation_seed")
+        try:
+            result = holdout_validation(data, outcome, predictors, model_kind=model_kind, test_fraction=float(test_fraction), seed=int(seed))
+        except InputValidationError as error:
+            st.warning(f"This validation calculation is not available for the current selections: {error}")
+            return
+        validation_selections = {"module": "D3M09", "validation design": "Deterministic internal holdout", "outcome": outcome, "model family": model_kind, "numeric predictors": predictors, "test fraction": test_fraction, "split seed": int(seed)}
+    st.dataframe(result["estimate"], width="stretch", hide_index=True)
+    if model_kind == "logistic":
+        roc = result["details"]["roc"]
+        roc_plot = px.line(roc, x="False positive rate", y="True positive rate", title="Held-out receiver-operating-characteristic curve", template="plotly_white")
+        roc_plot.add_shape(type="line", x0=0, y0=0, x1=1, y1=1, line={"dash": "dash", "color": "gray"})
+        st.plotly_chart(roc_plot, width="stretch", key=f"{key}_d3_validation_roc")
+        st.dataframe(result["details"]["calibration"], width="stretch", hide_index=True)
+    else:
+        predictions = result["details"]["test_predictions"]
+        prediction_plot = px.scatter(predictions, x="Observed", y="Predicted", hover_data=["Row", "Residual"], title="Held-out observed versus predicted values", template="plotly_white")
+        low = min(predictions["Observed"].min(), predictions["Predicted"].min())
+        high = max(predictions["Observed"].max(), predictions["Predicted"].max())
+        prediction_plot.add_shape(type="line", x0=low, y0=low, x1=high, y1=high, line={"dash": "dash", "color": "gray"})
+        st.plotly_chart(prediction_plot, width="stretch", key=f"{key}_d3_validation_predictions")
+    st.warning("Do not revise the model repeatedly using the displayed test performance. That leaks test information into model selection and makes the reported metric optimistic.")
+    _day3_report_download(result, audit, validation_selections, key)
+
+
+def render_day3_analysis(data: pd.DataFrame, audit: dict[str, Any], key: str, module_id: str, filename: str | None = None) -> None:
+    """Route a Day 3 module to calculations that match its teaching focus."""
+    if module_id in {"d3m01", "d3m02", "d3m03", "d3m04", "d3m08", "d3m10"}:
+        _render_day3_linear_lab(data, audit, key, module_id)
+    elif module_id in {"d3m05", "d3m06", "d3m07"}:
+        _render_day3_logistic_lab(data, audit, key, module_id)
+    elif module_id == "d3m09":
+        _render_day3_validation_lab(data, audit, key, filename)
+    else:
+        st.warning("This Day 3 module has no registered computation laboratory.")
+
+
+def render_workspace(data: pd.DataFrame, key: str, dataset_name: str, filename: str | None = None, module_id: str | None = None) -> None:
+    """Render a data/design, computation, and interpretation-record workflow."""
+    learn, practice, audit_mode = st.tabs(["1. Inspect data and design", "2. Run the method-appropriate analysis", "3. Interpret, limitations & reproducibility"])
     with learn:
         audit = render_dataset_audit(data, key, dataset_name, filename)
     with practice:
         audit = audit_dataset(data, dataset_name, metadata_for(filename))
-        render_guarded_analysis(data, audit, key)
+        if module_id and module_id.startswith("d3m"):
+            render_day3_analysis(data, audit, key, module_id, filename)
+        else:
+            render_guarded_analysis(data, audit, key)
     with audit_mode:
-        st.subheader("Inference audit prompts")
-        st.markdown("- What target population and unit of observation support the claim?")
-        st.markdown("- Which variables, coding choices, missing-data rules, and exclusions were used?")
-        st.markdown("- Which assumptions are design facts, and which have only been explored diagnostically?")
-        st.markdown("- What does the estimate and uncertainty interval say on the practical scale?")
-        st.markdown("- What does the result **not** establish, including causal or practical importance claims?")
-        st.text_area("Write a brief audit note", key=f"{key}_audit_note", placeholder="State the most important limitation or robustness check.")
+        st.subheader("Interpret the result, state limitations, and document the analysis")
+        st.caption("This replaces the vague label “Audit the claim.” Use this tab to turn a calculation into a bounded, reproducible statement.")
+        st.markdown("- **Target and unit:** What population, prediction setting, and unit of observation does this analysis address?")
+        st.markdown("- **Specification:** Which variables, coding choices, transformations, missing-data rules, exclusions, and thresholds were used?")
+        st.markdown("- **Assumptions and diagnostics:** Which conditions are design facts, and which have only been explored diagnostically?")
+        st.markdown("- **Practical meaning:** What do the estimate, probabilities, prediction metrics, and uncertainty mean on the relevant scale?")
+        st.markdown("- **Limitations:** What does the result **not** establish, including causal, fairness, practical-importance, or transportability claims?")
+        st.text_area("Write an interpretation, limitation, or next analysis step", key=f"{key}_audit_note", placeholder="State the main limitation, the diagnostic finding to investigate, or the next validation step.")

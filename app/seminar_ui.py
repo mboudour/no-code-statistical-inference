@@ -14,6 +14,7 @@ import streamlit as st
 from scipy import stats
 
 from day2_dataset_options import day2_dataset_options, day2_preparation_guidance
+from day3_dataset_options import day3_dataset_options
 
 APP_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = APP_DIR.parent
@@ -76,15 +77,16 @@ def public_dataset_labels(manifest: dict) -> dict[str, str]:
 
 
 def public_dataset_options_for_module(module: dict, manifest: dict) -> list[dict[str, str]] | None:
-    """Return curated public data choices for Day 2, or ``None`` for other days.
+    """Return curated public data choices for Day 2/3, or ``None`` for Day 1.
 
-    Day 1 and Day 3 preserve the existing full-library picker.  Day 2 uses the
-    compatibility registry so that a module presents only data whose current
-    columns fit its intended structure.  The returned method, rationale, and
-    caution are displayed before a participant opens the generic workspace.
+    The Day 2 and Day 3 registries show only files that support the module's
+    currently implemented calculation.  The method, rationale, and caution are
+    displayed before participants open the workspace.
     """
 
     curated = day2_dataset_options(module["id"])
+    if curated is None:
+        curated = day3_dataset_options(module["id"])
     if curated is None:
         return None
     labels = public_dataset_labels(manifest)
@@ -307,11 +309,12 @@ def render_dataset_workspace(
     key: str,
     dataset_name: str = "Participant dataset",
     filename: str | None = None,
+    module_id: str | None = None,
 ) -> None:
     """Render the common Learn / Practice / Audit workflow for all data pathways."""
     from inference_ui import render_workspace
 
-    render_workspace(data, key, dataset_name, filename)
+    render_workspace(data, key, dataset_name, filename, module_id=module_id)
     with st.expander("Visual exploration and descriptive graphics"):
         render_profile(data, key)
 
@@ -343,6 +346,7 @@ def render_module(module: dict, manifest: dict) -> None:
                 f"{module['id']}_worked",
                 dataset_name=demonstration["name"],
                 filename=demonstration["file"],
+                module_id=module["id"],
             )
             st.download_button(
                 "Download the worked dataset as CSV",
@@ -355,7 +359,7 @@ def render_module(module: dict, manifest: dict) -> None:
         with st.expander("Process another available public dataset"):
             curated_options = public_dataset_options_for_module(module, manifest)
             if curated_options is None:
-                # Day 1 and Day 3 retain their existing all-public-data route.
+                    # Day 1 retains the existing all-public-data route.
                 labels = public_dataset_labels(manifest)
                 filename = st.selectbox(
                     "Available public dataset",
@@ -375,7 +379,7 @@ def render_module(module: dict, manifest: dict) -> None:
                 st.caption("Use BYOD to upload data prepared for the module's required design.")
             else:
                 st.caption(
-                    "Only public datasets compatible with this Day 2 module are shown. "
+                    "Only public datasets compatible with this module's current method are shown. "
                     "Compatibility concerns variable structure; participants must still verify design, coding, and assumptions."
                 )
                 by_file = {option["file"]: option for option in curated_options}
@@ -395,6 +399,7 @@ def render_module(module: dict, manifest: dict) -> None:
                         f"{module['id']}_public",
                         dataset_name=selected["name"],
                         filename=filename,
+                        module_id=module["id"],
                     )
         st.markdown("---")
         st.markdown("#### 🔬 BYOD — upload your own dataset")
@@ -413,6 +418,7 @@ def render_module(module: dict, manifest: dict) -> None:
                 uploaded,
                 f"{module['id']}_upload",
                 dataset_name="Participant-uploaded dataset",
+                module_id=module["id"],
             )
 
 

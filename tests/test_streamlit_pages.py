@@ -31,6 +31,21 @@ def test_day_pages_load_and_show_ten_modules() -> None:
         assert len(app.expander) >= 10
 
 
+def test_day3_worked_labs_expose_linear_logistic_and_validation_computations() -> None:
+    """Opening worked data must activate the Day 3 computation-specific labs."""
+    app = app_test().switch_page("pages/3_Day_3_Regression_Prediction_and_Reproducibility.py").run(timeout=60)
+    # Each module contributes a worked-data and a public-data checkbox in module order.
+    for checkbox_index, expected_heading in [
+        (0, "Day 3 linear-model laboratory"),
+        (8, "Day 3 binary-outcome prediction laboratory"),
+        (16, "Day 3 train/test validation laboratory"),
+    ]:
+        app.checkbox[checkbox_index].set_value(True).run(timeout=90)
+        assert not app.exception
+        assert any(expected_heading in item.value for item in app.subheader)
+    assert any("named Pima test file" in item.value for item in app.caption)
+
+
 def test_guided_inference_starts_with_question_and_design_inputs() -> None:
     app = app_test().switch_page("pages/4_Guided_Inference.py").run(timeout=30)
     assert not app.exception
