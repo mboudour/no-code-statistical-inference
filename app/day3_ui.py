@@ -78,10 +78,11 @@ def _linear_inputs(data: pd.DataFrame, key: str, multiple: bool = False, categor
 def _render_linear_result(result: dict[str, Any], audit: dict[str, Any], key: str, selections: dict[str, Any], emphasis: str) -> None:
     details = result["details"]
     cases = details["diagnostic_cases"]
+    largest_cooks_distance = cases["Cook's distance"].max()
     first, second, third, fourth = st.columns(4)
     first.metric("Complete records", details["n"])
     second.metric("R²", f"{result['_model'].rsquared:.3f}")
-    third.metric("Largest Cook's distance", f"{cases['Cook\'s distance'].max():.3f}")
+    third.metric("Largest Cook's distance", f"{largest_cooks_distance:.3f}")
     fourth.metric("Breusch–Pagan p-value", f"{result['diagnostics'].get('breusch_pagan', {}).get('p_value', float('nan')):.4f}")
     tabs = st.tabs(["Coefficients", "Residuals and variance", "Leverage and influence", "Record"])
     with tabs[0]:
